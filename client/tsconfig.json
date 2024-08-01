@@ -1,0 +1,14 @@
+{
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "types": ["node", "react"],
+    "typeRoots": ["./node_modules/@types", "./declarations.d.ts"],
+    "baseUrl": "./",
+    "paths": {
+      "@env": ["./src/env"]
+    }
+  },
+  "include": ["src", "declarations.d.ts"], // Ensure the declarations file is included
+  "exclude": ["node_modules", "build"]
+}
