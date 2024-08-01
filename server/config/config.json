@@ -1,0 +1,23 @@
+{
+    "development": {
+      "username": "app_user",
+      "password": "This1sTraveling103!?",
+      "database": "app_dev",
+      "host": "127.0.0.1",
+      "dialect": "postgres"
+    },
+    "test": {
+      "username": "app_user",
+      "password": "securepassword",
+      "database": "app_test",
+      "host": "127.0.0.1",
+      "dialect": "postgres"
+    },
+    "production": {
+      "username": "app_user",
+      "password": "securepassword",
+      "database": "app_prod",
+      "host": "127.0.0.1",
+      "dialect": "postgres"
+    }
+  }
