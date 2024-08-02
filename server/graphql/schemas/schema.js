@@ -1,21 +1,25 @@
 const { buildSchema } = require('graphql');
 
 const schema = buildSchema(`
-  type Place {
-    id: ID!
-    name: String!
-    address: String!
-    latitude: Float
-    longitude: Float
-    types: [String]
-    rating: Float
-    userRatingsTotal: Int
+
+  type Location {
+    lat: Float!
+    lng: Float!
   }
 
-  type Query {
-    searchPlaces(query: String!): [Place]
-    getPlaceById(id: ID!): Place
+  type Geometry {
+    location: Location
   }
+
+  type Result {
+    geometry: Geometry
+  }
+
+
+  type Query {
+    geoCode(query: String!): [Result]
+  }
+
 `);
 
 module.exports = schema;
