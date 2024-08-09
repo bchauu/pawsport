@@ -8,7 +8,7 @@ const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
 
 const schema = require('./graphql/schemas/schema')
-const root = require('./graphql/resolver/resolver');
+const resolver = require('./graphql/resolver/resolver');
 const auth = require('./middleware/auth');
 
 
@@ -31,7 +31,7 @@ app.use('/navigate', auth, (req, res) => {
 
 app.use('/graphql',auth, graphqlHTTP((req) => ({
   schema: schema,
-  rootValue: root,
+  rootValue: resolver,
   context: { user: req.user }, // Pass the req.user to the context
   graphiql: true, 
 })));
