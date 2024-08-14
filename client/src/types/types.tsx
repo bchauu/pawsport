@@ -5,9 +5,8 @@ export type AuthStackParamList = {
 
   export type SearchField = {
     enteredQuery: {
-      description: string,
-      districtCity: string[],
-      country: string
+      location: string, 
+      type: string
     },
     updateQuery: (searchName: string, query: string ) => void
   }
