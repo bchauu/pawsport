@@ -21,7 +21,9 @@ const schema = buildSchema(`
     rating: Float
     types: [String], 
     user_ratings_total: String,
-    photos: [PhotoAtt]
+    photos: [PhotoAtt],
+    rankby: String
+    price_level: Int
   }
 
   type Response {

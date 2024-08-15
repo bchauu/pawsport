@@ -21,6 +21,7 @@ const getNearbyPlaces = async (location, radius, type) => {
       params: {
           location: `${location.lat},${location.lng}`,
           radius: radius,
+          rankby: 'prominence',
           type: type,
           key: process.env.GOOGLE_API_KEY
       }
@@ -55,6 +56,7 @@ const getNextPage = async (token) => {
   const response = await axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=${token}&key=${process.env.GOOGLE_API_KEY}`, {
     params: {
       pagetoken: token,
+      rankby: 'prominence',
       key: process.env.GOOGLE_API_KEY
     }
   });
@@ -87,12 +89,15 @@ const resolver = {
                   business_status: place.business_status,
                   place_id: place.place_id,
                   rating: place.rating,
+                  price_level: place.price_level,
                   types: place.types,
                   user_ratings_total: place.user_ratings_total,
                   photos: photos
               };
           }));
-            return { result: places, next_page_token: next_page_token };
+
+          const filteredPlaces = places.filter(place => place.user_ratings_total > 10);
+            return { result: filteredPlaces, next_page_token: next_page_token };
           }
           
           // Get location from geocode
@@ -124,8 +129,12 @@ const resolver = {
                   photos: photos
               };
           }));
+
+          const filteredPlaces = places.filter(place => place.user_ratings_total > 10);
+          // console.log(filteredPlaces[0].user_ratings_total, 'first total rating');
+          console.log(next_page_token, 'token before clicking next')
           
-          return { result: places, next_page_token: next_page_token };
+          return { result: filteredPlaces, next_page_token: next_page_token };
       } catch (error) {
           console.error("Error in searchPlaces resolver:", error.message);
           throw new Error('Error fetching places');
