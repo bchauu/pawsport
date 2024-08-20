@@ -2,6 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import CreateScreen from '../screens/CreateScreen';
 import LoginScreen from '../screens/LoginScreen';
+import SearchSuggestionScreen from '../screens/SearchSuggestScreen';
 
 const Stack = createStackNavigator();
 

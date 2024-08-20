@@ -1,15 +1,17 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import axios from "axios";
-import {View, Button,Text, Alert} from 'react-native';
+import {View, Button} from 'react-native';
 import LocationSearch from "../search/LocationSearch";
 import ButtonSlider from "../search/TypeButton";
 import Place from "../places/Place";
 import List from "../places/List";
 import { getToken } from "../../utils/authStorage";
 import config from "../../config";
+import { useSearch } from "../../context/SearchContext";
+
 
 type EnteredQuery = {
-    Location: string,
+    Location: {},
     type: string
   }
 
@@ -33,11 +35,19 @@ interface Place {
     
 }
 
+
 const Search = () => {
+    const {searchValue} = useSearch();
+    // console.log(searchValue, 'back to search component');
     const [enteredQuery, setEnteredQuery] = useState({
-        location: "",
+        location: {
+            'lat': '',
+            'lng': ''
+        },
         type: ""
     });
+
+    console.log(searchValue, 'before api call')
 
     const [places, setPlaces] = useState<Place[]>([]);
     const [nextPage, setNextPage] = useState<String>('');
@@ -48,21 +58,21 @@ const Search = () => {
         setEnteredQuery(prevState => ({
             ...prevState,
             [searchName]: query}));
+
+            console.log(enteredQuery, 'test')
     };
 
-
-
     const handleSubmit = async () => {
-
         const token = await getToken();
         console.log(token, 'jere');
-        
         try {
             console.log(config);
+            console.log(searchValue.location, 'context')
+            const {location, type} = searchValue;
             const response = await axios.post(
                 `${config.apiUrl}/graphql`, {
                     query: `query {
-                        searchPlaces(query: "${enteredQuery.location}", type: "${enteredQuery.type}", radius: 4500) {
+                        searchPlaces(location: {lat: ${location.lat}, lng: ${location.lng}}, type: "${type}", radius: 4500) {
                                 result {
                                     name
                                     location {
@@ -162,15 +172,15 @@ const Search = () => {
         <View>
             <LocationSearch enteredQuery={enteredQuery} updateQuery={updateQuery}></LocationSearch>
             <ButtonSlider enteredQuery={enteredQuery} updateQuery={updateQuery}></ButtonSlider>
-            <Button title="Search" onPress={handleSubmit}></Button>
             <List places={places} ></List>
-        {nextPage ? 
-            <Button title="next:" onPress={handleNextPage}></Button>
-            :
-            <></>
-        
-    }
-           
+            <Button title="Search" onPress={handleSubmit}></Button>
+            {nextPage ? 
+                <Button title="next:" 
+                onPress={handleNextPage}
+                />
+                :
+                <></>
+            }
         </View>
     );
 }

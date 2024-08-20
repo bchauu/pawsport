@@ -1,18 +1,27 @@
 import React from 'react';
 import { View, ScrollView, Button,TextInput, StyleSheet } from 'react-native';
 import { SearchField } from "../../types/types";
+import { useSearch } from '../../context/SearchContext';
 
-const ButtonSlider: React.FC<SearchField> = ({ enteredQuery, updateQuery }) => {
+const ButtonSlider: React.FC<SearchField> = ({ enteredQuery, updateSearchTypeupdateQuery }) => {
+    const {searchValue, setSearchValue} = useSearch();
+
+    const updateSearchType = (type) => {
+
+        setSearchValue({...searchValue, type: type} )
+        console.log(searchValue, 'typeButton')
+    }
+
     const buttonTypes = [
-        { title: 'Restaurant', onPress: () => updateQuery('type', 'restaurant') },
-        { title: 'Hotel', onPress: () => updateQuery('type', 'hotel') },
-        { title: 'Bar', onPress: () => updateQuery('type', 'bar') },
-        { title: 'Cafe', onPress: () => updateQuery('type', 'cafe') },
-        { title: 'Spa', onPress: () => updateQuery('type', 'spa') },
-        { title: 'Night Club', onPress: () => updateQuery('type', 'night_club') },
-        { title: 'Tourist Attraction', onPress: () => updateQuery('type', 'tourist_attraction') },
-        { title: 'Historical Landmark', onPress: () => updateQuery('type', 'historical_landmark') },
-        { title: 'Market', onPress: () => updateQuery('type', 'market') },
+        { title: 'Restaurant', onPress: () => updateSearchType('restaurant') },
+        { title: 'Hotel', onPress: () => updateSearchType('hotel') },
+        { title: 'Bar', onPress: () => updateSearchType('bar') },
+        { title: 'Cafe', onPress: () => updateSearchType('cafe') },
+        { title: 'Spa', onPress: () => updateSearchType('spa') },
+        { title: 'Night Club', onPress: () => updateSearchType('night_club') },
+        { title: 'Tourist Attraction', onPress: () => updateSearchType('tourist_attraction') },
+        { title: 'Historical Landmark', onPress: () => updateSearchType('historical_landmark') },
+        { title: 'Market', onPress: () => updateSearchType('market') },
     ]
 
     return (
