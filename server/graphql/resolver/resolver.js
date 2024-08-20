@@ -1,21 +1,5 @@
 const axios = require('axios');
 
-const getGeocode = async (query) => {
-  const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
-      params: {
-          address: query,
-          key: process.env.GOOGLE_API_KEY
-      }
-  });
-
-  if (response.data.results.length === 0) {
-      throw new Error('No results found for the provided address');
-  }
-
-  const location = response.data.results[0].geometry.location;
-  return location;
-};
-
 const getNearbyPlaces = async (location, radius, type) => {
   const response = await axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', {
       params: {
@@ -64,7 +48,7 @@ const getNextPage = async (token) => {
 }
 
 const resolver = {
-  searchPlaces: async ({ query, radius, type, nextPageToken }) => {
+  searchPlaces: async ({ location, radius, type, nextPageToken }) => {
       try {
         console.log(nextPageToken, 'token');
           if (nextPageToken) {
@@ -99,11 +83,8 @@ const resolver = {
           const filteredPlaces = places.filter(place => place.user_ratings_total > 10);
             return { result: filteredPlaces, next_page_token: next_page_token };
           }
-          
-          // Get location from geocode
-          const location = await getGeocode(query);
 
-          // Get nearby places
+            console.log(location, 'location')
           const { results, next_page_token } = await getNearbyPlaces(location, radius, type);
 
           const places = await Promise.all(results.map(async place => {
@@ -131,7 +112,6 @@ const resolver = {
           }));
 
           const filteredPlaces = places.filter(place => place.user_ratings_total > 10);
-          // console.log(filteredPlaces[0].user_ratings_total, 'first total rating');
           console.log(next_page_token, 'token before clicking next')
           
           return { result: filteredPlaces, next_page_token: next_page_token };

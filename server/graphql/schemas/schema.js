@@ -19,9 +19,9 @@ const schema = buildSchema(`
     business_status: String
     place_id: String
     rating: Float
-    types: [String], 
-    user_ratings_total: String,
-    photos: [PhotoAtt],
+    types: [String]
+    user_ratings_total: String
+    photos: [PhotoAtt]
     rankby: String
     price_level: Int
   }
@@ -31,8 +31,13 @@ const schema = buildSchema(`
     next_page_token: String
   }
 
+  input Coordinates {
+    lat: Float
+    lng: Float
+  }
+
   type Query {
-    searchPlaces(query: String, type: String, radius: Int, nextPageToken: String): Response
+    searchPlaces(location: Coordinates, type: String, radius: Int, nextPageToken: String): Response
   }
 `);
 

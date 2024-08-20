@@ -10,7 +10,7 @@ const userRoutes = require('./routes/userRoutes');
 const schema = require('./graphql/schemas/schema')
 const resolver = require('./graphql/resolver/resolver');
 const auth = require('./middleware/auth');
-
+const searchRoutes = require('./routes/searchRoutes');
 
 const app = express();
 
@@ -35,6 +35,10 @@ app.use('/graphql',auth, graphqlHTTP((req) => ({
   context: { user: req.user }, // Pass the req.user to the context
   graphiql: true, 
 })));
+
+app.use('/location', auth, searchRoutes, (req, res) => {
+  res.json({message: 'successfully retrieved coordinates'});
+})
 
 
 app.get('/', (req, res) => {

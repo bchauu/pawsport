@@ -1,6 +1,8 @@
 const express = require('express');
-import { textSearch } from '../controllers/searchController';
+const {suggestions} = require('../controllers/locationController');
 
 const router = express.Router();
 
-router.post('/location', textSearch);
+router.post('/suggest', suggestions);
+
+module.exports = router;
