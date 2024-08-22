@@ -4,7 +4,7 @@ import {View, Button} from 'react-native';
 import LocationSearch from "../search/LocationSearch";
 import ButtonSlider from "../search/TypeButton";
 import Place from "../places/Place";
-import List from "../places/List";
+import List from "../places/list";
 import { getToken } from "../../utils/authStorage";
 import config from "../../config";
 import { useSearch } from "../../context/SearchContext";
@@ -67,10 +67,11 @@ const Search = () => {
         console.log(token, 'jere');
         try {
             console.log(config);
+            const { apiUrl } = await config();
             console.log(searchValue.location, 'context')
             const {location, type} = searchValue;
             const response = await axios.post(
-                `${config.apiUrl}/graphql`, {
+                `${apiUrl}/graphql`, {
                     query: `query {
                         searchPlaces(location: {lat: ${location.lat}, lng: ${location.lng}}, type: "${type}", radius: 4500) {
                                 result {
@@ -121,9 +122,10 @@ const Search = () => {
         console.log(token, 'jere');
         
         try {
-            console.log(config);
+            // console.log(config);
+            const { apiUrl } = await config();
             const response = await axios.post(
-                `${config.apiUrl}/graphql`, {
+                `${apiUrl}/graphql`, {
                     query: `query {
                         searchPlaces( nextPageToken: "${nextPage}") {
                                 result {

@@ -5,9 +5,6 @@ import {View, TextInput, Button, Alert} from 'react-native';
 import { storeToken, getToken } from "../../utils/authStorage";
 import config from '../../config';
 
-const apiUrl = config.apiUrl;
-console.log('API URL:', config.apiUrl);
-
 
 interface FormData {
   username: string;
@@ -36,10 +33,13 @@ const CreateAccountForm: React.FC<{onSubmit: onSubmit}> = ({onSubmit}) => {
 
   const handleSubmit = async () => {
     const token = await getToken();
-    console.log(`${config.apiUrl}/api/users/create-account`);
+    // const apiUrl = config.apiUrl;
+    const { apiUrl } = await config();
+    console.log('API URL:', apiUrl);
+    console.log(`${apiUrl}/api/users/create-account`);
     try {
       const response = await axios.post(
-        `${config.apiUrl}/api/users/create-account`,
+        `${apiUrl}/api/users/create-account`,
         form
       );
       if (response.data.message === 'success') {

@@ -21,9 +21,9 @@ const LoginField = () => {
 
     const handleLogin = async() => {
         try {
-            console.log(`${config.apiUrl}`);
+            const { apiUrl } = await config();
             const response = await axios.post(
-                `${config.apiUrl}/api/users/login`,
+                `${apiUrl}/api/users/login`,
                 cred
             )
             if (response.status === 200) {

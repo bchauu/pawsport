@@ -18,8 +18,10 @@ const AppNavigator = () => {
      const token = await getToken();
 
      try {
+      const { apiUrl } = await config();
         console.log('try block')
-       const response = await axios.get(`${config.apiUrl}/navigate`, {
+        console.log(apiUrl)
+       const response = await axios.get(`${apiUrl}/navigate`, {
           headers: {
             'authorization': `Bearer ${token}`
           }

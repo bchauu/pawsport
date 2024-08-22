@@ -43,7 +43,8 @@ const SearchSuggestionScreen = () => {
                     // const response = await axios.post(
             //     `${config}/api/search/location`,
             //     payload);
-        const response = await axios.post(`${config.apiUrl}/location/suggest`, 
+            const { apiUrl } = await config();
+        const response = await axios.post(`${apiUrl}/location/suggest`, 
         {
             query: locationQuery
         },
