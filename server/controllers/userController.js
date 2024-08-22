@@ -20,7 +20,7 @@ exports.createUser = async (req, res) => {
 
         // Generate a JWT token
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.status(201).json({ token, user: { username: user.username, email: user.email, role: user.role }, message: "success" });
+        res.status(201).json({ token, user: { username: user.username, email: user.email }, message: "success" });
     } catch (error) {
         console.log(error)
         res.status(500).json({ error: 'Failed to register user' });

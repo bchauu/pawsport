@@ -1,9 +1,10 @@
 {
     "development": {
-      "username": "app_user",
-      "password": "This1sTraveling103!?",
-      "database": "app_dev",
-      "host": "127.0.0.1",
+      "username": "postgres.smycdborwuxcswtjpjvd",
+      "password": "Rms30khw1hCA3bnA",
+      "database": "postgres",
+      "port": "6543",
+      "host": "aws-0-us-west-1.pooler.supabase.com",
       "dialect": "postgres"
     },
     "test": {
