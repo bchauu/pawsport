@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const { graphqlHTTP } = require('express-graphql');
 const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
+const tripsRoutes = require('./routes/tripsRoutes');
 
 const schema = require('./graphql/schemas/schema')
 const resolver = require('./graphql/resolver/resolver');
@@ -18,15 +19,16 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// app.use(auth); 
-  //caused issue with createAccount
-
 // Routes
 app.use('/api/users', userRoutes);
 
-//app.get --> /navigate --> only check verifying token
+
 app.use('/navigate', auth, (req, res) => {
   res.json({message: 'Successful match'})
+});
+
+app.use('/trips', auth, tripsRoutes,  (req, res) => {
+  res.json({message: 'made it to trips database'})
 });
 
 app.use('/graphql',auth, graphqlHTTP((req) => ({

@@ -39,5 +39,9 @@ module.exports = (sequelize) => {
         timestamps: true
     });
 
+    User.associate = function(model) {
+        User.hasMany(model.TravelList, { foreignKey: 'userId' })
+    }
+
     return User;
 };
