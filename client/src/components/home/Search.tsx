@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import axios from "axios";
 import {View, Button} from 'react-native';
 import LocationSearch from "../search/LocationSearch";
@@ -8,7 +8,7 @@ import List from "../places/list";
 import { getToken } from "../../utils/authStorage";
 import config from "../../config";
 import { useSearch } from "../../context/SearchContext";
-
+import { useTrip } from "../../context/TripContext";
 
 type EnteredQuery = {
     Location: {},
@@ -37,8 +37,10 @@ interface Place {
 
 
 const Search = () => {
+    const {locations, setLocation} = useTrip();
+    const [isSearchInitiated, setIsSearchInitiated] = useState(false);
     const {searchValue} = useSearch();
-    // console.log(searchValue, 'back to search component');
+
     const [enteredQuery, setEnteredQuery] = useState({
         location: {
             'lat': '',
@@ -46,8 +48,6 @@ const Search = () => {
         },
         type: ""
     });
-
-    console.log(searchValue, 'before api call')
 
     const [places, setPlaces] = useState<Place[]>([]);
     const [nextPage, setNextPage] = useState<String>('');
@@ -59,8 +59,9 @@ const Search = () => {
             ...prevState,
             [searchName]: query}));
 
-            console.log(enteredQuery, 'test')
+            // console.log(enteredQuery, 'test')
     };
+
 
     const handleSubmit = async () => {
         const token = await getToken();
@@ -106,6 +107,8 @@ const Search = () => {
             )
             setPlaces([...response.data.data.searchPlaces.result]);
             setNextPage(response.data.data.searchPlaces.next_page_token);
+            setIsSearchInitiated(true);
+            setLocation([]);
             console.log(nextPage, 'state');
         } catch (error: any) {
             if (error.response.data.error === 'Token expired') {
@@ -159,6 +162,8 @@ const Search = () => {
             )
             setPlaces([...response.data.data.searchPlaces.result]);
             setNextPage(response.data.data.searchPlaces.next_page_token);
+            setIsSearchInitiated(true);
+            setLocation([]);
             console.log(nextPage, 'state');
         } catch (error: any) {
             if (error.response.data.error === 'Token expired') {
@@ -174,7 +179,12 @@ const Search = () => {
         <View>
             <LocationSearch enteredQuery={enteredQuery} updateQuery={updateQuery}></LocationSearch>
             <ButtonSlider enteredQuery={enteredQuery} updateQuery={updateQuery}></ButtonSlider>
-            <List places={places} ></List>
+            <List 
+                places={places} 
+                setIsSearchInitiated={setIsSearchInitiated} 
+                isSearchInitiated={isSearchInitiated} 
+            >
+            </List>
             <Button title="Search" onPress={handleSubmit}></Button>
             {nextPage ? 
                 <Button title="next:" 

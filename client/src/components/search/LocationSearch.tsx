@@ -17,7 +17,6 @@ const LocationSearch: React.FC<SearchField> = ({enteredQuery, updateQuery}) => {
             <TextInput 
                 placeholder="Bangkok, Thailand" 
                 value={searchValue.name} 
-                // onChangeText={(location) => updateQuery("location", location)}
                 onFocus={() => {handleNavigateToSuggest()}}
             />
         </View>

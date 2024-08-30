@@ -8,6 +8,9 @@ module.exports = (sequelize) => {
             autoIncrement: true,
             allowNull: false
         },
+        name: {
+            type: DataTypes.STRING,
+        },
         travelListId: {
             type: DataTypes.BIGINT,
             field: 'travel_list_id',
