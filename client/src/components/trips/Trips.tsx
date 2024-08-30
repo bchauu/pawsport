@@ -1,17 +1,51 @@
 import React, {useState, useEffect} from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, FlatList, StyleSheet } from "react-native";
 import { Card } from 'react-native-paper';
 
-const Trips = ({trip}) => {
-    console.log(trip.items, 'trips')
+const Trips = ({trip, tripPlaces}) => {
+    console.log(trip.items[0], 'trips')
+
+
+    // console.log(tripPlaces, 'trips')
+    const renderPlaces = ({ item, index }) => {
+        return (
+          <View style={styles.itemContainer}>
+            <Text style={styles.number}>{index + 1}.</Text>  
+            <Text style={styles.itemText}>{item.name}</Text>
+          </View>
+        );
+      };
+
     return (
         <View>
             <Text>{trip.name}</Text>
+                <FlatList
+                    data={trip.items}
+                    renderItem={renderPlaces}
+                    keyExtractor={(item)=> item.id }
+                    contentContainerStyle={styles.listContainer}
+                />
         </View>
     )
 }
 
-//render name, notes as list with delete button
+const styles = StyleSheet.create({
+    listContainer: {
+      padding: 20,
+    },
+    itemContainer: {
+      flexDirection: 'row',  // Align number and text horizontally
+      marginBottom: 5,
+    },
+    number: {
+      marginRight: 10,       // Space between number and text
+      fontSize: 16,
+      fontWeight: 'bold',    // Make the number bold
+    },
+    itemText: {
+      fontSize: 16,
+    },
+  });
 
 export default Trips;
 

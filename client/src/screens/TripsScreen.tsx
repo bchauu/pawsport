@@ -23,7 +23,7 @@ const TripsScreen =  () => {
         });
         // console.log(response.data.travelLists[0].name);
         setAllTravelList([...response.data.travelLists])
-        console.log(allTravelList)
+        console.log(allTravelList[0]?.items[0], 'tripsScreen')
     }
     getList();
   }, [])
@@ -53,6 +53,7 @@ const TripsScreen =  () => {
           <Trips
               key={index}
               trip={trip}
+              // tripPlaces={items}
           />
        ))}
     </View>

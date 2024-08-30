@@ -35,8 +35,8 @@ const SearchSuggestionScreen = () => {
 
   const handleAutoComplete = async () => {
     const token = await getToken();
-    console.log(locationQuery)
-    console.log(token)
+    // console.log(locationQuery)
+    // console.log(token)
 
     try {
         //to backend endpoint
@@ -54,8 +54,8 @@ const SearchSuggestionScreen = () => {
             }
         }
         )
-      console.log('api call being made')
-      console.log(response.data, 'after api')
+      // console.log('api call being made')
+      // console.log(response.data, 'after api')
       setSuggestions([...response.data.suggestions])  //suggestions to be displayed
       setHasSuggestion(true);
       

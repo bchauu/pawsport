@@ -65,9 +65,9 @@ const Search = () => {
 
     const handleSubmit = async () => {
         const token = await getToken();
-        console.log(token, 'jere');
+        // console.log(token, 'jere');
         try {
-            console.log(config);
+            // console.log(config);
             const { apiUrl } = await config();
             console.log(searchValue.location, 'context')
             const {location, type} = searchValue;
@@ -109,20 +109,20 @@ const Search = () => {
             setNextPage(response.data.data.searchPlaces.next_page_token);
             setIsSearchInitiated(true);
             setLocation([]);
-            console.log(nextPage, 'state');
+            // console.log(nextPage, 'state');
         } catch (error: any) {
             if (error.response.data.error === 'Token expired') {
                 console.log(error.error, 'new token needed');
             } else {
 
-                console.log(error.response.data, 'sending search request');
+                // console.log(error.response.data, 'sending search request');
             }
         }
     };
 
     const handleNextPage = async () => {
         const token = await getToken();
-        console.log(token, 'jere');
+        // console.log(token, 'jere');
         
         try {
             // console.log(config);
@@ -167,7 +167,7 @@ const Search = () => {
             console.log(nextPage, 'state');
         } catch (error: any) {
             if (error.response.data.error === 'Token expired') {
-                console.log(error.error, 'new token needed');
+                // console.log(error.error, 'new token needed');
             } else {
 
                 console.log(error.response.data, 'sending search request');

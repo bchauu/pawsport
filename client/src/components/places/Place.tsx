@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import { View, Text,Image, Button} from "react-native";
 import axios from "axios";
 import { Paragraph } from 'react-native-paper';
-import AddTravelModal from "../trips/addTravelModal";
+import AddTravelModal from "../trips/AddTravelModal";
 import { useTrip } from "../../context/TripContext";
 import { TripLocation } from "../../types/types";
 import { getToken } from "../../utils/authStorage";
