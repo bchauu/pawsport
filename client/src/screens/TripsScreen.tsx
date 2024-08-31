@@ -4,6 +4,7 @@ import Trips from '../components/trips/Trips';
 import axios from 'axios';
 import config from '../../src/config';
 import { getToken } from '../utils/authStorage';
+import SimpleMap from '../components/trips/Map';
 
 
 const TripsScreen =  () => {
@@ -56,6 +57,7 @@ const TripsScreen =  () => {
               // tripPlaces={items}
           />
        ))}
+       <SimpleMap></SimpleMap>
     </View>
   );
 };
