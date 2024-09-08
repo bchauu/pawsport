@@ -1,12 +1,9 @@
 import React, {useState, useEffect} from "react";
-import { View, Text, ScrollView, FlatList, StyleSheet } from "react-native";
+import { View, Text, ScrollView, FlatList, StyleSheet, TouchableOpacity } from "react-native";
 import { Card } from 'react-native-paper';
 
-const Trips = ({trip, tripPlaces}) => {
-    console.log(trip.items[0], 'trips')
-
-
-    // console.log(tripPlaces, 'trips')
+const Trips = ({isSelected, onSelect, trip}) => {
+  
     const renderPlaces = ({ item, index }) => {
         return (
           <View style={styles.itemContainer}>
@@ -18,7 +15,15 @@ const Trips = ({trip, tripPlaces}) => {
 
     return (
         <View>
-            <Text>{trip.name}</Text>
+            <TouchableOpacity 
+                onPress={() => onSelect(trip)}
+                style={[
+                  styles.item, 
+                  isSelected && styles.selectedItem
+                ]}
+            >
+                <Text>{trip.name}</Text>
+            </TouchableOpacity>
                 <FlatList
                     data={trip.items}
                     renderItem={renderPlaces}
@@ -37,6 +42,15 @@ const styles = StyleSheet.create({
       flexDirection: 'row',  // Align number and text horizontally
       marginBottom: 5,
     },
+    item: {
+      padding: 15,
+      marginVertical: 5,
+      backgroundColor: '#e0e0e0', // Default background color
+      borderRadius: 5,
+    },
+    selectedItem: {
+      backgroundColor: '#a0a0a0', // Background color for selected item
+    },
     number: {
       marginRight: 10,       // Space between number and text
       fontSize: 16,
@@ -48,68 +62,3 @@ const styles = StyleSheet.create({
   });
 
 export default Trips;
-
-
-// const List = ({places}) => {
-//     const [hasList, setHasList] = useState(false)
-//     const [trips, setTrips] = useState([]);
-//         //trips will be an array of trip lists
-//             //each trip will have a name
-//                 // will have name of each place, along with coordinates
-//                 // remove button - ability to remove from list
-//                 // trips: [place1: {
-//                 //     name, 
-//                 //     coordinates,
-//                 //     removed? boolean,
-//                 //      place_id
-//                 //      notes
-//                 // }
-//                 // ]
-// console.log(places, 'List component')
-
-// useEffect(() => {
-//     if (places.length > 0) {
-//         setHasList(true);
-//     } else {
-//         setHasList(false); // Reset if places becomes empty
-//     }
-//     console.log(hasList)
-// }, [places]); // Ensures this effect runs whenever `places` changes
-
-// return (
-//     <>
-//         {hasList ? (
-//             <View>
-//                 {/* { places?.map((place, index) => (
-//                     <Card key={place.place_id} style={{ marginBottom: 10 }}>
-//                         <Card.Content>
-//                             <Place placeDetail={place} />
-//                         </Card.Content>
-//                     </Card>
-//                 ))} */}
-//             </View>
-//         ) : (
-//             <Text>No places available</Text>
-//         )}
-//     </>
-//     );
-// };
-
-
-// export default List;
-
-
-// //all list should have data
-//     // location with photo
-//     // details
-//     // these are list of places
-
-// // i need list of trips
-//     //trips will have places like the ones shown
-//     //need contex
-    
-
-
-// //home    //search --> places --> details
-
-//         //trips --> state here
