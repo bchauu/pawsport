@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, View, Text, Button, TouchableOpacity } from 'react-native';
+import { Modal, View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTrip } from "../../context/TripContext";
 import axios from 'axios';
 
 const AddTravelModal = ({allTravelList, handleAddTrip}) => {
-    const {locations, setLocation} = useTrip();
-    const [selectedList, setSelectedList] = useState({});
+  const {locations, setLocation} = useTrip();
+  const [selectedList, setSelectedList] = useState({});
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -33,11 +33,17 @@ const AddTravelModal = ({allTravelList, handleAddTrip}) => {
           setModalVisible(!modalVisible); // Function to handle the back button on Android
         }}
       >
-        <View>
-          <View>
+        <View style={styles.overlay}>
+          <View style={styles.modalContainer}>
             <Text>Add to which Travels?</Text>
             {allTravelList.map((list, index)=> (
-                <Button title={list.name} key={index} onPress={() => handleSelectedList(list)}/>
+                <TouchableOpacity
+                    key={index}
+                    onPress={() => handleSelectedList(list)}
+                    // do the same as trips to handle selected background
+                >
+                  <Text>{list.name}</Text>
+                </TouchableOpacity>
             ))}
             <Button title="Add to Travel List" onPress={handleAddtoTravelList} />
             <Button title="Hide" onPress={() => setModalVisible(!modalVisible)} />
@@ -47,6 +53,45 @@ const AddTravelModal = ({allTravelList, handleAddTrip}) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background to overlay behind the modal
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 15,
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    paddingHorizontal: 8,
+    marginBottom: 15,
+    width: '100%',
+  },
+});
 
 export default AddTravelModal;
 
