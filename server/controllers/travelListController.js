@@ -26,7 +26,8 @@ exports.addCreate = async (req, res) => {
 
 exports.getList = async (req, res) => {
   const {userId} = req.user;
-  console.log(userId, 'getList')
+  const test = req.user;
+  console.log(test, 'test getList')
   try {
     let list; 
 
@@ -43,6 +44,9 @@ exports.getListswithPlaces = async (req, res) => {
   try {
     const { userId } = req.user;
     console.log(userId, 'allLists');
+
+    const test = req.user;
+    console.log(test, 'test getList')
 
     const travelLists = await TravelList.findAll({
       where: { userId },

@@ -27,6 +27,17 @@ exports.createUser = async (req, res) => {
     }
 };
 
+exports.getEmail = async (req, res) => {
+  const {userId} = req.user;
+  console.log(userId, 'getEmail');
+  let user,
+      id = userId;
+  user = await User.findOne({where: {id}});
+  console.log(user, 'afterUser')
+  console.log(user.dataValues.email, 'test')
+  res.status(201).json({email: user.dataValues.email} )
+}
+
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;

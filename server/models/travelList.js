@@ -34,6 +34,11 @@ module.exports = (sequelize) => {
             allowNull: false,
             unique: true
         },
+        uuid: {
+            type: DataTypes.UUID,
+            allowNull: true,
+            unique: true,
+        },
         isPublic: {
             type: DataTypes.BOOLEAN,
             field: 'is_public',
