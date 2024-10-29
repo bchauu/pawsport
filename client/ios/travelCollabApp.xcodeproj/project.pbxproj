@@ -13,6 +13,11 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3E7994C368D81856378AC68D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 7E0AB4F7BCA930EDFA11D999 /* PrivacyInfo.xcprivacy */; };
+		4253829F2C83C27800C9B1A9 /* libreact-native-maps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4253829E2C83C27800C9B1A9 /* libreact-native-maps.a */; };
+		425382A12C83C7DF00C9B1A9 /* GoogleMapsBase.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 425382A02C83C7DF00C9B1A9 /* GoogleMapsBase.xcframework */; };
+		425382A32C83C7DF00C9B1A9 /* GoogleMapsCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 425382A22C83C7DF00C9B1A9 /* GoogleMapsCore.xcframework */; };
+		425382A72C83C7FF00C9B1A9 /* libreact-native-google-maps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 425382A62C83C7FF00C9B1A9 /* libreact-native-google-maps.a */; };
+		425382A92C83CA8900C9B1A9 /* GoogleMaps.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 425382A82C83CA8900C9B1A9 /* GoogleMaps.xcframework */; };
 		7699B88040F8A987B510C191 /* libPods-travelCollabApp-travelCollabAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-travelCollabApp-travelCollabAppTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -40,10 +45,16 @@
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = travelCollabApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-travelCollabApp-travelCollabAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-travelCollabApp-travelCollabAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-travelCollabApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-travelCollabApp.debug.xcconfig"; path = "Target Support Files/Pods-travelCollabApp/Pods-travelCollabApp.debug.xcconfig"; sourceTree = "<group>"; };
+		4253829E2C83C27800C9B1A9 /* libreact-native-maps.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-maps.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		425382A02C83C7DF00C9B1A9 /* GoogleMapsBase.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleMapsBase.xcframework; path = Pods/GoogleMaps/Base/Frameworks/GoogleMapsBase.xcframework; sourceTree = "<group>"; };
+		425382A22C83C7DF00C9B1A9 /* GoogleMapsCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleMapsCore.xcframework; path = Pods/GoogleMaps/Maps/Frameworks/GoogleMapsCore.xcframework; sourceTree = "<group>"; };
+		425382A42C83C7DF00C9B1A9 /* libreact-native-maps.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-maps.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		425382A62C83C7FF00C9B1A9 /* libreact-native-google-maps.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-google-maps.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		425382A82C83CA8900C9B1A9 /* GoogleMaps.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleMaps.xcframework; path = Pods/GoogleMaps/Maps/Frameworks/GoogleMaps.xcframework; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-travelCollabApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-travelCollabApp.release.xcconfig"; path = "Target Support Files/Pods-travelCollabApp/Pods-travelCollabApp.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-travelCollabApp-travelCollabAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-travelCollabApp-travelCollabAppTests.debug.xcconfig"; path = "Target Support Files/Pods-travelCollabApp-travelCollabAppTests/Pods-travelCollabApp-travelCollabAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-travelCollabApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-travelCollabApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7E0AB4F7BCA930EDFA11D999 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = travelCollabApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		7E0AB4F7BCA930EDFA11D999 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = travelCollabApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = travelCollabApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-travelCollabApp-travelCollabAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-travelCollabApp-travelCollabAppTests.release.xcconfig"; path = "Target Support Files/Pods-travelCollabApp-travelCollabAppTests/Pods-travelCollabApp-travelCollabAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -62,6 +73,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				425382A92C83CA8900C9B1A9 /* GoogleMaps.xcframework in Frameworks */,
+				425382A72C83C7FF00C9B1A9 /* libreact-native-google-maps.a in Frameworks */,
+				425382A12C83C7DF00C9B1A9 /* GoogleMapsBase.xcframework in Frameworks */,
+				425382A32C83C7DF00C9B1A9 /* GoogleMapsCore.xcframework in Frameworks */,
+				4253829F2C83C27800C9B1A9 /* libreact-native-maps.a in Frameworks */,
 				0C80B921A6F3F58F76C31292 /* libPods-travelCollabApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -104,6 +120,12 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				425382A82C83CA8900C9B1A9 /* GoogleMaps.xcframework */,
+				425382A62C83C7FF00C9B1A9 /* libreact-native-google-maps.a */,
+				425382A02C83C7DF00C9B1A9 /* GoogleMapsBase.xcframework */,
+				425382A22C83C7DF00C9B1A9 /* GoogleMapsCore.xcframework */,
+				425382A42C83C7DF00C9B1A9 /* libreact-native-maps.a */,
+				4253829E2C83C27800C9B1A9 /* libreact-native-maps.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-travelCollabApp.a */,
 				19F6CBCC0A4E27FBF8BF4A61 /* libPods-travelCollabApp-travelCollabAppTests.a */,
@@ -560,7 +582,7 @@
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
-				USE_HERMES = true;
+				USE_HERMES = false;
 			};
 			name = Debug;
 		};
@@ -635,7 +657,7 @@
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
-				USE_HERMES = true;
+				USE_HERMES = false;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
