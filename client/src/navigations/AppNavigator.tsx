@@ -41,7 +41,7 @@ const AppNavigator = () => {
 
     checkToken();
   },[login]);
-
+  console.log(loading, 'loading')
   if (loading) return <LoadingScreen/>
 
   return isAuthenticated ? <MainNavigator /> : <AuthNavigator />;

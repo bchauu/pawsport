@@ -1,13 +1,14 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from '../screens/HomeScreen';
 import SuggestScreen from '../screens/SearchSuggestScreen';
+import CoopTripsScreen from '../screens/CoopTripsScreen';
 import { SearchProvider } from '../context/SearchContext';
 
 type HomeStackParamList = {
   Home: undefined;
   Suggest: { handleSubmit: () => Promise<void> };
+  CoopTrips: { handleSubmit: () => Promise<void> };
 };
 
 const HomeStack = createStackNavigator<HomeStackParamList>();
