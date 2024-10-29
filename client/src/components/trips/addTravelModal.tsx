@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
-import { useTrip } from "../../context/TripContext";
 import axios from 'axios';
 
 const AddTravelModal = ({allTravelList, handleAddTrip}) => {
-  const {locations, setLocation} = useTrip();
   const [selectedList, setSelectedList] = useState({});
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -25,7 +23,8 @@ const AddTravelModal = ({allTravelList, handleAddTrip}) => {
       <Button title="Add to Travels" onPress={() => setModalVisible(true)} />
 
       {/* The Modal */}
-      <Modal
+      {modalVisible && (
+        <Modal
         animationType="slide" // Animation can be 'slide', 'fade', or 'none'
         transparent={true} // Transparent to allow the content behind the modal to be visible
         visible={modalVisible} // Show or hide the modal based on state
@@ -50,6 +49,7 @@ const AddTravelModal = ({allTravelList, handleAddTrip}) => {
           </View>
         </View>
       </Modal>
+      )}
     </View>
   );
 };

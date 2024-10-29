@@ -5,7 +5,12 @@ export type AuthStackParamList = {
 
 export type HomeStackParamList = {
     Home: undefined;
-    Suggest: never
+    Suggest: never;
+}
+
+export type TripStackParamList = {
+  Trip: undefined;
+  CoopTrip: never;
 }
 
   export type SearchField = {

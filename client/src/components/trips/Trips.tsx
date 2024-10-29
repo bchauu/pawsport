@@ -1,8 +1,42 @@
 import React, {useState, useEffect} from "react";
-import { View, Text, ScrollView, FlatList, StyleSheet, TouchableOpacity } from "react-native";
-import { Card } from 'react-native-paper';
+import { View, Text, TextInput, ScrollView, FlatList, StyleSheet, TouchableOpacity, Button } from "react-native";
+import axios from 'axios';
+import useApiConfig from "../../utils/apiConfig";
+import Share from "./Share";
+import CollaboratorsModal from "./CollaboratorsModal";
 
-const Trips = ({isSelected, onSelect, trip}) => {
+
+const Trips = ({trip}) => {
+  const [hasUpdatedSharedUser, setHasUpdatedSharedUser] = useState(false);
+  const {token, apiUrl} = useApiConfig();
+
+  const handleShare = async (input) => {
+    console.log(input, 'trip')
+
+    try {
+      const response = await axios.post(`${apiUrl}/permissions/grant`, {
+          travelListId: trip.id, 
+          // sharedEmail: 'beecee12@gmail.com',
+          sharedEmail: `${input}`,
+             sharedUserName: '' //should be one field. adjust backend to only use one field and check for both user and email
+        },
+        {
+          headers: {
+            'authorization': `Bearer ${token}`
+          }
+        }
+      )
+      console.log(response, 'response from sharing')
+      setHasUpdatedSharedUser(true);
+    } catch (error) {
+        if (error.response.status === 409) {
+
+          console.log(error.response.status, error.response.data.message);
+        }
+    }
+
+    
+  }
   
     const renderPlaces = ({ item, index }) => {
         return (
@@ -16,16 +50,25 @@ const Trips = ({isSelected, onSelect, trip}) => {
     return (
         <View>
             <TouchableOpacity 
-                onPress={() => onSelect(trip)}
+                // onPress={() => onSelect(trip)}
                 style={[
                   styles.item, 
-                  isSelected && styles.selectedItem
+                  // isSelected && styles.selectedItem
                 ]}
             >
-                <Text>{trip.name}</Text>
+                <Text>{trip?.name}</Text>
+                <Share handleShare={handleShare}></Share>
+                <TouchableOpacity>
+                  <Text>View Collaborators</Text>
+                  <CollaboratorsModal
+                    trip={trip}
+                    hasUpdatedSharedUser={hasUpdatedSharedUser}
+                    setHasUpdatedSharedUser={setHasUpdatedSharedUser}
+                  />
+                </TouchableOpacity>
             </TouchableOpacity>
                 <FlatList
-                    data={trip.items}
+                    data={trip?.items}
                     renderItem={renderPlaces}
                     keyExtractor={(item)=> item.id }
                     contentContainerStyle={styles.listContainer}
@@ -58,6 +101,13 @@ const styles = StyleSheet.create({
     },
     itemText: {
       fontSize: 16,
+    },
+    input: {
+      height: 40,
+      borderColor: 'gray',
+      borderWidth: 1,
+      marginBottom: 20,
+      paddingHorizontal: 10,
     },
   });
 
