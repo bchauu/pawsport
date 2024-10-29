@@ -1,25 +1,33 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { User } = require('../models');
+const { uniqueNamesGenerator, adjectives, animals } = require('unique-names-generator');
+
+const generateUserName = uniqueNamesGenerator({
+  dictionaries: [adjectives, adjectives, animals],
+  separator: ' ',
+  style: 'capital',
+  length: 3
+});
 
 exports.createUser = async (req, res) => {
+
     console.log('controller')
-    const { username, email, password } = req.body;
+    const { email, password } = req.body;
+    const username = generateUserName;
     try {
         let user;
         user = await User.findOne({where: {email}});
 
         if (user) return res.status(400).json({ message: 'User already exists' });
 
-
-        console.log('trying')
         const hashedPassword = await bcrypt.hash(password, 10);
         user = await User.create({ username, email, password: hashedPassword });
         const { role } = user;
         const userRes = {username, email, role};
 
         // Generate a JWT token
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '2h' });
         res.status(201).json({ token, user: { username: user.username, email: user.email }, message: "success" });
     } catch (error) {
         console.log(error)
@@ -40,6 +48,7 @@ exports.getEmail = async (req, res) => {
 
 
 exports.login = async (req, res) => {
+  console.log(generateUserName, 'generateUserName');
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ where: { email } });
