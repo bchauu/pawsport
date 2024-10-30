@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { View, Modal, Button, Text, StyleSheet, Dimensions } from "react-native";
 import Chat from "./Chat";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const ChatModal = ({socket, listId, roomId, userEmail, setUserEmail, chat, setChat}) => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -62,7 +63,17 @@ const ChatModal = ({socket, listId, roomId, userEmail, setUserEmail, chat, setCh
             >
                 <View style={styles.modalBackground}>
                     <View style={styles.container}>
-
+                        <View style={styles.minContainer}>
+                            <TouchableOpacity
+                                onPress={() => setModalVisible(false)}
+                                style={styles.minButton}
+                            >
+                                <Text>
+                                ➖
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+      
                         <Chat
                             listId={listId}
                             roomId={roomId}
@@ -72,7 +83,6 @@ const ChatModal = ({socket, listId, roomId, userEmail, setUserEmail, chat, setCh
                             chat={chat}
                             setChat={setChat}
                         />
-                        <Button title="Hide" onPress={() => setModalVisible(false)} />
                     </View>
                 </View>
             </Modal>
@@ -88,21 +98,34 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end',
         alignItems: 'flex-end',
-        // backgroundColor: 'rgba(0, 0, 0, 0.5)'  // Semi-transparent black background
-
+        width: '99%',  
     },
     container: {
         height: height / 2, 
-        width: '70%',  
+        width: '70%',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'rgba(135, 206, 235, 0.9)',  // Sky blue with 90% opacity
-        padding: 20,
-        paddingTop: 30,
+        padding: 1,
+        paddingTop: 11,
+        paddingBottom: 25,
         borderRadius: 10,
         borderStyle: 'solid',
         borderColor: 'black',
-        borderWidth: 0.5,        // 1px border width
+        borderWidth: 0.5,  
+    },
+    minContainer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        width: '100%',
+        right: 1.5,
+    },
+    minButton: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 }, 
+        shadowOpacity: 0.03,
+        shadowRadius: 4,
     }
 })
 

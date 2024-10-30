@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, TextInput, StyleSheet, FlatList } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Chat = ({listId, roomId, chat, socket}) => {
   const [message, setMessage] = useState('');
@@ -14,26 +15,46 @@ const Chat = ({listId, roomId, chat, socket}) => {
   };
 
   return (
-    <View>
+    <View style={styles.chatContainer}>
       <FlatList
         data={chat}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({item}) => (
-          <Text>
-            {item.userId}: {item.text}
-          </Text>
+          <View style={styles.space}>
+            <View style={styles.user}>
+              <Text style={styles.username}>
+                {item.userId}
+              </Text>
+              <Text>
+                :
+              </Text>
+            </View>
+            <Text>
+            {item.text}
+            </Text>
+          </View>
         )}
-        style={styles.chatContainer}
+        style={styles.chatBoxContainer}
       />
       <View style={styles.space}></View>
-      <TextInput
-        placeholder="Type a message"
-        value={message}
-        onChangeText={setMessage}
-        style={styles.textInput}
-        multiline={true}
-      />
-      <Button title="Send" onPress={sendMessage} />
+      <View style={styles.textInputContainer}>
+        <TextInput
+          placeholder="Type a message"
+          value={message}
+          onChangeText={setMessage}
+          style={styles.textInput}
+          multiline={true}
+        />
+        <TouchableOpacity
+          style={styles.textButton}
+          onPress={sendMessage}
+        >
+          <Text>
+            Send
+          </Text>
+          {/* <Icon name="send" size={24} color="#007AFF" /> */}
+        </TouchableOpacity>
+      </View>
 
     </View>
   );
@@ -41,24 +62,48 @@ const Chat = ({listId, roomId, chat, socket}) => {
 
 const styles = StyleSheet.create({
   chatContainer: {
+    // backgroundColor: '#f9f9f9',
+    width: '99%',
+    height: '100%',
+    borderRadius: 10,
+  },
+  chatBoxContainer: {
     padding: 10,
     backgroundColor: '#f9f9f9',
     borderRadius: 10,
-    width: '90%',
     minWidth: '90%',
     maxHeight: '90%',  // Limit the height of the chat container
-    // zIndex: 10
   },
   space: {
-    padding: 1
+    paddingBottom: 3
+  },
+  user: {
+    flexDirection: 'row'
+  },
+  username: {
+    alignSelf: 'flex-start',
+    backgroundColor: 'rgba(211, 211, 211, 0.5)',
+  },
+  textInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    paddingRight: 5,
+    paddingBottom: 5, 
+    width: '100%',
+    backgroundColor: 'rgba(211, 211, 211, 0.7)',
+    borderRadius: 10,
   },
   textInput: {
-    paddingTop: -5,
+    flex: 1,
+    borderRadius: 10,
+    paddingTop: 2,
     paddingLeft: 2,
-    paddingRight: 2,
-    maxWidth: '90%',
+    maxWidth: '80%',
     height: 40,
-    // backgroundColor: 'blue'
+  },
+  textButton: {
+    zIndex: 10,
   }
 })
 
