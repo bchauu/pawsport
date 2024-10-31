@@ -8,8 +8,9 @@ const Chat = ({listId, roomId, chat, socket}) => {
   const sendMessage = () => {
     if (socket && message) {
         console.log(roomId, 'roomId in chat')
-      socket.emit('sendMessage', { roomId, message }, (response) => { //sending to testMessage worked. try to augment testMessage instead to debug
+      socket.emit('sendMessage', { roomId, message }, (response) => { 
         if (response.status === 'success') setMessage('');
+
       });
     }
   };
@@ -52,7 +53,6 @@ const Chat = ({listId, roomId, chat, socket}) => {
           <Text>
             Send
           </Text>
-          {/* <Icon name="send" size={24} color="#007AFF" /> */}
         </TouchableOpacity>
       </View>
 
@@ -62,20 +62,25 @@ const Chat = ({listId, roomId, chat, socket}) => {
 
 const styles = StyleSheet.create({
   chatContainer: {
-    // backgroundColor: '#f9f9f9',
+    backgroundColor: '#87CEEB',
     width: '99%',
     height: '100%',
     borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
   },
   chatBoxContainer: {
     padding: 10,
     backgroundColor: '#f9f9f9',
     borderRadius: 10,
     minWidth: '90%',
-    maxHeight: '90%',  // Limit the height of the chat container
+    maxHeight: '90%', 
+    
   },
   space: {
-    paddingBottom: 3
+    paddingBottom: 1
   },
   user: {
     flexDirection: 'row'

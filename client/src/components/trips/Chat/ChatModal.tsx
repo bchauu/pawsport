@@ -3,7 +3,7 @@ import { View, Modal, Button, Text, StyleSheet, Dimensions } from "react-native"
 import Chat from "./Chat";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const ChatModal = ({socket, listId, roomId, userEmail, setUserEmail, chat, setChat}) => {
+const ChatModal = ({setIsNewMessage, setNewMessageCount, newMessageCount, socket, listId, roomId, userEmail, setUserEmail, chat, setChat}) => {
     const [modalVisible, setModalVisible] = useState(false);
 
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -35,7 +35,6 @@ const ChatModal = ({socket, listId, roomId, userEmail, setUserEmail, chat, setCh
     
         const handleReceiveMessage = (data) => {
             setChat((prevChat) => [...prevChat, data]);
-            
         };
 
         socket.emit('startChat', listId, (response) => {
@@ -52,23 +51,42 @@ const ChatModal = ({socket, listId, roomId, userEmail, setUserEmail, chat, setCh
         };
     }, [listId, socket]);
 
+    const handleCollab = () => {
+        setNewMessageCount(0);
+        setIsNewMessage(false);
+        setModalVisible(true)
+    }
+
+    const closeModal = () => {
+        setNewMessageCount(0);
+        setIsNewMessage(false)
+        setModalVisible(false)
+    }
+
     return (
         <View>
-            <Button title='Collab Chat' onPress={() => setModalVisible(true)}/>
+            <TouchableOpacity
+                onPress={() => handleCollab()}
+                style={styles.planButton}
+            >
+                <Text style={styles.planButtonText}>
+                    Plan Together ✈️
+                </Text>
+            </TouchableOpacity>
             <Modal
                 animationType="slide"
                 transparent={true}
                 visible={modalVisible}
-                onRequestClose={()=> setModalVisible(false)}
+                onRequestClose={()=> closeModal()}
             >
                 <View style={styles.modalBackground}>
                     <View style={styles.container}>
                         <View style={styles.minContainer}>
                             <TouchableOpacity
-                                onPress={() => setModalVisible(false)}
+                                onPress={() => closeModal()}
                                 style={styles.minButton}
                             >
-                                <Text>
+                                <Text style={styles.minButton} >
                                 ➖
                                 </Text>
                             </TouchableOpacity>
@@ -105,14 +123,19 @@ const styles = StyleSheet.create({
         width: '70%',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(135, 206, 235, 0.9)',  // Sky blue with 90% opacity
+        backgroundColor: '#87CEEB',  // Sky blue without transparency
         padding: 1,
         paddingTop: 11,
         paddingBottom: 25,
         borderRadius: 10,
         borderStyle: 'solid',
-        borderColor: 'black',
-        borderWidth: 0.5,  
+        borderColor: 'grey',
+        borderWidth: .17, 
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.6,
+        shadowRadius: 10,
+        elevation: 10,
     },
     minContainer: {
         flexDirection: 'row',
@@ -121,11 +144,33 @@ const styles = StyleSheet.create({
         width: '100%',
         right: 1.5,
     },
-    minButton: {
+    planButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'rgba(135, 206, 235, 0.85)', // Soft blue background
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 20,
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 }, 
-        shadowOpacity: 0.03,
-        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 6,
+      },
+      planButtonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 16,
+        marginLeft: 8, // Space for an optional icon
+      },
+      iconStyle: {
+        color: '#fff',
+        fontSize: 18,
+      },
+    minButton: {
+        fontSize: 16,
+        textShadowColor: 'rgba(0, 0, 0, 0.3)',
+        textShadowOffset: { width: 1, height: 2 },
+        textShadowRadius: 3,
     }
 })
 

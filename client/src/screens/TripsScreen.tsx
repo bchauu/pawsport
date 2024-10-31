@@ -28,6 +28,8 @@ const TripsScreen =  () => {
   const [chat, setChat] = useState([]);
   const [socket, setSocket] = useState(null)
   const [isRoomJoined, setIsRoomJoined] = useState(false);
+  const [newMessageCount, setNewMessageCount] = useState(0);  
+  const [isNewMessage, setIsNewMessage] = useState(false);
 
   const getList = async () => {
     const token = await getToken();
@@ -44,7 +46,6 @@ const TripsScreen =  () => {
 }
 
   const handleSelect = (trip) => {
-    console.log(trip, 'entire trip instead of id')
     setSelectedTrip(trip);
   };
 
@@ -55,6 +56,16 @@ const TripsScreen =  () => {
   useEffect(() => { //initial
     getList();
   },[])
+
+  useEffect(() => {
+    console.log(chat.length, 'whats in chat')
+    // setNewMessageCount(newMessageCount+1)
+    setNewMessageCount(4+1) // for testing
+
+    if(chat.length > 0) {
+      setIsNewMessage(true);
+    }
+  }, [chat])
 
 
   // Step 1: Initialize the socket only once
@@ -81,7 +92,6 @@ const TripsScreen =  () => {
     }
   }, []);
 
-  // Step 2: Join/leave rooms when `selectedTrip` changes
   useEffect(() => {
     if (socket && selectedTrip) {
         console.log('leaving room useEffect triggered', `${roomId} this room`)
@@ -116,7 +126,7 @@ const TripsScreen =  () => {
       if (hasNewList) {
         console.log('second time')
         try {
-          await delay(500); // Add a .5-second delay here
+          await delay(500); 
           await getList();
         } finally {
           setHasNewList(false)
@@ -161,6 +171,7 @@ const TripsScreen =  () => {
         setInputName={setInputName}
         InputName={InputName}
       />
+
       {/* <Button 
         title='Coop Travels'
         onPress={() => {handleNavigateToCoopTrips()}}
@@ -179,31 +190,29 @@ const TripsScreen =  () => {
         <MyMap selectedTrip={selectedTrip} />
       </View>
       {isRoomJoined &&
-         <ChatModal
-          listId={selectedTrip?.id}
-          roomId={roomId}
-          socket={socket}
-          userEmail={userEmail}
-          setUserEmail={setUserEmail}
-          chat={chat}
-          setChat={setChat}
-         />
+      <View style={styles.chatContainer}>
+        <ChatModal
+         setIsNewMessage={setIsNewMessage}
+         setNewMessageCount={setNewMessageCount}
+         newMessageCount={newMessageCount}
+         listId={selectedTrip?.id}
+         roomId={roomId}
+         socket={socket}
+         userEmail={userEmail}
+         setUserEmail={setUserEmail}
+         chat={chat}
+         setChat={setChat}
+        />
+        {isNewMessage &&
+        <View style={styles.messageIndicatorContainer}>
+          <Text style={styles.messageIndicator}>{newMessageCount}</Text>
+        </View>
+        }
+      </View>
       }
-      {/* <ChatModal
-        listId={selectedTrip?.id}
-        roomId={roomId}
-        socket={socket.current}
-        userEmail={userEmail}
-        setUserEmail={setUserEmail}
-        chat={chat}
-        setChat={setChat}
-      /> */}
     </View>
   );
 };
-
-// a new component or instance of chatModal needs to be rendered based on travelList
-  // might not need to pass selected List if just render here. 
 
 const styles = StyleSheet.create({
   scrollContainer: {
@@ -228,18 +237,35 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
   },
+  messageIndicatorContainer: {
+    minWidth: 20,        
+    height: 20,
+    backgroundColor: '#FF0000', 
+    borderRadius: 10,       
+    alignItems: 'center',   
+    justifyContent: 'center',
+    top: -7,                
+    paddingHorizontal: 6,   
+    zIndex: 1,              
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 1.5,
+  },
+  messageIndicator: {
+    color: '#FFFFFF',       
+    fontSize: 12,
+    fontWeight: 'bold',     
+  },
   mapContainer: {
-    height: 300,  // Fixed height for the map
+    height: 300, 
     marginBottom: 10,
     borderRadius: 10,
     overflow: 'hidden',
   },
   chatContainer: {
-    flexShrink: 0,
-    marginTop: 10,
-    padding: 10,
-    borderTopWidth: 1,
-    borderColor: '#ccc',
+    flexDirection: 'row',
+    justifyContent: 'center'
   },
 });
 
