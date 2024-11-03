@@ -1,10 +1,8 @@
 const { TravelItems } = require('../models'); 
 
 exports.addPlaceToList = async (req, res) => {
-  console.log('add place')
     try {
       const { travelListId, place_id, name, lat, lng, notes } = req.body; 
-      console.log(travelListId, 'Adding item to list');
   
       const newItem = await TravelItems.create({
         travelListId,
@@ -23,10 +21,8 @@ exports.addPlaceToList = async (req, res) => {
   };
 
 exports.getPlace = async (req, res) => {
-  console.log('get place')
     try {
       const listId = req.params.listId; 
-      console.log(listId, 'Fetching items for list');
   
       const items = await TravelItems.findAll({
         where: { travelListId: listId },
@@ -44,7 +40,6 @@ exports.getPlace = async (req, res) => {
   };
 
 exports.deletePlaceFromList = async (req, res) => {
-  console.log('from delete places')
   const {travelListId, itemId} = req.body;
   
   
@@ -56,10 +51,6 @@ exports.deletePlaceFromList = async (req, res) => {
         travel_list_id: travelListId
       }
     })
-        // matches. now --> make duplicate item but with unique id. delete one to make sure it works
-          //duplicate item each time before deleting
-    console.log(deleteItem, 'item to be deleted')
-    console.log(travelListId, itemId, 'from clientside')
   
     if (deleteItem) {
         await TravelItems.destroy({
@@ -74,7 +65,6 @@ exports.deletePlaceFromList = async (req, res) => {
 
 
   } catch (error) {
-    console.log(error, 'error from delete')
     res.status(500).json({ error: 'Failed to fetch items for list' });
   }
 }

@@ -33,8 +33,6 @@ const CollaboratorsModal = ({trip, hasUpdatedSharedUser, setHasUpdatedSharedUser
     }, [trip, hasUpdatedSharedUser])  //this needs to be refreshed when new user is added
 
     const handleRemove = async (id) => {
-            console.log(id)
-            // console.log(permissedUsers, 'permissedUsers')
         try {
             const response = await axios.delete(`${apiUrl}/permissions/${id}`, {
                 headers: {
@@ -42,13 +40,9 @@ const CollaboratorsModal = ({trip, hasUpdatedSharedUser, setHasUpdatedSharedUser
                 }
             });
             
-            
-            console.log(response, 'remove response')
             const test = permissedUsers.filter(user => user.listPermissionId != id);
             setPermissedUsers(test);
             setHasUpdatedSharedUser(true);
-            console.log(test, 'test')
-            console.log(permissedUsers)
             
         } catch (error) {
             console.log(error, 'error')

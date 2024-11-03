@@ -10,7 +10,6 @@ const useSocket =  () => {
     useEffect(() => {
         const establishSocketConnection = async () => {
             const token = await getToken();
-            console.log(token, 'useSocket occuring again')
             const newSocket = io(SOCKET_SERVER_URL, {
                 query: {token}
             });    // socket connection

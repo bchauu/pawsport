@@ -13,7 +13,6 @@ const Trips = ({trip, getList}) => {
 
   useEffect(() => {
       if (trip) {
-        console.log(trip?.items, 'what is trip')
         setAllTrip([...trip?.items])
       }
       getList();  //ensures list is latest from database --> list wont be old from switching lists
@@ -23,7 +22,6 @@ const Trips = ({trip, getList}) => {
   const {token, apiUrl} = useApiConfig();
 
   const handleShare = async (input) => {
-    console.log(input, 'trip')
 
     try {
       const response = await axios.post(`${apiUrl}/permissions/grant`, {
@@ -37,7 +35,6 @@ const Trips = ({trip, getList}) => {
           }
         }
       )
-      console.log(response, 'response from sharing')
       setHasUpdatedSharedUser(true);
     } catch (error) {
         if (error.response.status === 409) {
@@ -48,7 +45,6 @@ const Trips = ({trip, getList}) => {
   }
 
   const handleSwipeLeft =  (item) => {
-    console.log(item.name, 'swipe is triggering')
     setIsSwipedLeft(true);
 
   }
@@ -71,7 +67,6 @@ const Trips = ({trip, getList}) => {
     })
       console.log(response.data, 'successfully deleted item from list')
       const withoutDeletedItemTrip = allTrip.filter((item) => item.id !== id)
-      console.log(withoutDeletedItemTrip, 'currentTripList')
       setAllTrip([...withoutDeletedItemTrip]) // this set removes from state and updates
 
     } catch (error) {

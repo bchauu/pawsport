@@ -7,15 +7,12 @@ exports.grantPermission = async (req, res) => {
     try {
       const { travelListId, sharedUserName, sharedEmail, permissionType } = req.body;
       const travelList = await TravelList.findByPk(travelListId);
-      console.log(sharedUserName, 'travelList')
-      console.log(travelList.userId)    //this shows 4
       if (!travelList || travelList.userId !== req.user.userId) {
         return res.status(403).json({ message: 'Not authorized to share this list' });
       }
 
   
       // Find the user by username and email
-      console.log(User, 'User')
       const sharedUser = await User.findOne({
         where: {
           email: sharedEmail
@@ -114,17 +111,11 @@ exports.updatePermission = async (req, res) => {
 
 // Get permissions for a list
 exports.getPermissions = async (req, res) => {
-  console.log('getPermission') //this works
-    //check if its not returning or if travelList is not correct
     try {
       const { travelListId } = req.params;
-      // console.log(travelListId, 'travelListId')
   
       // Fetch the travel list to ensure the requesting user has access
       const travelList = await TravelList.findByPk(travelListId);
-      console.log(travelList, 'travelList')
-      console.log(travelList.userId, 'travelList.userId')
-      console.log(req.user.userId, 'req.user.userId')
 
   
       // Check if the current user is the owner or has permissions
@@ -136,19 +127,15 @@ exports.getPermissions = async (req, res) => {
       const permissions = await ListPermission.findAll({
         where: { travelListId },
       });
-      console.log(permissions, 'all data from permissions')
 
       const permissionEmail = await Promise.all(
         permissions.map( async (permission) => {
           const listPermissionId = permission.id;
           const foundUser = await User.findByPk(permission.userId)
-          console.log(foundUser, 'foundUser')
           const {email, id} = foundUser; 
           return {email, userId: id, listPermissionId };
         })
       )
-
-      console.log(permissionEmail, 'permissionEmail')
   
       res.status(201).json(permissionEmail);
     } catch (error) {

@@ -12,7 +12,6 @@ const generateUserName = uniqueNamesGenerator({
 
 exports.createUser = async (req, res) => {
 
-    console.log('controller')
     const { email, password } = req.body;
     const username = generateUserName;
     try {
@@ -30,25 +29,20 @@ exports.createUser = async (req, res) => {
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '2h' });
         res.status(201).json({ token, user: { username: user.username, email: user.email }, message: "success" });
     } catch (error) {
-        console.log(error)
         res.status(500).json({ error: 'Failed to register user' });
     }
 };
 
 exports.getEmail = async (req, res) => {
   const {userId} = req.user;
-  console.log(userId, 'getEmail');
   let user,
       id = userId;
   user = await User.findOne({where: {id}});
-  console.log(user, 'afterUser')
-  console.log(user.dataValues.email, 'test')
   res.status(201).json({email: user.dataValues.email} )
 }
 
 
 exports.login = async (req, res) => {
-  console.log(generateUserName, 'generateUserName');
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ where: { email } });

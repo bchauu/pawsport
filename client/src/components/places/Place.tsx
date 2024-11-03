@@ -11,7 +11,6 @@ import config from "../../config";
 
 const Place = ({placeDetail, index, setIsSearchInitiated, isSearchInitiated}) => {
     const {locations, setLocation} = useTrip<TripLocation[]>([]);
-    // console.log(placeDetail, 'places')
 
     const {lat, lng } = placeDetail.location,
     {name, place_id} = placeDetail;
@@ -50,7 +49,6 @@ const Place = ({placeDetail, index, setIsSearchInitiated, isSearchInitiated}) =>
 
             return updatedLocations;
         });
-        console.log(currentPlace, 'useeffect')
         setIsSearchInitiated(false);
     }, [isSearchInitiated])
 
@@ -59,7 +57,6 @@ const Place = ({placeDetail, index, setIsSearchInitiated, isSearchInitiated}) =>
         //post request to save to specific list.
         const token = await getToken();
         const { apiUrl } = await config();
-        console.log(selectedList.id, 'adding from modal')
 
         try {
             const response = await axios.post(`${apiUrl}/trips/lists/places`,{
@@ -73,7 +70,6 @@ const Place = ({placeDetail, index, setIsSearchInitiated, isSearchInitiated}) =>
                     'Authorization': `Bearer ${token}`
                 }
             });
-            console.log(response)
 
         } catch (error) {
             console.log(error)
@@ -87,8 +83,6 @@ const Place = ({placeDetail, index, setIsSearchInitiated, isSearchInitiated}) =>
             return updatedLocations;
 
         });
-        console.log(locations[index], 'trip context')
-        
 
     }
     return (

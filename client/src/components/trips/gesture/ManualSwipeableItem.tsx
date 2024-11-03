@@ -15,7 +15,6 @@ const ManualSwipeableRow = ({item, index, handleSwipeLeft, handleSwipeRight, isS
       onPanResponderRelease: (evt, gestureState) => {
         if (gestureState.dx < -20) {
           handleSwipeLeft(item)
-          console.log(item.name, 'Deleted action')
           Animated.spring(translateX, {
             toValue: -20, // Swipe item to the right, adjust as needed
             useNativeDriver: true,
@@ -24,7 +23,6 @@ const ManualSwipeableRow = ({item, index, handleSwipeLeft, handleSwipeRight, isS
 
         if (gestureState.dx > 0) {
           handleSwipeRight(item)
-          console.log('Move Item Back')
           Animated.spring(translateX, {
             toValue: 0, // Swipe item to the right, adjust as needed
             useNativeDriver: true,

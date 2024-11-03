@@ -4,7 +4,6 @@ import { useTrip } from "../../context/TripContext";
 import axios from 'axios';
 
 const CreateTravelListModal = ({setIsCreateNewList, InputName, setInputName}) => {
-  console.log('create modal')
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleAddtoTravelList = () => {

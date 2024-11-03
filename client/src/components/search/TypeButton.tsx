@@ -9,7 +9,6 @@ const ButtonSlider: React.FC<SearchField> = ({ enteredQuery, updateSearchTypeupd
     const updateSearchType = (type) => {
 
         setSearchValue({...searchValue, type: type} )
-        console.log(searchValue, 'typeButton')
     }
 
     const buttonTypes = [

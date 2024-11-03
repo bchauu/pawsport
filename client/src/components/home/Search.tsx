@@ -53,23 +53,18 @@ const Search = () => {
     const [nextPage, setNextPage] = useState<String>('');
 
     const updateQuery = (searchName: keyof EnteredQuery | string, query: string) => {
-        console.log(searchName, enteredQuery)
 
         setEnteredQuery(prevState => ({
             ...prevState,
             [searchName]: query}));
 
-            // console.log(enteredQuery, 'test')
     };
 
 
     const handleSubmit = async () => {
         const token = await getToken();
-        // console.log(token, 'jere');
         try {
-            // console.log(config);
             const { apiUrl } = await config();
-            console.log(searchValue.location, 'context')
             const {location, type} = searchValue;
             const response = await axios.post(
                 `${apiUrl}/graphql`, {
@@ -109,23 +104,19 @@ const Search = () => {
             setNextPage(response.data.data.searchPlaces.next_page_token);
             setIsSearchInitiated(true);
             setLocation([]);
-            // console.log(nextPage, 'state');
         } catch (error: any) {
             if (error.response.data.error === 'Token expired') {
                 console.log(error.error, 'new token needed');
             } else {
 
-                // console.log(error.response.data, 'sending search request');
             }
         }
     };
 
     const handleNextPage = async () => {
         const token = await getToken();
-        // console.log(token, 'jere');
         
         try {
-            // console.log(config);
             const { apiUrl } = await config();
             const response = await axios.post(
                 `${apiUrl}/graphql`, {
@@ -164,10 +155,9 @@ const Search = () => {
             setNextPage(response.data.data.searchPlaces.next_page_token);
             setIsSearchInitiated(true);
             setLocation([]);
-            console.log(nextPage, 'state');
         } catch (error: any) {
             if (error.response.data.error === 'Token expired') {
-                // console.log(error.error, 'new token needed');
+                console.log(error.error, 'new token needed');
             } else {
 
                 console.log(error.response.data, 'sending search request');

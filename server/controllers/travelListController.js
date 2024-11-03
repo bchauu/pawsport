@@ -1,24 +1,17 @@
 const { TravelList, TravelItems } = require('../models'); // Correct way to import
 
 exports.addCreate = async (req, res) => {
-    console.log('travel list controller')
     const { name } = req.body;
     const {userId} = req.user;
-    console.log(TravelList, 'here');
-    console.log(req.user, 'req')
     try {
         let listName;
         listName = await TravelList?.findOne({where: {name, userId}});
 
         if (listName) return res.status(400).json({ message: 'travel list already exist' });
 
-
-        console.log('trying controller')
-
         listName = await TravelList.create({ name, userId });
         res.status(201).json({ message: "Success adding new list", listName });
     } catch (error) {
-        console.log(error)
         res.status(500).json({ error: 'Failed to register new list' });
     }
 };
@@ -27,12 +20,10 @@ exports.addCreate = async (req, res) => {
 exports.getList = async (req, res) => {
   const {userId} = req.user;
   const test = req.user;
-  console.log(test, 'test getList')
   try {
     let list; 
 
     list = await TravelList.findAll({where: {userId}})
-    console.log(list, 'fromlist')
     res.status(200).json({message: list})
 
   } catch (error) {
@@ -43,10 +34,6 @@ exports.getList = async (req, res) => {
 exports.getListswithPlaces = async (req, res) => {
   try {
     const { userId } = req.user;
-    console.log(userId, 'allLists');
-
-    const test = req.user;
-    console.log(test, 'test getList')
 
     const travelLists = await TravelList.findAll({
       where: { userId },
@@ -57,8 +44,6 @@ exports.getListswithPlaces = async (req, res) => {
         }
       ]
     });
-
-    console.log(travelLists, 'after fetching all lists');
 
     if (!travelLists.length) {
       return res.status(404).json({ message: 'No travel lists found for user' });

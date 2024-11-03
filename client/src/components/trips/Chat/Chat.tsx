@@ -7,7 +7,6 @@ const Chat = ({listId, roomId, chat, socket}) => {
 
   const sendMessage = () => {
     if (socket && message) {
-        console.log(roomId, 'roomId in chat')
       socket.emit('sendMessage', { roomId, message }, (response) => { 
         if (response.status === 'success') setMessage('');
 

@@ -50,10 +50,8 @@ const getNextPage = async (token) => {
 const resolver = {
   searchPlaces: async ({ location, radius, type, nextPageToken }) => {
       try {
-        console.log(nextPageToken, 'token');
           if (nextPageToken) {
             const {results, next_page_token} = await getNextPage(nextPageToken);
-            console.log(results, 'result from next token');
 
             const places = await Promise.all(results.map(async place => {
               
@@ -84,7 +82,6 @@ const resolver = {
             return { result: filteredPlaces, next_page_token: next_page_token };
           }
 
-            console.log(location, 'location')
           const { results, next_page_token } = await getNearbyPlaces(location, radius, type);
 
           const places = await Promise.all(results.map(async place => {
@@ -112,7 +109,6 @@ const resolver = {
           }));
 
           const filteredPlaces = places.filter(place => place.user_ratings_total > 10);
-          console.log(next_page_token, 'token before clicking next')
           
           return { result: filteredPlaces, next_page_token: next_page_token };
       } catch (error) {

@@ -3,7 +3,6 @@ const axios = require('axios');
 exports.suggestions = async (req, res) => {
     const { query } = req.body;
     try {
-        console.log(query, 'query');
 
         if (!query) {
            return res.status(400).json({message: 'query is missing'})
@@ -16,7 +15,6 @@ exports.suggestions = async (req, res) => {
               dedupe: 1       // Remove duplicate results
           },
         });
-        console.log(suggestions.data, 'from locationIQ')
       res.status(201).json({message: 'successfully retrieved suggestions', suggestions: suggestions.data})
 
         //to locationIQ api

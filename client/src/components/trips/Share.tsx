@@ -9,7 +9,6 @@ const Share = ({handleShare}) => {
   const handleChange = () => {
     // setInputValue(text); // Update state when the input value changes
     handleShare(inputValue);
-    console.log(inputValue, 'inputValue')
     setInputValue('');
   };
 

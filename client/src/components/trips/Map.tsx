@@ -12,7 +12,6 @@ const initial = {
 };
 
 const MyMap = ({ selectedTrip }) => {
-  console.log(selectedTrip, 'mymap')
   const [region, setRegion] = useState(initial);
   const mapRef = useRef(null);
   const [markerPositions, setMarkerPositions] = useState([]);
@@ -95,7 +94,6 @@ const MyMap = ({ selectedTrip }) => {
 
     const latitudeDelta = (maxLatitude - minLatitude) + 0.02; // Add padding
     const longitudeDelta = (maxLongitude - minLongitude) + 0.02; // Add padding
-    console.log(latitudeDelta, longitudeDelta, 'zoom');
 
     return {
       latitude: midLatitude,

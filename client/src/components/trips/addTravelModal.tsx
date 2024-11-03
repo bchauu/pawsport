@@ -9,7 +9,6 @@ const AddTravelModal = ({allTravelList, handleAddTrip}) => {
 
   const handleSelectedList = (list) => {
     setSelectedList({...list})
-    console.log(selectedList, 'selectedList')
   }
 
   const handleAddtoTravelList = () => {

@@ -3,7 +3,6 @@ import { View, StyleSheet, Text } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 const TravelListDropdown = ({allTravelList, selectedTrip, setSelectedTrip, handleSelect}) => {
-  console.log(allTravelList, 'allTravelList')
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null); // --> this needs to be in parent so i can update and pass to trip
   // const [test, setTest] = useState({});
@@ -37,9 +36,6 @@ const TravelListDropdown = ({allTravelList, selectedTrip, setSelectedTrip, handl
           setSelectedTrip(chosenTripList[0])
       }
     }, [value]); 
-
-    console.log(items, 'dropdownItems')
-    // console.log(test, 'after selecting')
 
 
   return (

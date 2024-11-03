@@ -2,7 +2,6 @@
 exports.textSearch = (req, res) => {
     const { payload } = req.body;
     try {
-        console.log(payload);
         let url;
         //https://maps.googleapis.com/maps/api/place/textsearch/json?query=thai+food&location=13.7563,100.5018&radius=5000&type=restaurant&language=en&opennow=true&key=AIzaSyAEEHT0dHSKuklxdI-L7q8byjZnG24-Quw
         //https://maps.googleapis.com/maps/api/geocode/json?address=Sukhumvit,Bangkok&key=YOUR_API_KEY

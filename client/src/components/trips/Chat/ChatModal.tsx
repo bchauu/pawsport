@@ -31,8 +31,6 @@ const ChatModal = ({setIsNewMessage, setNewMessageCount, newMessageCount, socket
     useEffect(() => {
         if (!socket) return;
     
-        console.log(listId, 'is this listId changing?');
-    
         const handleReceiveMessage = (data) => {
             setChat((prevChat) => [...prevChat, data]);
         };

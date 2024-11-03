@@ -5,16 +5,13 @@ import Place from "./Place";
 
 const List = ({places, isSearchInitiated, setIsSearchInitiated}) => {
     const [hasList, setHasList] = useState(false)
-    // console.log(places, 'List component')
 
     useEffect(() => {
         if (places.length > 0) {
-            // console.log('test');
             setHasList(true);
         } else {
             setHasList(false); // Reset if places becomes empty
         }
-        console.log(hasList)
     }, [places]); // Ensures this effect runs whenever `places` changes
 
     return (

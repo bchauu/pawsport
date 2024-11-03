@@ -25,7 +25,6 @@ function setupSocketIO(server) {
         return next(new Error('Authentication error'));
       }
       socket.user = decoded;
-      console.log(socket.user, 'socket decoded')
       next();
     });
   });
@@ -38,7 +37,6 @@ function setupSocketIO(server) {
       const user = await User.findOne({ where: {id: socket.user.userId}})
       const {username: displayName} = user;
       socket.displayName = displayName;
-      console.log(displayName, 'socket user in startChat')
 
       try {
         let travelList;

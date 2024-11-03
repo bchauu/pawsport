@@ -15,19 +15,15 @@ const AutoCompleteField: React.FC<AutoCompleteFieldProps> = ({address, lat, lon}
     const navigation = useNavigation();
     const {searchValue, setSearchValue} = useSearch(); 
     //name, city, state. country_code
-    console.log(address)
 
     const {name, country_code, city = '', suburb = '', neighbourhood = ''} = address;
 
     let searchName;
-    let location;
     const constructSearchName = () => {
         //construct name based on country_code
             searchName = `${name} ${city} ${neighbourhood} ${suburb} ${country_code}`
     
             searchName = searchName.replace(/\s+/g, ' ').trim();
-            
-        console.log(searchName);
         
     }
 

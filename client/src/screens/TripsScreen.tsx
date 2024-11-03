@@ -33,7 +33,6 @@ const TripsScreen =  () => {
 
   const getList = async () => {
     const token = await getToken();
-    console.log(token, 'TripsScreen')
     const { apiUrl } = await config();
     const response = await axios.get(`${apiUrl}/trips/lists/places`, {
         headers: {
@@ -81,7 +80,6 @@ const TripsScreen =  () => {
       // Cleanup on unmount
       return () =>{
         newSocket.disconnect()
-        console.log('disconnects initial')
         setIsRoomJoined(false);
         setChat([]);
       };
@@ -124,7 +122,6 @@ const TripsScreen =  () => {
   useEffect(() => { //this is to fetch newData after adding list. 
     const fetchList = async () => {
       if (hasNewList) {
-        console.log('second time')
         try {
           await delay(200); 
           await getList();
@@ -138,7 +135,6 @@ const TripsScreen =  () => {
 
   useEffect(() => { //this is for adding newList
     if (isCreateNewList) {
-      console.log(InputName, 'api call')
 
       const postList = async () => {
         const token = await getToken();
