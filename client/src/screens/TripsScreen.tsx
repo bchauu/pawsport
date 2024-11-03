@@ -40,8 +40,10 @@ const TripsScreen =  () => {
           'authorization': `Bearer ${token}`
         }
     });
-    setAllTravelList([...response.data.travelLists])
-    setIsInitialList(true);
+    setAllTravelList((prevList) => [...response.data.travelLists])
+
+    await delay(50)
+    setIsInitialList(true)
    
 }
 
@@ -58,8 +60,6 @@ const TripsScreen =  () => {
   },[])
 
   useEffect(() => {
-    console.log(chat.length, 'whats in chat')
-    // setNewMessageCount(newMessageCount+1)
     setNewMessageCount(4+1) // for testing
 
     if(chat.length > 0) {
@@ -118,7 +118,7 @@ const TripsScreen =  () => {
     if (!selectedTrip) {
       setSelectedTrip(allTravelList[1]);
     } 
-  },[isInitialList])
+  },[isInitialList])    //auto pick first (2nd) one on load
 
 
   useEffect(() => { //this is to fetch newData after adding list. 
@@ -126,7 +126,7 @@ const TripsScreen =  () => {
       if (hasNewList) {
         console.log('second time')
         try {
-          await delay(500); 
+          await delay(200); 
           await getList();
         } finally {
           setHasNewList(false)
@@ -157,7 +157,6 @@ const TripsScreen =  () => {
       postList();
       setIsCreateNewList(false);
       setInputName('');
-      // getList()
       setHasNewList(true); 
     }
 
@@ -184,7 +183,8 @@ const TripsScreen =  () => {
         handleSelect={handleSelect}
       />
         <Trips
-          trip={selectedTrip} 
+          trip={selectedTrip}
+          getList={getList}
         />
        <View style={styles.mapContainer}>
         <MyMap selectedTrip={selectedTrip} />

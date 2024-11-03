@@ -30,9 +30,11 @@ app.use('/navigate', auth, (req, res) => {
   res.json({ message: 'Successful match' });
 });
 
-app.use('/trips', auth, tripsRoutes, (req, res) => {
-  res.json({ message: 'made it to trips database' });
-});
+// app.use('/trips',auth,  tripsRoutes, (req, res) => {
+//   res.json({ message: 'made it to trips database' });
+// });
+
+app.use('/trips', auth, tripsRoutes);
 
 app.use('/graphql', auth, graphqlHTTP((req) => ({
   schema: schema,
