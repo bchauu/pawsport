@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { View, Text, TextInput, ScrollView, FlatList, StyleSheet, TouchableOpacity, Button } from "react-native";
+import { View, Text, TextInput, ScrollView, FlatList, StyleSheet, TouchableOpacity, Button, Alert } from "react-native";
 import axios from 'axios';
 import useApiConfig from "../../utils/apiConfig";
 import Share from "./Share";
@@ -9,6 +9,8 @@ import ManualSwipeableRow from "./gesture/ManualSwipeableItem";
 const Trips = ({trip, getList}) => {
   const [hasUpdatedSharedUser, setHasUpdatedSharedUser] = useState(false);
   const [allTrip, setAllTrip] = useState([]);   // this needs to change with 
+  const [deletedTrip, setDeletedTrip] = useState('');
+  const [deletedTripIndex, setDeletedTripIndex] = useState(-1); //keeping in state incase i want to implement undo button
 
   useEffect(() => {
       if (trip) {
@@ -45,7 +47,14 @@ const Trips = ({trip, getList}) => {
   
   const handleDeleteItem = async ({id, travelListId}) => {
 
-    console.log(id, travelListId, 'works from child')
+    //optimistic deletion
+      const withoutDeletedItemTrip = allTrip.filter((item) => item.id !== id) 
+      const deletedTripItem = allTrip.filter((item) => item.id === id); //save to state
+      setDeletedTrip(deletedTrip[0]); //temp hold whats deleted
+      const index = allTrip.indexOf(deletedTripItem[0]) //holding the index of whats deleted
+      setDeletedTripIndex(index)
+      setAllTrip([...withoutDeletedItemTrip]) // this set removes from state and updates
+
     try {
       const response = await axios.delete(`${apiUrl}/trips/lists/places/delete`, {
         data: {
@@ -58,24 +67,15 @@ const Trips = ({trip, getList}) => {
         }
     })
       console.log(response.data, 'successfully deleted item from list')
-      const withoutDeletedItemTrip = allTrip.filter((item) => item.id !== id) //reverse this --> currently optismitic 
-      setAllTrip([...withoutDeletedItemTrip]) // this set removes from state and updates
 
     } catch (error) {
       console.log(error.message, 'error in deleting item from list')
+      //delete unsuccessful   --> setting it back 
+      withoutDeletedItemTrip.splice(deletedTripIndex, 0, deletedTripItem[0])
+      setAllTrip([...withoutDeletedItemTrip])
+      Alert.alert("Error in deleting, please try again later")
     }
   }
-  // 1.	Immediate State Update: Remove the item from the UI instantly to enhance responsiveness.
-	// 2.	Temporary Storage: Save a reference to the deleted item in case you need to restore it later.
-	// 3.	Server Response Handling:
-	// •	If Successful: Clear the temporary storage, confirming the deletion.
-	// •	If Failed: Re-add the item to the UI and notify the user of the deletion failure.
-
-    //in addition for user friendly
-        // after adding items to list or deleting
-          // we need to display a notice its either deleted or some kind of UI 
-              //i.e. countdown until its actually deleted?
-                  //ability to undo?
 
   const renderPlaces = ({ item, index }) => {
       return (
