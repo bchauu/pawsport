@@ -8,10 +8,6 @@ import ManualSwipeableRow from "./gesture/ManualSwipeableItem";
 
 const Trips = ({trip, getList}) => {
   const [hasUpdatedSharedUser, setHasUpdatedSharedUser] = useState(false);
-  // const [isSwipedLeft, setIsSwipedLeft] = useState(false);  
-  const [tempIsSwiped, setTemptIsSwiped] = useState(false);
-  // this is currently a state used by all buttons.
-      //each created manualSwipe should have its own state
   const [allTrip, setAllTrip] = useState([]);   // this needs to change with 
 
   useEffect(() => {
@@ -45,17 +41,6 @@ const Trips = ({trip, getList}) => {
           console.log(error.response.status, error.response.data.message);
         }
     }
-  }
-
-  const handleSwipeLeft =  (item) => {
-    // setIsSwipedLeft(true);
-      //pass in from child
-      setTemptIsSwiped(true);
-
-  }
-
-  const handleSwipeRight = () => {
-    // setIsSwipedLeft(false);
   }
   
   const handleDeleteItem = async ({id, travelListId}) => {
