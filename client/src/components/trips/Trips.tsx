@@ -8,7 +8,10 @@ import ManualSwipeableRow from "./gesture/ManualSwipeableItem";
 
 const Trips = ({trip, getList}) => {
   const [hasUpdatedSharedUser, setHasUpdatedSharedUser] = useState(false);
-  const [isSwipedLeft, setIsSwipedLeft] = useState(false);  
+  // const [isSwipedLeft, setIsSwipedLeft] = useState(false);  
+  const [tempIsSwiped, setTemptIsSwiped] = useState(false);
+  // this is currently a state used by all buttons.
+      //each created manualSwipe should have its own state
   const [allTrip, setAllTrip] = useState([]);   // this needs to change with 
 
   useEffect(() => {
@@ -45,15 +48,19 @@ const Trips = ({trip, getList}) => {
   }
 
   const handleSwipeLeft =  (item) => {
-    setIsSwipedLeft(true);
+    // setIsSwipedLeft(true);
+      //pass in from child
+      setTemptIsSwiped(true);
 
   }
 
   const handleSwipeRight = () => {
-    setIsSwipedLeft(false);
+    // setIsSwipedLeft(false);
   }
   
   const handleDeleteItem = async ({id, travelListId}) => {
+
+    console.log(id, travelListId, 'works from child')
     try {
       const response = await axios.delete(`${apiUrl}/trips/lists/places/delete`, {
         data: {
@@ -90,18 +97,19 @@ const Trips = ({trip, getList}) => {
         <View style={styles.itemContainer}>
           <ManualSwipeableRow
             item={item} 
-            index={index+1} 
-            handleSwipeLeft={handleSwipeLeft}
-            handleSwipeRight={handleSwipeRight}
-            isSwipedLeft={isSwipedLeft}
+            index={index+1}
+            handleDeleteItem={handleDeleteItem}
+            // handleSwipeLeft={handleSwipeLeft}
+            // handleSwipeRight={handleSwipeRight}
           />
-          {isSwipedLeft && 
-            <TouchableOpacity
-              onPress={() => handleDeleteItem(item)}
-            >
-              <Text>Delete</Text>
-            </TouchableOpacity>
-          }
+          {/* {tempIsSwiped &&
+            // isSwipedLeft && 
+              <TouchableOpacity
+                onPress={() => handleDeleteItem(item)}
+              >
+                <Text>Delete</Text>
+              </TouchableOpacity>
+          } */}
         </View>
         
       );
