@@ -50,7 +50,7 @@ const Trips = ({trip, getList}) => {
     //optimistic deletion
       const withoutDeletedItemTrip = allTrip.filter((item) => item.id !== id) 
       const deletedTripItem = allTrip.filter((item) => item.id === id); //save to state
-      setDeletedTrip(deletedTrip[0]); //temp hold whats deleted
+      setDeletedTrip(deletedTripItem[0]); //temp hold whats deleted
       const index = allTrip.indexOf(deletedTripItem[0]) //holding the index of whats deleted
       setDeletedTripIndex(index)
       setAllTrip([...withoutDeletedItemTrip]) // this set removes from state and updates
