@@ -58,7 +58,7 @@ const Trips = ({trip, getList}) => {
         }
     })
       console.log(response.data, 'successfully deleted item from list')
-      const withoutDeletedItemTrip = allTrip.filter((item) => item.id !== id)
+      const withoutDeletedItemTrip = allTrip.filter((item) => item.id !== id) //reverse this --> currently optismitic 
       setAllTrip([...withoutDeletedItemTrip]) // this set removes from state and updates
 
     } catch (error) {
@@ -84,17 +84,7 @@ const Trips = ({trip, getList}) => {
             item={item} 
             index={index+1}
             handleDeleteItem={handleDeleteItem}
-            // handleSwipeLeft={handleSwipeLeft}
-            // handleSwipeRight={handleSwipeRight}
           />
-          {/* {tempIsSwiped &&
-            // isSwipedLeft && 
-              <TouchableOpacity
-                onPress={() => handleDeleteItem(item)}
-              >
-                <Text>Delete</Text>
-              </TouchableOpacity>
-          } */}
         </View>
         
       );
