@@ -1,4 +1,4 @@
-const { TravelList, TravelItems } = require('../models'); // Correct way to import
+const { TravelList, TravelItems, ListPermission } = require('../models'); // Correct way to import
 
 exports.addCreate = async (req, res) => {
     const { name } = req.body;
@@ -30,6 +30,36 @@ exports.getList = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch list of user' });
   }
 };
+
+exports.getSharedList = async (req, res) => {
+  const {userId} = req.user;
+  console.log(userId, 'getSharedList controller')
+
+  const listPermission = await ListPermission.findAll({
+    // where: { userId: userId},
+    where: { userId: 5},
+    include: [
+      {
+        model: TravelList, 
+        as: 'travelList'
+      }
+    ]
+  })
+
+  if (listPermission.length) {
+    console.log(listPermission, 'from querying listPermission')
+
+    res.status(200).json({message: 'successfully fetched shared lists', listPermission})
+  } else {
+      console.log('user has no shared list')
+    res.status(200).json({message: 'user has no shared list' })
+  }
+
+
+
+
+  
+}
 
 exports.getListswithPlaces = async (req, res) => {
   try {

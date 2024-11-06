@@ -49,7 +49,9 @@ module.exports = (sequelize) => {
 
   ListPermission.associate = function(models) {
     // Associations can be defined here
-    ListPermission.belongsTo(models.TravelList, { foreignKey: 'travelListId' });
+    ListPermission.belongsTo(models.TravelList, {
+      as: 'travelList', 
+      foreignKey: 'travelListId' });
     ListPermission.belongsTo(models.User, { foreignKey: 'userId' });
   };
 

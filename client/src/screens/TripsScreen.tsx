@@ -9,6 +9,7 @@ import CreateTravelListModal from '../components/trips/CreateTravelListModal';
 import TravelListDropdown from '../components/trips/TravelListDropDown';
 import ChatModal from '../components/trips/Chat/ChatModal';
 import { useNavigation } from "@react-navigation/native";
+import CollapsibleDropdown from '../components/trips/CollapsibleDropDown';
 import io from 'socket.io-client';
 
 
@@ -30,6 +31,7 @@ const TripsScreen =  () => {
   const [isRoomJoined, setIsRoomJoined] = useState(false);
   const [newMessageCount, setNewMessageCount] = useState(0);  
   const [isNewMessage, setIsNewMessage] = useState(false);
+  const [sharedListWithUser, setSharedListWithUser] = useState([]);
 
   const getList = async () => {
     const token = await getToken();
@@ -57,6 +59,29 @@ const TripsScreen =  () => {
   useEffect(() => { //initial
     getList();
   },[])
+
+  useEffect(() => {
+    const getSharedList = async () => {
+      const token = await getToken();
+      const { apiUrl } = await config();
+      const response = await axios.get(`${apiUrl}/trips/lists/shared`, {
+          headers: {
+            'authorization': `Bearer ${token}`
+          }
+      });
+      console.log(response.data.listPermission, 'allTravelList')
+      // response.data.listPermission.map((list) => (
+      //   console.log(list, 'each list')
+      // ))
+
+      // console.log(allTravelList, 'all')
+
+      setSharedListWithUser(response.data.listPermission);
+    }
+
+    getSharedList();
+
+  }, [])  //query shared list with current user
 
   useEffect(() => {
     setNewMessageCount(4+1) // for testing
@@ -166,18 +191,26 @@ const TripsScreen =  () => {
         setInputName={setInputName}
         InputName={InputName}
       />
+            <CollapsibleDropdown
+                allTravelList={allTravelList}
+                selectedTrip={selectedTrip}
+                setSelectedTrip={setSelectedTrip}
+                handleSelect={handleSelect}
+                sharedListWithUser={sharedListWithUser}
+            ></CollapsibleDropdown>
 
       {/* <Button 
         title='Coop Travels'
         onPress={() => {handleNavigateToCoopTrips()}}
       >
       </Button> */}
-      <TravelListDropdown
+      {/* <TravelListDropdown
         allTravelList={allTravelList}
         selectedTrip={selectedTrip}
         setSelectedTrip={setSelectedTrip}
         handleSelect={handleSelect}
-      />
+      /> */}
+
         <Trips
           trip={selectedTrip}
           getList={getList}

@@ -1,5 +1,5 @@
 const express = require('express');
-const {addCreate, getList, getListswithPlaces } = require('../controllers/travelListController');
+const {addCreate, getList, getListswithPlaces, getSharedList} = require('../controllers/travelListController');
 const {addPlaceToList, getPlace, deletePlaceFromList} = require('../controllers/travelItemController');
 
 const router = express.Router();
@@ -11,6 +11,8 @@ router.delete('/lists/places/delete', deletePlaceFromList);
 router.post('/list', addCreate);
 
 router.get('/list', getList);
+
+router.get('/lists/shared', getSharedList)
 
 router.get('/lists/places', getListswithPlaces);
 
