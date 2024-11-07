@@ -12,6 +12,17 @@ const Trips = ({trip, getList}) => {
   const [deletedTrip, setDeletedTrip] = useState('');
   const [deletedTripIndex, setDeletedTripIndex] = useState(-1); //keeping in state incase i want to implement undo button
 
+//need to make comments come through
+  //should already exist from database and models
+  //adjust backend to update route 
+      //in addition this probably should connect to socket in some ways
+        //or allow referencing?   --> probably future features if too complicated
+          //notation of comments?
+
+        //which means comments should be display username of each person leaving it
+          //so we need to grab user from socket... or pass it back out from chat modal
+
+
   useEffect(() => {
       if (trip) {
         setAllTrip([...trip?.items])

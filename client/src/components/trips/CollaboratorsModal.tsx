@@ -9,6 +9,13 @@ const CollaboratorsModal = ({trip, hasUpdatedSharedUser, setHasUpdatedSharedUser
     const {token, apiUrl} = useApiConfig();
     const [permissedUsers, setPermissedUsers] = useState([]);
 
+    //want to show who is currently online --> hence in the chatroom
+        // to do this, i need to connect to socket and potentially
+            // be able to check the users an then return those users
+                //if returned. show a green dot next to it
+            
+    
+
 
     useEffect(() => {
         const getPermissedUsers = async () => {

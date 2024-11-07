@@ -70,11 +70,6 @@ const TripsScreen =  () => {
           }
       });
       console.log(response.data.listPermission, 'allTravelList')
-      // response.data.listPermission.map((list) => (
-      //   console.log(list, 'each list')
-      // ))
-
-      // console.log(allTravelList, 'all')
 
       setSharedListWithUser(response.data.listPermission);
     }
