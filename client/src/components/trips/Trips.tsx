@@ -169,12 +169,13 @@ const Trips = ({trip, getList}) => {
             handleDeleteItem={handleDeleteItem}
           />
           <NotesSection 
-            notes={notes} 
+            notes={notes}
             item={item}
 
           />
         <NoteInput
           item={item}
+          index={index+1}
           handleEnteredNotes={handleEnteredNotes}
           newNoteAdded={newNoteAdded}
           addNotes={addNotes}

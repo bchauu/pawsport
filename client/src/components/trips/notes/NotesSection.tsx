@@ -10,7 +10,7 @@ const NotesSection = ({notes, item}) => {
             .filter((listItem) => listItem.parentId === item.id)
             .flatMap((item) => item.notes)
             .map((note, index) => (
-              <Text>
+              <Text key={index}>
                 {note}
               </Text>
             ))
