@@ -30,10 +30,6 @@ module.exports = (sequelize) => {
             field: 'added_count',
             defaultValue: 0
         },
-        notes: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
         lat: {
             type: DataTypes.FLOAT,
         },
@@ -47,6 +43,11 @@ module.exports = (sequelize) => {
 
     TravelItems.associate = function(models) {
         TravelItems.belongsTo(models.TravelList, { foreignKey: 'travelListId' });
+
+        TravelItems.hasMany(models.ItemNotes, { 
+            foreignKey: 'travelItemId', // Matches the belongsTo foreign key
+            as: 'notes', // Alias for the association
+        });
     };
 
     return TravelItems;

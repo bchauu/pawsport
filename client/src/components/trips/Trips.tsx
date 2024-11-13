@@ -5,31 +5,65 @@ import useApiConfig from "../../utils/apiConfig";
 import Share from "./Share";
 import CollaboratorsModal from "./CollaboratorsModal";
 import ManualSwipeableRow from "./gesture/ManualSwipeableItem";
+import NotesSection from "./notes/NotesSection";
+import NoteInput from './notes/NoteInput';
 
 const Trips = ({trip, getList}) => {
   const [hasUpdatedSharedUser, setHasUpdatedSharedUser] = useState(false);
   const [allTrip, setAllTrip] = useState([]);   // this needs to change with 
   const [deletedTrip, setDeletedTrip] = useState('');
-  const [deletedTripIndex, setDeletedTripIndex] = useState(-1); //keeping in state incase i want to implement undo button
-
-//need to make comments come through
-  //should already exist from database and models
-  //adjust backend to update route 
-      //in addition this probably should connect to socket in some ways
-        //or allow referencing?   --> probably future features if too complicated
-          //notation of comments?
-
-        //which means comments should be display username of each person leaving it
-          //so we need to grab user from socket... or pass it back out from chat modal
-
+  const [notes, setNotes] = useState([]);
+  const [tripsEnteredNotes, setTripsEnteredNotes] = useState('');
+  const [selectedNoteTrip, setSelectedNoteTrip] = useState('');
+  const [newNoteAdded, setNewNoteAdded] = useState(false);
+  const [deletedTripIndex, setDeletedTripIndex] = useState(-1); 
 
   useEffect(() => {
       if (trip) {
         setAllTrip([...trip?.items])
       }
-      getList();  //ensures list is latest from database --> list wont be old from switching lists
+      getList();  //ensures list is latest from database --> list wont be old from switching list
 
   }, [trip])  // now the list of trips is stored in its own state which renders based on this state
+
+  useEffect(() => { //individual notes fro each place
+    if (trip) {
+     
+      const getNotes = async () => {
+        console.log(trip.id, 'hitting getNotes')
+        try {
+          const response = await axios.get(`${apiUrl}/trips/list/places/allnotes`, {
+            headers: {
+              'authorization': `Bearer ${token}`
+            },
+            params: {
+              travelListId: trip.id,
+            }
+        });
+
+        console.log(response.data.travelList[0].notes, 'response for notes')
+
+          const arrangedNotes = response.data.travelList.map((travelItem) => (
+            {
+              parentId: travelItem.id,
+              notes: travelItem.notes.map(note => note.notes)    //this is extra
+            }
+          ))
+          console.log(arrangedNotes, 'arrangedNotes')
+
+          setNotes(arrangedNotes);
+          setNewNoteAdded(false);
+        } catch (error) {
+          console.log(error, 'error in getNotes')
+        }
+  
+      };
+
+   
+
+      getNotes();
+    }
+  }, [trip, newNoteAdded])
 
   const {token, apiUrl} = useApiConfig();
 
@@ -55,7 +89,7 @@ const Trips = ({trip, getList}) => {
         }
     }
   }
-  
+
   const handleDeleteItem = async ({id, travelListId}) => {
 
     //optimistic deletion
@@ -88,6 +122,44 @@ const Trips = ({trip, getList}) => {
     }
   }
 
+
+  const addNotes = async () => {
+
+    console.log(tripsEnteredNotes, 'TripsenteredNotes')
+
+    console.log(selectedNoteTrip, 'selected item for note')
+    
+    try {
+      const response = await axios.post(
+        `${apiUrl}/trips/lists/places/note`, 
+        {
+            travelListId: selectedNoteTrip.travelListId,  //these two need to be taken from item
+            itemId: selectedNoteTrip.id,
+            note: tripsEnteredNotes
+        }, 
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+    )
+      console.log(response.data.message, 'successfully added notes to item from list')
+      setTripsEnteredNotes('');
+      setNewNoteAdded(true);
+
+    } catch (error) {
+      console.log(error.message, 'error in adding notes to list')
+    }
+  }
+
+
+
+  const handleEnteredNotes = (value, item) => {
+      setTripsEnteredNotes(value);
+      setSelectedNoteTrip(item);
+
+  }
+
   const renderPlaces = ({ item, index }) => {
       return (
         <View style={styles.itemContainer}>
@@ -96,11 +168,22 @@ const Trips = ({trip, getList}) => {
             index={index+1}
             handleDeleteItem={handleDeleteItem}
           />
+          <NotesSection 
+            notes={notes} 
+            item={item}
+
+          />
+        <NoteInput
+          item={item}
+          handleEnteredNotes={handleEnteredNotes}
+          newNoteAdded={newNoteAdded}
+          addNotes={addNotes}
+        />
+
         </View>
         
       );
   };
-
 
     return (
         <View>
@@ -137,7 +220,7 @@ const styles = StyleSheet.create({
       padding: 20,
     },
     itemContainer: {
-      flexDirection: 'row',  // Align number and text horizontally
+      flexDirection: 'column',  // Align number and text horizontally
       marginBottom: 5,
     },
     item: {

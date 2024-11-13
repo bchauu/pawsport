@@ -134,7 +134,7 @@ const TripsScreen =  () => {
 
   useEffect(() => {
     if (!selectedTrip) {
-      setSelectedTrip(allTravelList[1]);
+      setSelectedTrip(allTravelList[0]);
     } 
   },[isInitialList])    //auto pick first (2nd) one on load
 
@@ -178,14 +178,20 @@ const TripsScreen =  () => {
 
   }, [isCreateNewList]) 
 
+  const test = () => {
+    console.log(allTravelList[1], 'allTravelList in trip Screen')
+  }
+
 
   return (
     <View>
+      <Button title='test' onPress={test}/>
       <CreateTravelListModal 
         setIsCreateNewList={setIsCreateNewList}
         setInputName={setInputName}
         InputName={InputName}
       />
+      
             <CollapsibleDropdown
                 allTravelList={allTravelList}
                 selectedTrip={selectedTrip}

@@ -1,5 +1,4 @@
-const { TravelItems } = require('../models'); 
-
+const { TravelItems, ItemNotes, TravelList } = require('../models'); 
 exports.addPlaceToList = async (req, res) => {
     try {
       const { travelListId, place_id, name, lat, lng, notes } = req.body; 
@@ -67,5 +66,79 @@ exports.deletePlaceFromList = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch items for list' });
   }
+}
+
+exports.addNote = async (req, res) => {
+  const {travelListId, itemId, note} = req.body;
+
+  console.log(travelListId, 'travelListId')
+  console.log(itemId, 'itemId')
+  console.log(note, 'note')
+  const {userId} = req.user
+  console.log(userId, 'userId')
+  console.log(userId, 'addNote')
+
+  try {
+    if (userId) {
+      const travelItem = await TravelItems.findOne({ where: 
+        { 
+          id: itemId, 
+          travel_list_id: travelListId
+        }})
+
+      if (travelItem) {
+        console.log(itemId, 'should be 4')
+          const newNote = await ItemNotes.create({
+            travelItemId: itemId,
+            notes: note
+          })
+
+          console.log(newNote, 'creating')
+
+      }
+
+      res.status(200).json({message: 'added notes successfully'})
+    }
+
+  } catch (error) {
+    console.log(error, 'error')
+  }
+
+
+
+}
+
+exports.getNotes = async (req, res) => {
+  const {travelListId} = req.query;
+  console.log(travelListId, 'getNotes')
+
+  try {
+    const travelList = await TravelList.findOne({
+      where: { id: travelListId },
+      include: [
+        {
+          model: TravelItems,
+          as: 'items', 
+          include: [
+            {
+              model: ItemNotes, 
+              as: 'notes'
+            }
+          ]
+        }
+      ]
+    })
+
+    //add an include of Users to see if its can fetch after adding foreign key and see if its successful
+    console.log(travelList.dataValues.items, 'travel list items')
+    res.status(200).json({message: 'sucessfully fetched list with notes', travelList: travelList.dataValues.items })
+  } catch (error) {
+    console.log(error, 'error in get notes')
+  }
+
+
+
+
+  
 }
   

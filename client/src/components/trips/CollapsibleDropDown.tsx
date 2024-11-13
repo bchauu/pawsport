@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet,Button } from 'react-native';
 
-function CustomDropdown({allTravelList, selectedTrip, setSelectedTrip, handleSelect, sharedListWithUser}) {
+const CustomDropdown = ({allTravelList, selectedTrip, setSelectedTrip, handleSelect, sharedListWithUser}) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);  //initial opening of dropdown
   const [expandedCategory, setExpandedCategory] = useState({}); //nested. reveals items in parent
   const [value, setValue] = useState(null); // --> this needs to be in parent so i can update and pass to trip

@@ -33,8 +33,32 @@ function setupSocketIO(server) {
 
     socket.on('startChat', async (listId, callback) => {
       console.log(`${socket.id} joined room ${listId} as listId`);
+        // 3sJJa0TvewbNx8a9AAAD
+        console.log(socket.user, 'socket user')
+          // { userId: '4', iat: 1730951808, exp: 1730955408 } socket user
+              // so we know who is online
+                //match userId in database and just return their username
+  
 
       const user = await User.findOne({ where: {id: socket.user.userId}})
+      console.log(user, 'startChat socket')
+
+      // User {
+      //   dataValues: {
+      //     id: '4',
+      //     username: 'Sound Autonomous Aardvark',
+      //     email: '131313@gmail.com',
+      //     password: '$2b$10$Qu8ViH89w7mjUWvBoAN7dOgfmFQve9UHzoktAMq6ecdnYr94REWKq',
+      //     createdAt: 2024-08-22T00:03:38.482Z,
+      //     updatedAt: 2024-08-22T00:03:38.482Z
+      //   },
+
+        //if im just putting who posts i dont need socket. I just need who left the note
+            //these comments will persist unlike chat room
+              //since we dont want comments to take up whole screen.
+                //this should also be a modal
+
+
       const {username: displayName} = user;
       socket.displayName = displayName;
 

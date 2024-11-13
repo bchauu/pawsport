@@ -1,4 +1,4 @@
-const { TravelList, TravelItems, ListPermission } = require('../models'); // Correct way to import
+const { TravelList, TravelItems, ListPermission, ItemNotes } = require('../models'); // Correct way to import
 
 exports.addCreate = async (req, res) => {
     const { name } = req.body;
@@ -70,7 +70,7 @@ exports.getListswithPlaces = async (req, res) => {
       include: [
         {
           model: TravelItems,
-          as: 'items'
+          as: 'items', 
         }
       ]
     });
