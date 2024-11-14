@@ -5,12 +5,10 @@ const NoteInput = ({item, newNoteAdded, handleEnteredNotes, addNotes}) => {
    const [enteredNotes, setEnteredNotes] = useState('');
 
    useEffect(() => {
-         console.log('is enteredNotes resetting')
-         setEnteredNotes('');
+      setEnteredNotes('');
     }, [newNoteAdded])
 
    useEffect(() => {
-      console.log(enteredNotes, 'enteredNotes')
       handleEnteredNotes(enteredNotes, item);  
    }, [enteredNotes])
 
@@ -18,14 +16,10 @@ const NoteInput = ({item, newNoteAdded, handleEnteredNotes, addNotes}) => {
       setEnteredNotes(value);
    }
 
-   const checkNotes = () => {
-      console.log(enteredNotes, 'enteredNotes after resetting')
-   }
      return (
         <View>
          <TextInput placeholder="new notes..." onChangeText={value => handleNoteInput(value)} value={enteredNotes}/>
          <Button title="add notes" onPress={addNotes}/>
-         <Button title="notes" onPress={checkNotes}/>
         </View>
      )
 }

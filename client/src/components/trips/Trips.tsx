@@ -17,14 +17,27 @@ const Trips = ({trip, getList}) => {
   const [selectedNoteTrip, setSelectedNoteTrip] = useState('');
   const [newNoteAdded, setNewNoteAdded] = useState(false);
   const [deletedTripIndex, setDeletedTripIndex] = useState(-1); 
+  const [isItemNotesCollapsed, setItemIsNotesCollapsed] = useState({});
 
   useEffect(() => {
       if (trip) {
         setAllTrip([...trip?.items])
+        // console.log(allTrip, 'allTrip')
       }
       getList();  //ensures list is latest from database --> list wont be old from switching list
 
   }, [trip])  // now the list of trips is stored in its own state which renders based on this state
+
+
+  useEffect(() => {
+    allTrip.map((item) => (
+      setItemIsNotesCollapsed((prevState) => ({
+        ...prevState,
+        [item.id]: {isCollapsed: false}
+      }))
+    ))
+
+  }, [allTrip])
 
   useEffect(() => { //individual notes fro each place
     if (trip) {
@@ -152,23 +165,23 @@ const Trips = ({trip, getList}) => {
     }
   }
 
-
-
   const handleEnteredNotes = (value, item) => {
       setTripsEnteredNotes(value);
       setSelectedNoteTrip(item);
-
   }
 
   const renderPlaces = ({ item, index }) => {
+
       return (
         <View style={styles.itemContainer}>
           <ManualSwipeableRow
             item={item} 
             index={index+1}
             handleDeleteItem={handleDeleteItem}
+            setItemIsNotesCollapsed={setItemIsNotesCollapsed}
           />
           <NotesSection 
+            isItemNotesCollapsed={isItemNotesCollapsed}
             notes={notes}
             item={item}
 

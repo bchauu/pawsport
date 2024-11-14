@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, PanResponder, Animated } from 'react-native';
 
-const ManualSwipeableRow = ({item, index, handleDeleteItem }) => {
+const ManualSwipeableRow = ({item, index, handleDeleteItem, setItemIsNotesCollapsed }) => {
   const translateX = useRef(new Animated.Value(0)).current; // Animated value for translation
   const [isSwipedLeft, setIsSwipedLeft] = useState(false);  
+
 
   const handleSwipeLeft = () => {
     setIsSwipedLeft(true);
@@ -52,6 +53,13 @@ const ManualSwipeableRow = ({item, index, handleDeleteItem }) => {
     })
   ).current;
 
+  const handleCollapse = () => {
+    setItemIsNotesCollapsed((prevState) => ({
+      ...prevState,
+      [item.id]: {isCollapsed: !prevState[item.id].isCollapsed}
+    }))
+  }
+
   return (
     <Animated.View
       {...panResponder.panHandlers} // Attach the pan responder
@@ -59,6 +67,11 @@ const ManualSwipeableRow = ({item, index, handleDeleteItem }) => {
         <View
           style={styles.itemContainer} 
         >
+          <TouchableOpacity
+            onPress={() => handleCollapse()}
+          >
+            <Text>{'>'}</Text>
+          </TouchableOpacity>
           <Text style={styles.number}>{index}.</Text>  
           <Text style={styles.itemText}>{item.name}</Text>
         </View>

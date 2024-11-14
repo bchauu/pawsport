@@ -200,18 +200,6 @@ const TripsScreen =  () => {
                 sharedListWithUser={sharedListWithUser}
             ></CollapsibleDropdown>
 
-      {/* <Button 
-        title='Coop Travels'
-        onPress={() => {handleNavigateToCoopTrips()}}
-      >
-      </Button> */}
-      {/* <TravelListDropdown
-        allTravelList={allTravelList}
-        selectedTrip={selectedTrip}
-        setSelectedTrip={setSelectedTrip}
-        handleSelect={handleSelect}
-      /> */}
-
         <Trips
           trip={selectedTrip}
           getList={getList}

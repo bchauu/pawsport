@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet,Button, TextInput } from 'react-native';
 
 
-const NotesSection = ({notes, item}) => {
+const NotesSection = ({isItemNotesCollapsed, notes, item}) => {
+  
      return (
         <View> 
-        {
+        {isItemNotesCollapsed[item.id]?.isCollapsed &&
           notes
             .filter((listItem) => listItem.parentId === item.id)
             .flatMap((item) => item.notes)
@@ -20,5 +21,9 @@ const NotesSection = ({notes, item}) => {
       </View>
      )
 }
+
+const styles = StyleSheet.create({
+
+})
 
 export default NotesSection;
