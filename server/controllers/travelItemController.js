@@ -1,4 +1,4 @@
-const { TravelItems, ItemNotes, TravelList } = require('../models'); 
+const { TravelItems, ItemNotes, TravelList, User } = require('../models'); 
 exports.addPlaceToList = async (req, res) => {
     try {
       const { travelListId, place_id, name, lat, lng, notes } = req.body; 
@@ -41,9 +41,7 @@ exports.getPlace = async (req, res) => {
 exports.deletePlaceFromList = async (req, res) => {
   const {travelListId, itemId} = req.body;
   
-  
   try {
-
     const deleteItem = await TravelItems.findOne({
       where: {
         id: itemId,
@@ -70,13 +68,7 @@ exports.deletePlaceFromList = async (req, res) => {
 
 exports.addNote = async (req, res) => {
   const {travelListId, itemId, note} = req.body;
-
-  console.log(travelListId, 'travelListId')
-  console.log(itemId, 'itemId')
-  console.log(note, 'note')
   const {userId} = req.user
-  console.log(userId, 'userId')
-  console.log(userId, 'addNote')
 
   try {
     if (userId) {
@@ -90,9 +82,9 @@ exports.addNote = async (req, res) => {
         console.log(itemId, 'should be 4')
           const newNote = await ItemNotes.create({
             travelItemId: itemId,
-            notes: note
+            notes: note, 
+            userId: userId
           })
-
           console.log(newNote, 'creating')
 
       }
@@ -110,7 +102,6 @@ exports.addNote = async (req, res) => {
 
 exports.getNotes = async (req, res) => {
   const {travelListId} = req.query;
-  console.log(travelListId, 'getNotes')
 
   try {
     const travelList = await TravelList.findOne({
@@ -122,15 +113,19 @@ exports.getNotes = async (req, res) => {
           include: [
             {
               model: ItemNotes, 
-              as: 'notes'
+              as: 'notes',
+              include: [
+               { 
+                 model: User,
+                 as: 'user'
+               }
+              ]
             }
           ]
         }
       ]
     })
 
-    //add an include of Users to see if its can fetch after adding foreign key and see if its successful
-    console.log(travelList.dataValues.items, 'travel list items')
     res.status(200).json({message: 'sucessfully fetched list with notes', travelList: travelList.dataValues.items })
   } catch (error) {
     console.log(error, 'error in get notes')
