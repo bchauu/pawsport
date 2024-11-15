@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet,Button } from 'react-native';
 
-const CustomDropdown = ({allTravelList, selectedTrip, setSelectedTrip, handleSelect, sharedListWithUser}) => {
+const CustomDropdown = ({setIsSharedList, allTravelList, selectedTrip, setSelectedTrip, handleSelect, sharedListWithUser}) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);  //initial opening of dropdown
   const [expandedCategory, setExpandedCategory] = useState({}); //nested. reveals items in parent
   const [value, setValue] = useState(null); // --> this needs to be in parent so i can update and pass to trip
@@ -19,8 +19,14 @@ const CustomDropdown = ({allTravelList, selectedTrip, setSelectedTrip, handleSel
     }));
   };
 
-  const handleDropDownValue = (label, value) => {
-    console.log(label, value, 'setDropDownValue')
+  const handleDropDownValue = (label, value, category) => {
+    console.log(label, value, category, 'setDropDownValue')
+    if (category === 'travelList') {
+      setIsSharedList(false)
+    } else if ('sharedList') {
+      console.log('shows sharedList')
+      setIsSharedList(true);
+    }
     setValue(value);
     setDropdownOpen(false);
     setExpandedCategory(false);
@@ -92,7 +98,7 @@ const CustomDropdown = ({allTravelList, selectedTrip, setSelectedTrip, handleSel
                         <TouchableOpacity
                           key={list.value}
                           style={styles.listItem}
-                          onPress={() => handleDropDownValue(list.label, list.value)}
+                          onPress={() => handleDropDownValue(list.label, list.value, list.category)}
                         >
                           <Text style={styles.listText}>{list.label}</Text>
                         </TouchableOpacity>

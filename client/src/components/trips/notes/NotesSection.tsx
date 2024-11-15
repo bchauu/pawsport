@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet,Button, TextInput } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 
 const NotesSection = ({isItemNotesCollapsed, notes, item}) => {
-  
+
+    console.log(notes[0], 'notesection')
+
      return (
         <View> 
         {isItemNotesCollapsed[item.id]?.isCollapsed &&
@@ -11,9 +13,13 @@ const NotesSection = ({isItemNotesCollapsed, notes, item}) => {
             .filter((listItem) => listItem.parentId === item.id)
             .flatMap((item) => item.notes)
             .map((note, index) => (
-              <Text key={index}>
-                {note}
-              </Text>
+              // console.log(note, 'test note')
+              <View key={index}>
+                <Text >
+                  {note.message}
+                </Text>
+                <Text> {note.user}</Text>
+              </View>
             ))
             //can make it collapsible to make it simpler
               // do i need conditional check if notes changes?

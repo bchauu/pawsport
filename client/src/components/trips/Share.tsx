@@ -17,7 +17,7 @@ const Share = ({handleShare}) => {
   };
   return (
     <View>
-      <Button title={showTextField ? 'Hide' : 'Share'} onPress={toggleVisibility} />
+      <Button title={showTextField ? 'Hide' : 'Invite'} onPress={toggleVisibility} />
       {showTextField && (
       <>
         <TextInput

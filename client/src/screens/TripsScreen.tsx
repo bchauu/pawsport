@@ -32,6 +32,7 @@ const TripsScreen =  () => {
   const [newMessageCount, setNewMessageCount] = useState(0);  
   const [isNewMessage, setIsNewMessage] = useState(false);
   const [sharedListWithUser, setSharedListWithUser] = useState([]);
+  const [isSharedList, setIsSharedList] = useState(false);
 
   const getList = async () => {
     const token = await getToken();
@@ -178,56 +179,60 @@ const TripsScreen =  () => {
 
   }, [isCreateNewList]) 
 
-  const test = () => {
-    console.log(allTravelList[1], 'allTravelList in trip Screen')
-  }
+  // const test = () => {
+  //   console.log(allTravelList[1], 'allTravelList in trip Screen')
+  // }
 
 
   return (
     <View>
-      <Button title='test' onPress={test}/>
-      <CreateTravelListModal 
-        setIsCreateNewList={setIsCreateNewList}
-        setInputName={setInputName}
-        InputName={InputName}
-      />
-      
-            <CollapsibleDropdown
-                allTravelList={allTravelList}
-                selectedTrip={selectedTrip}
-                setSelectedTrip={setSelectedTrip}
-                handleSelect={handleSelect}
-                sharedListWithUser={sharedListWithUser}
-            ></CollapsibleDropdown>
-
-        <Trips
-          trip={selectedTrip}
-          getList={getList}
+      <ScrollView>
+        {/* <Button title='test' onPress={test}/> */}
+        <CreateTravelListModal 
+          setIsCreateNewList={setIsCreateNewList}
+          setInputName={setInputName}
+          InputName={InputName}
         />
-       <View style={styles.mapContainer}>
-        <MyMap selectedTrip={selectedTrip} />
-      </View>
-      {isRoomJoined &&
-      <View style={styles.chatContainer}>
-        <ChatModal
-         setIsNewMessage={setIsNewMessage}
-         setNewMessageCount={setNewMessageCount}
-         newMessageCount={newMessageCount}
-         listId={selectedTrip?.id}
-         roomId={roomId}
-         socket={socket}
-         userEmail={userEmail}
-         setUserEmail={setUserEmail}
-         chat={chat}
-         setChat={setChat}
+        <CollapsibleDropdown
+            setIsSharedList={setIsSharedList}
+            allTravelList={allTravelList}
+            selectedTrip={selectedTrip}
+            setSelectedTrip={setSelectedTrip}
+            handleSelect={handleSelect}
+            sharedListWithUser={sharedListWithUser}
         />
-        {isNewMessage &&
-        <View style={styles.messageIndicatorContainer}>
-          <Text style={styles.messageIndicator}>{newMessageCount}</Text>
+          <Trips
+            trip={selectedTrip}
+            getList={getList}
+            isSharedList={isSharedList}
+            
+          />
+              {/* </ScrollView> */}
+        <View style={styles.mapContainer}>
+          <MyMap selectedTrip={selectedTrip} />
+        </View>
+        {isRoomJoined &&
+        <View style={styles.chatContainer}>
+          <ChatModal
+            setIsNewMessage={setIsNewMessage}
+            setNewMessageCount={setNewMessageCount}
+            newMessageCount={newMessageCount}
+            listId={selectedTrip?.id}
+            roomId={roomId}
+            socket={socket}
+            userEmail={userEmail}
+            setUserEmail={setUserEmail}
+            chat={chat}
+            setChat={setChat}
+          />
+          {isNewMessage &&
+          <View style={styles.messageIndicatorContainer}>
+            <Text style={styles.messageIndicator}>{newMessageCount}</Text>
+          </View>
+          }
         </View>
         }
-      </View>
-      }
+      </ScrollView>
     </View>
   );
 };

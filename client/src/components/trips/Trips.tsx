@@ -8,7 +8,7 @@ import ManualSwipeableRow from "./gesture/ManualSwipeableItem";
 import NotesSection from "./notes/NotesSection";
 import NoteInput from './notes/NoteInput';
 
-const Trips = ({trip, getList}) => {
+const Trips = ({trip, getList, isSharedList}) => {
   const [hasUpdatedSharedUser, setHasUpdatedSharedUser] = useState(false);
   const [allTrip, setAllTrip] = useState([]);   // this needs to change with 
   const [deletedTrip, setDeletedTrip] = useState('');
@@ -18,11 +18,20 @@ const Trips = ({trip, getList}) => {
   const [newNoteAdded, setNewNoteAdded] = useState(false);
   const [deletedTripIndex, setDeletedTripIndex] = useState(-1); 
   const [isItemNotesCollapsed, setItemIsNotesCollapsed] = useState({});
+  const [isTravelersViewed, setIsTravelersViewed] = useState(false);
+
+  //need to have socket open to refresh when new notes are added
+    //but also if new items in list are listed as well?
+
+
+  //if selecting 'shared with you'
+    //share button should not be displayed
+
+
 
   useEffect(() => {
       if (trip) {
         setAllTrip([...trip?.items])
-        // console.log(allTrip, 'allTrip')
       }
       getList();  //ensures list is latest from database --> list wont be old from switching list
 
@@ -54,15 +63,29 @@ const Trips = ({trip, getList}) => {
             }
         });
 
-        console.log(response.data.travelList[0].notes, 'response for notes')
+        console.log(response.data.travelList[0].notes[0].user.username, 'response for notes')
+          //this works. i have each username and id.
+              //store inside state of notes so can be displayed alongside each note
 
           const arrangedNotes = response.data.travelList.map((travelItem) => (
             {
               parentId: travelItem.id,
-              notes: travelItem.notes.map(note => note.notes)    //this is extra
+              notes: travelItem.notes.map(note => {
+                return {
+                  message: note.notes,
+                  user: note.user.username
+                }
+              }
+                // {
+                //   note.notes
+
+                // }
+
+              ),    //this is extra
+              // user: travelItem.user
             }
           ))
-          console.log(arrangedNotes, 'arrangedNotes')
+          console.log(arrangedNotes[0].notes, 'arrangedNotes')
 
           setNotes(arrangedNotes);
           setNewNoteAdded(false);
@@ -135,12 +158,17 @@ const Trips = ({trip, getList}) => {
     }
   }
 
+  const handleViewTravlers = () => {
+    setIsTravelersViewed((prevState) => !prevState)
+  }
+
 
   const addNotes = async () => {
 
     console.log(tripsEnteredNotes, 'TripsenteredNotes')
 
     console.log(selectedNoteTrip, 'selected item for note')
+
     
     try {
       const response = await axios.post(
@@ -184,11 +212,11 @@ const Trips = ({trip, getList}) => {
             isItemNotesCollapsed={isItemNotesCollapsed}
             notes={notes}
             item={item}
-
           />
         <NoteInput
           item={item}
           index={index+1}
+          isItemNotesCollapsed={isItemNotesCollapsed}
           handleEnteredNotes={handleEnteredNotes}
           newNoteAdded={newNoteAdded}
           addNotes={addNotes}
@@ -199,31 +227,56 @@ const Trips = ({trip, getList}) => {
       );
   };
 
+  //isSharedList --> conditionally render if shared is true or false. to allow rendering of guest of admin look
     return (
         <View>
+          <View>
             <TouchableOpacity 
-                // onPress={() => onSelect(trip)}
-                style={[
-                  styles.item, 
-                  // isSelected && styles.selectedItem
-                ]}
-            >
-                <Text>{trip?.name}</Text>
-                <Share handleShare={handleShare}></Share>
-                <TouchableOpacity>
-                  <Text>View Collaborators</Text>
-                  <CollaboratorsModal
-                    trip={trip}
-                    hasUpdatedSharedUser={hasUpdatedSharedUser}
-                    setHasUpdatedSharedUser={setHasUpdatedSharedUser}
-                  />
-                </TouchableOpacity>
-            </TouchableOpacity>
+                  // onPress={() => onSelect(trip)}
+                  style={[
+                    styles.item, 
+                    // isSelected && styles.selectedItem
+                  ]}
+              >
+                  <Text>{trip?.name}</Text>
+                  {!isSharedList?
+                    <Share handleShare={handleShare}></Share>
+                    :
+                    <View></View>
+                  
+                  }
+
+              </TouchableOpacity>
+              <View>
+                <TouchableOpacity onPress={handleViewTravlers}>
+                  {
+                    !isTravelersViewed ?
+                      <Text>View Co-Travelers</Text>
+                      :
+                      <Text>Hide Co-Travelers</Text>
+                  }
+                  </TouchableOpacity>
+                  {isTravelersViewed &&
+                    <CollaboratorsModal
+                      trip={trip}
+                      hasUpdatedSharedUser={hasUpdatedSharedUser}
+                      setHasUpdatedSharedUser={setHasUpdatedSharedUser}
+                      isSharedList={isSharedList}
+                      isTravelersViewed={isTravelersViewed}
+                      apiUrl={apiUrl}
+                      token={token}
+                    />
+                  }
+
+              </View>
+          </View>
+
                 <FlatList
                     data={allTrip}
                     renderItem={renderPlaces}
                     keyExtractor={(item)=> item.id }
                     contentContainerStyle={styles.listContainer}
+                    scrollEnabled={false} 
                 />
         </View>
     )
