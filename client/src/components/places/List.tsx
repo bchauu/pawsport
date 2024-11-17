@@ -5,6 +5,7 @@ import Place from "./Place";
 
 const List = ({places, isSearchInitiated, setIsSearchInitiated}) => {
     const [hasList, setHasList] = useState(false)
+    const [reviews, setReviews] = useState({});
 
     useEffect(() => {
         if (places.length > 0) {
@@ -22,6 +23,8 @@ const List = ({places, isSearchInitiated, setIsSearchInitiated}) => {
                 <Card key={place.place_id} style={{ marginBottom: 10 }}>
                   <Card.Content>
                     <Place
+                      reviews={reviews}
+                      setReviews={setReviews}
                       placeDetail={place}
                       index={index}
                       setIsSearchInitiated={setIsSearchInitiated}

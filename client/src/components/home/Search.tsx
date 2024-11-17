@@ -10,6 +10,7 @@ import config from "../../config";
 import { useSearch } from "../../context/SearchContext";
 import { useTrip } from "../../context/TripContext";
 
+
 type EnteredQuery = {
     Location: {},
     type: string
@@ -35,6 +36,10 @@ interface Place {
     
 }
 
+//clicking view more needs to be able to show more details
+    //check whats being returned from backend
+        //details modal of more details
+            //when clicking view more
 
 const Search = () => {
     const {locations, setLocation} = useTrip();
@@ -62,6 +67,7 @@ const Search = () => {
 
 
     const handleSubmit = async () => {
+        console.log('handleSubmit')
         const token = await getToken();
         try {
             const { apiUrl } = await config();
@@ -80,6 +86,7 @@ const Search = () => {
                                     place_id
                                     rating
                                     price_level
+                                    vicinity
                                     types
                                     user_ratings_total
                                     photos {
@@ -100,6 +107,8 @@ const Search = () => {
                     }
                 }
             )
+            console.log(response.data.data.searchPlaces, 'handleSubmit')
+                // should display message to user if it returns empty
             setPlaces([...response.data.data.searchPlaces.result]);
             setNextPage(response.data.data.searchPlaces.next_page_token);
             setIsSearchInitiated(true);

@@ -14,6 +14,25 @@ const getNearbyPlaces = async (location, radius, type) => {
   return response.data;
 };
 
+const getAllReviews = async (placeId) => {
+  console.log('getPaceReviews')
+
+  try {
+    const response = await axios.get('https://maps.googleapis.com/maps/api/place/details/json', {
+      params: {
+        place_id: placeId,
+        fields: 'reviews',
+        key: process.env.GOOGLE_API_KEY
+      }
+    })
+    console.log(response.data.result, 'getPlaceReviews')
+    return response.data.result;
+  } catch (error) {
+    console.error('Error fetching place reviews:', error.message);
+  }
+
+}
+
 
 const getPhotoUrl = async (photoReference) => {
   try {
@@ -72,6 +91,7 @@ const resolver = {
                   place_id: place.place_id,
                   rating: place.rating,
                   price_level: place.price_level,
+                  vicinity: place.vicinity,
                   types: place.types,
                   user_ratings_total: place.user_ratings_total,
                   photos: photos
@@ -103,6 +123,7 @@ const resolver = {
                   place_id: place.place_id,
                   rating: place.rating,
                   types: place.types,
+                  vicinity: place.vicinity,
                   user_ratings_total: place.user_ratings_total,
                   photos: photos
               };
@@ -115,7 +136,34 @@ const resolver = {
           console.error("Error in searchPlaces resolver:", error.message);
           throw new Error('Error fetching places');
       }
+  },
+
+  getPlaceReviews: async ({ placeId }) => {
+    try {
+      const placeDetails = await getAllReviews(placeId);
+        console.log(placeDetails.reviews[0], 'placeDetails')
+        const test = {         reviews: placeDetails.reviews.map((review) => ({
+          author: review.author_name,
+          rating: review.rating,
+          text: review.text,
+          relativeTimeDescription: review.relative_time_description,
+        }))}
+
+        console.log(test, 'test placeDetails')
+      return {
+          reviews: placeDetails.reviews.map((review) => ({
+          author: review.author_name,
+          rating: review.rating,
+          text: review.text,
+          relativeTimeDescription: review.relative_time_description,
+        }))
+      };
+    } catch (error) {
+      console.error('Error in resolver:', error.message);
+      throw new Error('Failed to fetch place reviews');
+    }
   }
+
 };
 
 

@@ -24,6 +24,7 @@ const schema = buildSchema(`
     photos: [PhotoAtt]
     rankby: String
     price_level: Int
+    vicinity: String
   }
 
   type Response {
@@ -36,10 +37,24 @@ const schema = buildSchema(`
     lng: Float
   }
 
+  type Review {
+    author: String
+    rating: Int
+    text: String
+    relativeTimeDescription: String
+  }
+
+  type ReviewResponse {
+    reviews: [Review]
+  }
+
   type Query {
     searchPlaces(location: Coordinates, type: String, radius: Int, nextPageToken: String): Response
+    getPlaceReviews(placeId: String!): ReviewResponse
   }
 `);
+
+//query response needs to be defined as a type as top level.
 
 
 module.exports = schema;

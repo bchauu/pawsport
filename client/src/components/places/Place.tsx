@@ -1,16 +1,20 @@
 import React, {useState, useEffect} from "react";
-import { View, Text,Image, Button} from "react-native";
+import { View, Text,Image, Button, TouchableOpacity} from "react-native";
 import axios from "axios";
 import { Paragraph } from 'react-native-paper';
 import AddTravelModal from "../trips/AddTravelModal";
+import PlaceDetails from "./PlaceDetails";
 import { useTrip } from "../../context/TripContext";
 import { TripLocation } from "../../types/types";
 import { getToken } from "../../utils/authStorage";
 import config from "../../config";
 
 
-const Place = ({placeDetail, index, setIsSearchInitiated, isSearchInitiated}) => {
+const Place = ({reviews, setReviews, placeDetail, index, setIsSearchInitiated, isSearchInitiated}) => {
     const {locations, setLocation} = useTrip<TripLocation[]>([]);
+    // const [reviews, setReviews] = useState([]);
+
+    console.log(placeDetail.name, placeDetail.place_id, 'placeDetails')
 
     const {lat, lng } = placeDetail.location,
     {name, place_id} = placeDetail;
@@ -99,9 +103,11 @@ const Place = ({placeDetail, index, setIsSearchInitiated, isSearchInitiated}) =>
                 Rating: {placeDetail.rating}
                 Total: {placeDetail.user_ratings_total}
             </Paragraph>
-            <Paragraph>
-                View more:
-            </Paragraph>
+            <PlaceDetails
+                placeId={placeDetail.place_id}
+                reviews={reviews}
+                setReviews={setReviews}
+            ></PlaceDetails>
             <AddTravelModal allTravelList={allTravelList} handleAddTrip={handleAddTrip}></AddTravelModal>
         </View>
     )
