@@ -1,14 +1,50 @@
 import React, {useState, useEffect} from "react";
 import { View, Modal, Button, Text, StyleSheet, Dimensions, ScrollView, Image } from "react-native";
-import { Paragraph } from 'react-native-paper';
 import useApiConfig from "../../utils/apiConfig";
 import { Card } from 'react-native-paper';
+import ListSelector from "./BottomSheet";
 import axios from "axios";
-import { black } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
 const DirectSearchPlace = ({directSearchResult}) => {
     const {token, apiUrl} = useApiConfig();
+    console.log(token, apiUrl, 'test')
     const [modalVisible, setModalVisible] = useState(false);
+    const [isBottomVisible, setIsBottomVisible] = useState(false);
+    const [selectedItem, setSelectedItem] = useState('');
+
+
+    const [allTravelList, setAllTravelList] = useState([]);
+
+    useEffect(() => {
+
+        if (token && apiUrl) {
+            try {
+                const getList = async () => {
+                    const response = await axios.get(`${apiUrl}/trips/lists/places`, {
+                        headers: {
+                          'authorization': `Bearer ${token}`
+                        }
+                    });
+        
+                    console.log(response.data.travelLists, 'directSearch')
+        
+                    setAllTravelList([...response.data.travelLists])
+        
+                }
+                getList();
+            } catch (error) {
+                console.log(error, 'error in direct')
+                console.error('Error fetching travel lists:', error.message);
+                if (error.response) {
+                    console.error('Response error:', error.response);
+                } else if (error.request) {
+                    console.error('Request error:', error.request);
+                } else {
+                    console.error('Other error:', error);
+                }
+            }
+        }
+      }, [token, apiUrl])      
 
     const handleGoogleUrl = () => {
         setModalVisible(true)
@@ -19,6 +55,12 @@ const DirectSearchPlace = ({directSearchResult}) => {
         console.log(directSearchResult[0])
     }, [directSearchResult])
 
+    const handleAddDirectToList = (item) => {
+        console.log(item.place_id, 'handleAddDirectToList')
+        setSelectedItem(item);
+        setIsBottomVisible(true)
+    }
+
     
     return (
         <View>
@@ -28,24 +70,32 @@ const DirectSearchPlace = ({directSearchResult}) => {
                 transparent={true}  // Set to true to allow background visibility
                 visible={modalVisible}
                 onRequestClose={() => setModalVisible(false)}  // To allow closing the modal
-
-                //only need one review of each pace
-                    // match placeId of review state
-
             >
                 <View style={styles.modalBackground}>
                     <View style={styles.container}>
                         <Text>Is this the One?</Text>
+                        
+                        {
+                        isBottomVisible && 
+                        <ListSelector 
+                            allTravelList={allTravelList}
+                            selectedItem={selectedItem}
+                            isBottomVisible={isBottomVisible}
+                            setIsBottomVisible={setIsBottomVisible}
+                        >
+                        </ListSelector>
+                        
+                        }
                         {directSearchResult &&
                             <ScrollView horizontal>
                                 <Card>
                                     {
-                                    directSearchResult.map((item, index) => (
+                                    directSearchResult.map((item) => (
+                                        
+                                        <View  key={item.place_id}>
                                         <View>
-
-                                        <Card.Content>
-                                            <Text key={index}>{item.name}</Text>
-                                        </Card.Content>
+                                            <Button title="Add to List" onPress={() => handleAddDirectToList(item)} />
+                                        </View>
                                         <Card.Content>
                                             <Text>Rating: {item.rating}</Text>
                                             <Text>Total: {item.user_ratings_total}</Text>
@@ -59,42 +109,11 @@ const DirectSearchPlace = ({directSearchResult}) => {
                                         
                                         ))
                                     }
-                                    {/* <Card.Content>
-                                    <Paragraph>
-                                        Rating: {item.rating}
-                                        Total: {placeDetail.user_ratings_total}
-                                    </Paragraph>
-                                    </Card.Content> */}
                                 </Card>
                             </ScrollView>
-
                         }
-                        {/* {reviews && //all data is here. just put it in a horizontal list with within a card component
-                            <ScrollView horizontal>
-                            {reviews[placeId]?.map((review) => (
-                                    //write helper function to transform review.text to all be same format
-                                <Card style={styles.reviewCard}>
-                                    <Card.Content style={styles.reviewHeader}>
-                                        <Text>{review.author}</Text>
-                                        <Text>{review.rating}</Text>
-                                        <Text>{review.relativeTimeDescription}</Text>
-                                    </Card.Content>
-                                    <Card.Content >
-                                        <ScrollView>
-                                        <Text>{review.text}</Text>
-                                        </ScrollView>
-                                    </Card.Content>
-                                </Card>
-   
-                            ))}
-                            </ScrollView>
-           
-
-                        } */}
                         <View>
-
                         </View>
-                        {/* <Button title={"test"} onPress={() =>handleTest() }></Button> */}
                         <Button title="Hide" onPress={() => setModalVisible(false)} /> 
                     </View>
                 </View>

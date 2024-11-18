@@ -43,6 +43,7 @@ interface Place {
 
 const Search = () => {
     const {locations, setLocation} = useTrip();
+    console.log(locations, 'what is location')
     const [isSearchInitiated, setIsSearchInitiated] = useState(false);
     const [directSearchResult, setDirectSearchResult] = useState([])
     const {searchValue} = useSearch();
@@ -284,7 +285,6 @@ const Search = () => {
 
     return (
         <View>
-            {/* <DirectSearchPlace></DirectSearchPlace> */}
             <LocationSearch enteredQuery={enteredQuery} updateQuery={updateQuery}></LocationSearch>
             <ButtonSlider enteredQuery={enteredQuery} updateQuery={updateQuery}></ButtonSlider>
             <List 
@@ -310,7 +310,10 @@ const Search = () => {
             <TouchableOpacity onPress={() => submitGoogleUrl()}>
                 <Text>Submit Google Urls</Text>
             </TouchableOpacity>
-            <DirectSearchPlace directSearchResult={directSearchResult}></DirectSearchPlace>
+            <DirectSearchPlace 
+                directSearchResult={directSearchResult}
+            >
+            </DirectSearchPlace>
         </View>
     );
 }
