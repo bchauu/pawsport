@@ -18,6 +18,7 @@ const schema = buildSchema(`
     location: Location
     business_status: String
     place_id: String
+    address: String
     rating: Float
     types: [String]
     user_ratings_total: String
@@ -51,6 +52,7 @@ const schema = buildSchema(`
   type Query {
     searchPlaces(location: Coordinates, type: String, radius: Int, nextPageToken: String): Response
     getPlaceReviews(placeId: String!): ReviewResponse
+    resolveAndExtractPlace(url: String!): Response
   }
 `);
 
