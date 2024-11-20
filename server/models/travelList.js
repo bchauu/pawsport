@@ -65,6 +65,8 @@ module.exports = (sequelize) => {
         TravelList.belongsTo(models.User, { foreignKey: 'userId' });
         // Association with the TravelItem model
         TravelList.hasMany(models.TravelItems, { foreignKey: 'travelListId', as: 'items' });
+
+        TravelList.hasMany(models.TravelListSubLevels, {foreignKey: 'travelListId', as: 'subLevels'})
     };
 
     return TravelList;

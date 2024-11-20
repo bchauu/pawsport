@@ -26,7 +26,7 @@ const DirectSearchPlace = ({directSearchResult}) => {
                         }
                     });
         
-                    console.log(response.data.travelLists, 'directSearch')
+                    console.log(response.data.travelLists[0].subLevels, 'directSearch')
         
                     setAllTravelList([...response.data.travelLists])
         

@@ -72,48 +72,6 @@ const Search = () => {
 
     }, [])
 
-    // const extractGoogleUrl = (value) => {
-    //     const coordinatesRegex = /@-?\d+.\d+/;
-    //     const placeTextRegex = /^[A-Za-z0-9+]+$/;
-        
-    //     //https://www.google.com/maps/place/The+Cups+Coffee+Roastery/@16.0559575,108.2458726,17z/
-    //     const url = 'https://www.google.com/maps/place/The+Cups+Coffee+Roastery/@16.0559575,108.2458726,17z/';
-    //     const splitUrl = url.split('/');
-    //     console.log(splitUrl, 'split url')
-
-    //     if (!splitUrl || splitUrl.length < 7 ) {
-    //         return console.log('URL is incomplete or invalid')
-    //     }
-
-    //     if (splitUrl[2] !== 'www.google.com') {
-    //         return console.log('url is not from google')
-
-    //     } 
-    //     if (splitUrl[3] !== 'maps') {
-    //         return console.log('please get url from google maps')
-    //     }
-
-    //     if (splitUrl[4] === 'place') {
-    //         //proceed to validate and extract
-    //         let newCoordinates;
-    //         let newPlaceText;
-    //         if (coordinatesRegex.test(splitUrl[6]) === true) {
-    //             newCoordinates = splitUrl[6].split(',').slice(0, 2).join(',')
-    //             console.log(newCoordinates, 'newCoordinates');
-    //         }
-
-    //         if (placeTextRegex.test(splitUrl[5]) === true) {
-    //             newPlaceText = splitUrl[5]
-    //             console.log(newPlaceText, 'placeTextRegex')
-    //         }
-    //         //https://maps.googleapis.com/maps/api/place/textsearch/json?query=The+Cups+Coffee+Roastery&location=16.0559575,108.2458726&radius=100
-    //     }
-
-
-
-    // }
-    // extractGoogleUrl('test')
-
 
     const handleSubmit = async () => {
         console.log('handleSubmit')
@@ -279,9 +237,7 @@ const Search = () => {
 
             }
         }
-    }
-
-    
+    }    
 
     return (
         <View>

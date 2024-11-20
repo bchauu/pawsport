@@ -42,6 +42,8 @@ const TripsScreen =  () => {
           'authorization': `Bearer ${token}`
         }
     });
+
+    console.log(response.data.travelLists, 'getList in TripScreen')
     setAllTravelList((prevList) => [...response.data.travelLists])
 
     await delay(50)
@@ -156,13 +158,13 @@ const TripsScreen =  () => {
 
   useEffect(() => { //this is for adding newList
     if (isCreateNewList) {
-
+  
       const postList = async () => {
         const token = await getToken();
         const { apiUrl } = await config();
         const response = await axios.post(`${apiUrl}/trips/list`, {
           name: InputName,
-        },
+        }, 
         {
           headers: {
             'authorization': `Bearer ${token}`

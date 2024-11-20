@@ -1,4 +1,4 @@
-const { TravelList, TravelItems, ListPermission, ItemNotes } = require('../models'); // Correct way to import
+const { TravelList, TravelItems, ListPermission, ItemNotes, TravelListSubLevels } = require('../models'); // Correct way to import
 
 exports.addCreate = async (req, res) => {
     const { name } = req.body;
@@ -20,10 +20,22 @@ exports.addCreate = async (req, res) => {
 exports.getList = async (req, res) => {
   const {userId} = req.user;
   const test = req.user;
+  console.log('before get list')
   try {
     let list; 
+    console.log('before get list')
 
-    list = await TravelList.findAll({where: {userId}})
+    list = await TravelList.findAll({
+      where: {userId},
+      include: [
+        {
+          model: TravelListSubLevels, 
+          as: 'subLevels'
+        }
+      ]
+  })
+
+  console.log(list, 'check list with sublevels')
     res.status(200).json({message: list})
 
   } catch (error) {
@@ -41,7 +53,7 @@ exports.getSharedList = async (req, res) => {
     include: [
       {
         model: TravelList, 
-        as: 'travelList'
+        as: 'travelList',
       }
     ]
   })
@@ -71,9 +83,15 @@ exports.getListswithPlaces = async (req, res) => {
         {
           model: TravelItems,
           as: 'items', 
+        },
+        {
+          model: TravelListSubLevels, 
+          as: 'subLevels'
         }
       ]
     });
+
+    console.log(travelLists[0], 'should include sublevels')
 
     if (!travelLists.length) {
       return res.status(404).json({ message: 'No travel lists found for user' });
@@ -85,3 +103,43 @@ exports.getListswithPlaces = async (req, res) => {
     res.status(500).json({ error: error.message || 'Failed to fetch list with items' }); // Send detailed error
   }
 };
+
+exports.addSubLevel = async (req, res) => {
+  const {name, travelListId} = req.body
+  console.log(name, travelListId, 'addSubLevel')
+  try {
+    const subLevels = await TravelListSubLevels.create({name, travelListId})
+    res.json({message: 'added sub-level', subLevels})
+
+  } catch (error) {
+    console.log(error, 'error in creating sublevels ')
+  }
+}
+
+exports.deleteSubLevel = async (req, res) => {
+
+  const {id} = req.body;
+
+  try {
+    const deleteItem = await TravelListSubLevels.findOne({
+      where: {
+        id: id,
+      }
+    })
+
+    console.log(deleteItem, 'deleteItem')
+  
+    if (deleteItem) {
+        await TravelListSubLevels.destroy({
+          where: {
+            id: id, 
+          }
+        })
+
+        res.status(200).json({ message: 'removed sublevel from list' });
+    }
+
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch items for list' });
+  }
+}

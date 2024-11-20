@@ -7,6 +7,8 @@ import CollaboratorsModal from "./CollaboratorsModal";
 import ManualSwipeableRow from "./gesture/ManualSwipeableItem";
 import NotesSection from "./notes/NotesSection";
 import NoteInput from './notes/NoteInput';
+import SubLevelInput from "./subLevels/SubLevelInput";
+import RemoveSubLevel from "./subLevels/RemoveSubLevel";
 
 const Trips = ({trip, getList, isSharedList}) => {
   const [hasUpdatedSharedUser, setHasUpdatedSharedUser] = useState(false);
@@ -19,6 +21,9 @@ const Trips = ({trip, getList, isSharedList}) => {
   const [deletedTripIndex, setDeletedTripIndex] = useState(-1); 
   const [isItemNotesCollapsed, setItemIsNotesCollapsed] = useState({});
   const [isTravelersViewed, setIsTravelersViewed] = useState(false);
+  const [subLevels, setSubLevels] = useState([]);
+
+  console.log(trip, 'checking trip')
 
   //need to have socket open to refresh when new notes are added
     //but also if new items in list are listed as well?
@@ -27,15 +32,29 @@ const Trips = ({trip, getList, isSharedList}) => {
   //if selecting 'shared with you'
     //share button should not be displayed
 
+    //japan travels
+        //null
+      //or
+        //Id 1  --> array 
+          // Day 1
+          // Day 2
+          // Day 3
+      
+      //japan hotel
+        // Day 1
+
+      //just matching string name with levels available on array of list
+
 
 
   useEffect(() => {
       if (trip) {
         setAllTrip([...trip?.items])
+        setSubLevels([...trip?.subLevels])
       }
       getList();  //ensures list is latest from database --> list wont be old from switching list
 
-  }, [trip])  // now the list of trips is stored in its own state which renders based on this state
+  }, [trip]) // now the list of trips is stored in its own state which renders based on this state
 
 
   useEffect(() => {
@@ -199,7 +218,9 @@ const Trips = ({trip, getList, isSharedList}) => {
   }
 
   const renderPlaces = ({ item, index }) => {
-
+    console.log(item, 'what is item')
+    console.log(subLevels, 'subLevels in renderPlaces')
+  
       return (
         <View style={styles.itemContainer}>
           <ManualSwipeableRow
@@ -213,14 +234,14 @@ const Trips = ({trip, getList, isSharedList}) => {
             notes={notes}
             item={item}
           />
-        <NoteInput
-          item={item}
-          index={index+1}
-          isItemNotesCollapsed={isItemNotesCollapsed}
-          handleEnteredNotes={handleEnteredNotes}
-          newNoteAdded={newNoteAdded}
-          addNotes={addNotes}
-        />
+          <NoteInput
+            item={item}
+            index={index+1}
+            isItemNotesCollapsed={isItemNotesCollapsed}
+            handleEnteredNotes={handleEnteredNotes}
+            newNoteAdded={newNoteAdded}
+            addNotes={addNotes}
+          />
 
         </View>
         
@@ -270,14 +291,38 @@ const Trips = ({trip, getList, isSharedList}) => {
 
               </View>
           </View>
-
-                <FlatList
-                    data={allTrip}
-                    renderItem={renderPlaces}
-                    keyExtractor={(item)=> item.id }
-                    contentContainerStyle={styles.listContainer}
-                    scrollEnabled={false} 
-                />
+            <View>
+              {subLevels.length > 0 &&
+                subLevels
+                .sort((a, b) => a.id - b.id)
+                .map((subLevel, index) => (
+                  <View key={index}>
+                    <Text>
+                      {subLevel.name}
+                    </Text>
+                    <RemoveSubLevel 
+                      subLevel={subLevel}
+                      setSubLevels={setSubLevels}
+                      />
+                    <FlatList 
+                      data={allTrip.filter((trip) => subLevel.name === trip.subLevelName)}
+                      renderItem={renderPlaces}
+                      keyExtractor={(item)=> item.id }
+                      contentContainerStyle={styles.listContainer}
+                      scrollEnabled={false} 
+                    />
+                  </View>
+                ))
+              }
+              <FlatList
+                data={allTrip.filter((trip) => trip.subLevelName === null)}
+                renderItem={renderPlaces}
+                keyExtractor={(item)=> item.id }
+                contentContainerStyle={styles.listContainer}
+                scrollEnabled={false} 
+              />
+            </View>
+            <SubLevelInput trip={trip}></SubLevelInput>
         </View>
     )
 }

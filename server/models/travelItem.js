@@ -30,6 +30,10 @@ module.exports = (sequelize) => {
             field: 'added_count',
             defaultValue: 0
         },
+        subLevelName: {
+            type: DataTypes.STRING,
+            field: 'sub_level_name'
+        },
         lat: {
             type: DataTypes.FLOAT,
         },
