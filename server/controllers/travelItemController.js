@@ -1,7 +1,7 @@
 const { TravelItems, ItemNotes, TravelList, User } = require('../models'); 
 exports.addPlaceToList = async (req, res) => {
     try {
-      const { travelListId, place_id, name, lat, lng, notes } = req.body; 
+      const { travelListId, placeId, name, lat, lng, notes } = req.body; 
   
       const newItem = await TravelItems.create({
         travelListId,
@@ -9,7 +9,7 @@ exports.addPlaceToList = async (req, res) => {
         lat,
         lng,
         notes,
-        placeId: place_id 
+        placeId
       });
   
       res.status(201).json({ message: 'Successfully added item to list', item: newItem });

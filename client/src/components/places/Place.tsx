@@ -14,17 +14,17 @@ const Place = ({reviews, setReviews, placeDetail, index, setIsSearchInitiated, i
     const {locations, setLocation} = useTrip<TripLocation[]>([]);
     // const [reviews, setReviews] = useState([]);
 
-    console.log(placeDetail.name, placeDetail.place_id, 'placeDetails')
+    console.log(placeDetail.name, placeDetail.placeId, 'placeDetails')
 
     const {lat, lng } = placeDetail.location,
-    {name, place_id} = placeDetail;
+    {name, placeId} = placeDetail;
 
     //dont need photo, they can click more details which will pull up photos along with details
     const currentPlace: TripLocation = {
     name,
     lat,
     lng,
-    place_id
+    placeId
     };
 
     const [allTravelList, setAllTravelList] = useState([]);
@@ -63,12 +63,13 @@ const Place = ({reviews, setReviews, placeDetail, index, setIsSearchInitiated, i
         const { apiUrl } = await config();
 
         try {
+            console.log(placeId, 'placeId in place')
             const response = await axios.post(`${apiUrl}/trips/lists/places`,{
                 name: name,
                 lat: lat,
                 lng: lng,
                 travelListId: selectedList.id,
-                place_id: place_id 
+                placeId: placeId 
             }, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -104,7 +105,7 @@ const Place = ({reviews, setReviews, placeDetail, index, setIsSearchInitiated, i
                 Total: {placeDetail.user_ratings_total}
             </Paragraph>
             <PlaceDetails
-                placeId={placeDetail.place_id}
+                placeId={placeDetail.placeId}
                 reviews={reviews}
                 setReviews={setReviews}
             ></PlaceDetails>

@@ -89,17 +89,16 @@ const Search = () => {
                                         lat
                                         lng
                                     }
-                                    business_status
+                                    businessStatus
                                     address
-                                    place_id
+                                    placeId
                                     rating
-                                    price_level
                                     vicinity
                                     types
-                                    user_ratings_total
+                                    userRatingTotal
                                     photos {
                                         height
-                                        photo_reference
+                                        photoReference
                                         width
                                         photoUrl
                                     }
@@ -129,6 +128,11 @@ const Search = () => {
             }
         }
     };
+
+    //camelcase next_page_token
+    //fix graphql for reviews
+        // in addition save reviews to database once error is fixed 
+    //good news. searchResults didnt break on frontend. 
 
     const handleNextPage = async () => {
         const token = await getToken();

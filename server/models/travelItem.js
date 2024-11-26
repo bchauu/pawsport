@@ -52,6 +52,12 @@ module.exports = (sequelize) => {
             foreignKey: 'travelItemId', // Matches the belongsTo foreign key
             as: 'notes', // Alias for the association
         });
+
+        TravelItems.belongsToMany(models.PlaceDetails, {
+            through: 'TravelItemPlace', // Name of the junction table
+            foreignKey: 'travelItemId', // Foreign key in the junction table referencing TravelItem
+            as: 'placeDetails'
+          });
     };
 
     return TravelItems;

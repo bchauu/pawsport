@@ -8,7 +8,7 @@ const schema = buildSchema(`
 
   type PhotoAtt {
     height: Int
-    photo_reference: String
+    photoReference: String
     width: Int
     photoUrl: String
   }
@@ -17,15 +17,17 @@ const schema = buildSchema(`
     name: String
     location: Location
     business_status: String
-    place_id: String
+    businessStatus: String
+    placeId: String
     address: String
     rating: Float
     types: [String]
-    user_ratings_total: String
+    userRatingTotal: Float
     photos: [PhotoAtt]
     rankby: String
-    price_level: Int
     vicinity: String
+    last_updated: String
+    lastUpdated: String
   }
 
   type Response {
@@ -45,14 +47,42 @@ const schema = buildSchema(`
     relativeTimeDescription: String
   }
 
+  type subLevel {
+    id: String
+    createdAt: String
+    travelListId: String
+    name: String
+    updatedAt: String
+  }
+
+  type TravelList {
+    id: ID!
+    createdAt: String!
+    updatedAt: String
+    userId: String!
+    name: String!
+    uuid: String!
+    isPublic: Boolean!
+    viewCount: String!
+    likesCount: String!
+    listType: String
+    subLevels: [subLevel]
+    items: [Result]
+  }
+
   type ReviewResponse {
     reviews: [Review]
+  }
+
+  type CuratedResponse {
+    list: [TravelList]
   }
 
   type Query {
     searchPlaces(location: Coordinates, type: String, radius: Int, nextPageToken: String): Response
     getPlaceReviews(placeId: String!): ReviewResponse
     resolveAndExtractPlace(url: String!): Response
+    getCuratedListPlaces(userId: String!): CuratedResponse
   }
 `);
 

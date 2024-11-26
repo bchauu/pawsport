@@ -54,6 +54,10 @@ module.exports = (sequelize) => {
             type: DataTypes.INTEGER,
             field: 'likes_count',
             defaultValue: 0
+        },
+        listType: {
+            type: DataTypes.TEXT,
+            field: 'list_type'
         }
     }, {
         tableName: 'travel_list',

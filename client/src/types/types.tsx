@@ -39,7 +39,7 @@ export type TripStackParamList = {
     name: string
     lat: number | null
     lng: number | null
-    place_id: string
+    placeId: string
   }
 
   export interface TripContextType {
