@@ -114,7 +114,7 @@ const Search = () => {
                     }
                 }
             )
-            console.log(response.data.data.searchPlaces, 'handleSubmit')
+            console.log(response.data.data.searchPlaces.result, 'handleSubmit')
                 // should display message to user if it returns empty
             setPlaces([...response.data.data.searchPlaces.result]);
             setNextPage(response.data.data.searchPlaces.next_page_token);

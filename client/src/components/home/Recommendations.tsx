@@ -1,13 +1,15 @@
 import {useState, useEffect} from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import axios from "axios";
 // import { getToken } from "../../utils/authStorage";
 // import config from "../../config";
 import useApiConfig from "../../utils/apiConfig";
+import List from "../places/list";
 
 
 const Recommendations = () => {
     const [curatedList, setCuratedList] = useState([]);
+    // const [isSearchInitiated, setIsSearchInitiated] = useState(false);
     const {token, apiUrl} = useApiConfig();
 
     useEffect(() => {
@@ -61,7 +63,10 @@ const Recommendations = () => {
                             }
                         }
                     )
-                    console.log(response.data.data.getCuratedListPlaces.list, 'handleGoogleUrl from graphql');
+                    console.log(response.data.data.getCuratedListPlaces.list[0].items, 'handleGoogleUrl from graphql');
+                            //handle submit from search is coming back as an array of objects
+                                //each index is an empty thats represented as an object
+                    setCuratedList(response.data.data.getCuratedListPlaces.list)
                     // setDirectSearchResult(response.data.data.resolveAndExtractPlace.result);
            
                 } catch (error: any) {
@@ -76,7 +81,7 @@ const Recommendations = () => {
 
         getCuratedList();
 
-      }, [token, apiUrl])        
+      }, [token, apiUrl])
 
         //this can pass in data to same as search for trips
             //because need exact or very similar format
@@ -85,9 +90,33 @@ const Recommendations = () => {
             <Text>
                 Curated lists
             </Text>
+            {
+                //same as search.
+                    // should be able to use same format because i used graphql
+                    //import componennt and pass in the list to render in scrollview
+                curatedList.map((list, index)=> (
+                    <View key={index} >
+                        <Text>
+                            {list.name}
+                        </Text>
+                        <TouchableOpacity>
+                            <Text>
+                                Save curated Trip
+                            </Text>
+                            {/* ability to add entire list and all its trips to the user --> copy travelList and assign to specificied userID*/}
+                            {/* items need to be cloned as well*/}
+                        </TouchableOpacity>
+                        <List 
+                            places={list.items} 
+                        >
+                        </List>
+                    </View>
+                ))
+            }
         </View>
     )
 }
+    //confirm searchInitiated doesnt do anything here?
 
 export default Recommendations;
 

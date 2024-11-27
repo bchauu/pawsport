@@ -1,15 +1,14 @@
 import React from 'react';
-import {View, Text, Button } from 'react-native';
+import {View, Text, Button, ScrollView } from 'react-native';
 import Search from '../components/home/Search';
 import Recommendations from '../components/home/Recommendations';
 
 const HomeScreen = () => {
   return (
-    <View>
-      <Text>Home Screens</Text>
+    <ScrollView>
       <Search></Search>
       <Recommendations></Recommendations>
-    </View>
+    </ScrollView>
   );
 };
 

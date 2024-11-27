@@ -53,7 +53,10 @@ const Place = ({reviews, setReviews, placeDetail, index, setIsSearchInitiated, i
 
             return updatedLocations;
         });
-        setIsSearchInitiated(false);
+        if (setIsSearchInitiated) {
+
+            setIsSearchInitiated(false);
+        }
     }, [isSearchInitiated])
 
     const handleAddTrip = async (selectedList) => {
