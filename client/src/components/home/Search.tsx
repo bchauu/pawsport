@@ -36,11 +36,6 @@ interface Place {
     
 }
 
-//clicking view more needs to be able to show more details
-    //check whats being returned from backend
-        //details modal of more details
-            //when clicking view more
-
 const Search = () => {
     const {locations, setLocation} = useTrip();
     console.log(locations, 'what is location')
@@ -128,11 +123,6 @@ const Search = () => {
             }
         }
     };
-
-    //camelcase next_page_token
-    //fix graphql for reviews
-        // in addition save reviews to database once error is fixed 
-    //good news. searchResults didnt break on frontend. 
 
     const handleNextPage = async () => {
         const token = await getToken();

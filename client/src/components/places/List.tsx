@@ -43,11 +43,3 @@ const List = ({places, isSearchInitiated, setIsSearchInitiated}) => {
 
 
 export default List;
-
-
-//all list should have data
-    // location with photo
-    // details
-    // these are list of places
-
-// i need list of trips

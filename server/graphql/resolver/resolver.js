@@ -18,10 +18,6 @@ const getNearbyPlaces = async (location, radius, type) => {
 const getAllReviews = async (placeId) => {
 
   try {
-    //findOne if doesnt exist then do api
-    // const foundPlaceReview = await PlaceReview.findOne({where: {place_id: placeId}});
-
-    // if (foundPlaceReview) return foundPlaceReview;
 
     const response = await axios.get('https://maps.googleapis.com/maps/api/place/details/json', {
       params: {
@@ -31,32 +27,6 @@ const getAllReviews = async (placeId) => {
       }
     })
 
-    // const {
-    //   author_name, 
-    //   author_url, 
-    //   language, 
-    //   original_language, 
-    //   rating, 
-    //   relative_time_description, 
-    //   text, 
-    //   translated
-    // } = response.data.result;
-
-    // PlaceReview.create({
-    //   placeId,
-    //   language,
-    //   rating,
-    //   text,
-    //   translated,
-    //   originalLanguage: original_language,
-    //   relativeTimeDescription: relative_time_description,
-    //   authorName: author_name,
-    //   authorUrl: author_url, 
-    // })
-      //cuz its an array. leave out for now
-
-    //if response exist, then create data row
-    // console.log(response.data.result, 'getPlaceReviews')
     return response.data.result;
   } catch (error) {
     console.error('Error fetching place reviews:', error.message);
@@ -107,7 +77,6 @@ const extractQueryFromUrl = async (url) => {
   return query;
 }
 
-// Step 2: Use Geocoding API to get coordinates and Place ID
 const getCoordinatesAndPlaceId = async (address) => {
   try {
     const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
@@ -172,14 +141,6 @@ const filteredResults = async (results) => {
   // console.log(results, 'passed into filteredResults')
   const {reviews} = results[0];
   const places = await Promise.all(results.map(async place => {
-              
-    // const photos = place.photos ? await Promise.all(place.photos.map(async photo => ({
-    //     height: photo.height,
-    //     photo_reference: photo.photo_reference,
-    //     width: photo.width,
-    //     photoUrl: await getPhotoUrl(photo.photo_reference)
-    // }))) : [];
-
 
     const photos = place.photos
       ? await Promise.all(
@@ -215,9 +176,6 @@ const filteredResults = async (results) => {
             photos: photos
         };
       }));
-    // console.log(places, 'after mapping through')
-    // console.log(reviews, 'reviews from results')
-      //good but lost reviews
 
       const filteredPlaces = places.filter(
         place => place.userRatingTotal === undefined || place.userRatingTotal > 10
@@ -237,8 +195,6 @@ const getPlaceWithPlaceId = async (placeId) => {
         key: process.env.GOOGLE_API_KEY
       }
     })
-
-    // console.log(response, 'getting each place detail')
   } catch (error) {
     console.log(error, 'error in placeId')
   }
@@ -280,9 +236,7 @@ const checkforReview = async (placeId, reviews) => {
 
   //this should be called within a map to get each
 const getSpecificPlaceWithReview = async (placeId) => {
-    //issue here as we map through each
 
-  // console.log(placeId, 'within getSpecificPlaceWithReview')
   try {
     const placeDetails = await PlaceDetails.findOne({where: {place_id: placeId}})
     if (!placeDetails) {
@@ -293,30 +247,11 @@ const getSpecificPlaceWithReview = async (placeId) => {
         }
       })
   
-      // const {reviews} = response.data.result;
-      //   //undefined 
-      // console.log(response.data.result, 'review from response')
-
-      // checkforReview(placeId, reviews);
-  
       const places = await filteredResults([response.data.result])    //this gets all in right format. including photo
-      // places[0].reviews = reviews;
 
-          //placeDetails dont match results
       console.log(places, 'places after adding reviews')
         //photoreference is not extrapolated here
       console.log(places[0].photos[0], 'photos after filtered')
-
-      // {
-      //   height: 2268,
-      //   photo_reference: 'AdDdOWrNxsqYbXUDJpNvug8PJSfjA902SDLFeW8mOeBBqNRi2_R4qBSmUASqa6xhaYWtIXG9h47l4v-d50-3eixCN3spf7v4ofpjqDUahmbPxHikE7UPFv4ZiR6w7dwDaJSQzP0xUB_ruWJSkvOLJVTJKyCayH77DoXziBePKy8CoGBNdeey',
-      //   width: 4032,
-      //   photoUrl: 'https://lh3.googleusercontent.com/places/ANXAkqFa2TBW-vMU-1ZaOfQnN8gRY84aNRfbFabwDlyRETRUNklhglbYyuIlOs2xhwQFNANCgo8QS3FSnBTO6yl_C3JyymwhELM9X0M=s1600-w400'
-      // } photos after filtered
-        //need it in this format
-          //database needs to reflect this as well
-            //so jsonb again instead of string
-
 
      const newPlaceDetails = await PlaceDetails.create(
       { placeId: places[0].placeId, 
@@ -332,25 +267,9 @@ const getSpecificPlaceWithReview = async (placeId) => {
 
       })
 
-      // type Result {
-      //   name: String     check
-      //   location: Location   WRong Format
-      //   business_status: String
-      //   place_id: String     check
-      //   address: String      check
-      //   rating: Float        check
-      //   types: [String]  
-      //   user_ratings_total: String
-      //   photos: [PhotoAtt]
-      //   rankby: String
-      //   price_level: Int
-      //   vicinity: String
-      // }
-
       return places;  //this is returning with review, but my schema for this particular query has no review
     }
 
-    // console.log(placeDetails.dataValues, 'placeWithReviews')
     return placeDetails.dataValues;
 
   } catch (error) {
@@ -379,27 +298,14 @@ const getRecommendedList = async (listType) => {
     console.log(allRecommended, 'what is allRecommended')
   
     const filteredRecommneded = allRecommended.map((list) => (
-      // list.filter((data) => data.dataValues === dataValues)
       list.dataValues
     ))
   
-    // console.log(filteredRecommneded, 'filteredRecommneded')
     return filteredRecommneded;
 
   } catch (error) {
     console.log(error, 'error in getting recomended list')
   }
-
-
-
-
-
-  // // console.log(allRecommended, 'allRecommended');
-  // console.log(filteredRecommneded[0].items, 'filteredRecommneded')
-  // // filteredRecommneded[0].items.map((item) => (
-  // //   getPlaceWithPlaceId(item.placeId)
-  // // ))
-  //   //map through each
 
 
 }
@@ -467,8 +373,6 @@ const resolver = {
   },
 
   getCuratedListPlaces: async ({listType}) => {
-    // userId is temp for testing. ==> 6 is where the curated lists are
-    console.log(listType, 'hits resolver')
     const allcuratedList = await getRecommendedList(listType);
     const list = await Promise.all(
       allcuratedList.map(async (curatedList) => {  //each list
@@ -483,10 +387,6 @@ const resolver = {
           })
         )
 
-        // )
-
-        // console.log(itemsWithDetails, 'itemsWithDetails')
-        // console.log(curatedLists, 'curatedLists')
         return {
           ...curatedList,
           items: itemsWithDetails
@@ -495,13 +395,8 @@ const resolver = {
       })
 
     )
-    // console.log(list, 'all data in list')
-    // console.log(list[0].items, 'items in list')
     return {list};
-      //now to make sure this returns with matching schema. it will most likely not since reviews is now added
-      //either create new schema or remove review entirely. probably best to remove reviews
-        //since querying to database, i can retreive later without going through google api
-          // and then finally create new field to check if its curated instead of userId
+
   }
 
 };
