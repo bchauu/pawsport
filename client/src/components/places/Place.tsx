@@ -105,7 +105,7 @@ const Place = ({reviews, setReviews, placeDetail, index, setIsSearchInitiated, i
             </Text>
             <Paragraph>
                 Rating: {placeDetail.rating}
-                Total: {placeDetail.user_ratings_total}
+                Total: {placeDetail.userRatingTotal}
             </Paragraph>
             <PlaceDetails
                 placeId={placeDetail.placeId}

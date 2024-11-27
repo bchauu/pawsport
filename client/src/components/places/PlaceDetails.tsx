@@ -75,7 +75,7 @@ const PlaceDetails = ({placeId, reviews, setReviews}) => {
     
     return (
         <View>
-            <Button title="View More Details" onPress={() => handleViewDetails()} />
+            <Button title="View Reviews" onPress={() => handleViewDetails()} />
             <Modal
                 animationType="slide"
                 transparent={true}  // Set to true to allow background visibility

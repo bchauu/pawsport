@@ -98,7 +98,7 @@ const DirectSearchPlace = ({directSearchResult}) => {
                                         </View>
                                         <Card.Content>
                                             <Text>Rating: {item.rating}</Text>
-                                            <Text>Total: {item.user_ratings_total}</Text>
+                                            <Text>Total: {item.userRatingTotal}</Text>
                                             <Text>Address: {item.address}</Text>
                                             <Image
                                                 source={{ uri: `${item.photos[0]?.photoUrl}` }}
