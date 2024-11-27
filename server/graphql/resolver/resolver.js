@@ -56,7 +56,7 @@ const getAllReviews = async (placeId) => {
       //cuz its an array. leave out for now
 
     //if response exist, then create data row
-    console.log(response.data.result, 'getPlaceReviews')
+    // console.log(response.data.result, 'getPlaceReviews')
     return response.data.result;
   } catch (error) {
     console.error('Error fetching place reviews:', error.message);
@@ -169,7 +169,7 @@ const getTextSearch = async (location, address) => {
 }
 
 const filteredResults = async (results) => {
-  console.log(results, 'passed into filteredResults')
+  // console.log(results, 'passed into filteredResults')
   const {reviews} = results[0];
   const places = await Promise.all(results.map(async place => {
               
@@ -223,7 +223,7 @@ const filteredResults = async (results) => {
         place => place.userRatingTotal === undefined || place.userRatingTotal > 10
       );
     
-    console.log(filteredPlaces, 'this should not be empty from getting photos')
+    // console.log(filteredPlaces, 'this should not be empty from getting photos')
       //this works now cuz user rating is not undefined
   return filteredPlaces;
 }
@@ -238,7 +238,7 @@ const getPlaceWithPlaceId = async (placeId) => {
       }
     })
 
-    console.log(response, 'getting each place detail')
+    // console.log(response, 'getting each place detail')
   } catch (error) {
     console.log(error, 'error in placeId')
   }
@@ -282,7 +282,7 @@ const checkforReview = async (placeId, reviews) => {
 const getSpecificPlaceWithReview = async (placeId) => {
     //issue here as we map through each
 
-  console.log(placeId, 'within getSpecificPlaceWithReview')
+  // console.log(placeId, 'within getSpecificPlaceWithReview')
   try {
     const placeDetails = await PlaceDetails.findOne({where: {place_id: placeId}})
     if (!placeDetails) {
@@ -350,7 +350,7 @@ const getSpecificPlaceWithReview = async (placeId) => {
       return places;  //this is returning with review, but my schema for this particular query has no review
     }
 
-    console.log(placeDetails.dataValues, 'placeWithReviews')
+    // console.log(placeDetails.dataValues, 'placeWithReviews')
     return placeDetails.dataValues;
 
   } catch (error) {
@@ -359,28 +359,38 @@ const getSpecificPlaceWithReview = async (placeId) => {
 }
 
 
-const getRecommendedList = async (userId) => {
-  const allRecommended = await TravelList.findAll({
-    where: {userId: 6},
-    include: [
-      {
-        model: TravelItems,
-        as: 'items', 
-      },
-      {
-        model: TravelListSubLevels, 
-        as: 'subLevels'
-      }
-    ]
-  })
+const getRecommendedList = async (listType) => {
+  try {
 
-  const filteredRecommneded = allRecommended.map((list) => (
-    // list.filter((data) => data.dataValues === dataValues)
-    list.dataValues
-  ))
+    const allRecommended = await TravelList.findAll({
+      where: {listType: listType},
+      include: [
+        {
+          model: TravelItems,
+          as: 'items', 
+        },
+        {
+          model: TravelListSubLevels, 
+          as: 'subLevels'
+        }
+      ]
+    })
+  
+    console.log(allRecommended, 'what is allRecommended')
+  
+    const filteredRecommneded = allRecommended.map((list) => (
+      // list.filter((data) => data.dataValues === dataValues)
+      list.dataValues
+    ))
+  
+    // console.log(filteredRecommneded, 'filteredRecommneded')
+    return filteredRecommneded;
 
-  console.log(filteredRecommneded, 'filteredRecommneded')
-  return filteredRecommneded;
+  } catch (error) {
+    console.log(error, 'error in getting recomended list')
+  }
+
+
 
 
 
@@ -412,7 +422,7 @@ const resolver = {
 
 
           const resultPlaces = await filteredResults(results);
-          console.log(resultPlaces, 'Places')
+          // console.log(resultPlaces, 'Places')
           return {result: resultPlaces, next_page_token: next_page_token }
      
       } catch (error) {
@@ -423,7 +433,7 @@ const resolver = {
 
   getPlaceReviews: async ({ placeId }) => {
     try {
-      console.log(placeId, 'placeId getPlaceReviews')
+      // console.log(placeId, 'placeId getPlaceReviews')
       const placeDetails = await getAllReviews(placeId);
         console.log(placeDetails.reviews[0], 'placeDetails')
         const test = {         reviews: placeDetails.reviews.map((review) => ({
@@ -433,7 +443,7 @@ const resolver = {
           relativeTimeDescription: review.relative_time_description,
         }))}
 
-        console.log(test, 'test placeDetails')
+        // console.log(test, 'test placeDetails')
       return {
           reviews: placeDetails.reviews.map((review) => ({
           author: review.author_name,
@@ -456,10 +466,10 @@ const resolver = {
       
   },
 
-  getCuratedListPlaces: async ({userId}) => {
+  getCuratedListPlaces: async ({listType}) => {
     // userId is temp for testing. ==> 6 is where the curated lists are
-    console.log('hits resolver')
-    const allcuratedList = await getRecommendedList();
+    console.log(listType, 'hits resolver')
+    const allcuratedList = await getRecommendedList(listType);
     const list = await Promise.all(
       allcuratedList.map(async (curatedList) => {  //each list
         const itemsWithDetails = [];
@@ -467,7 +477,7 @@ const resolver = {
         const curatedLists = await Promise.all(
           curatedList.items.map(async (item) => { //then the items of each list
             const placeDetails = await getSpecificPlaceWithReview(item.dataValues.placeId)
-            console.log(placeDetails, 'should just be placeDetails')
+            // console.log(placeDetails, 'should just be placeDetails')
             itemsWithDetails.push(placeDetails)
             await delay(200);
           })
@@ -475,8 +485,8 @@ const resolver = {
 
         // )
 
-        console.log(itemsWithDetails, 'itemsWithDetails')
-        console.log(curatedLists, 'curatedLists')
+        // console.log(itemsWithDetails, 'itemsWithDetails')
+        // console.log(curatedLists, 'curatedLists')
         return {
           ...curatedList,
           items: itemsWithDetails
@@ -485,8 +495,8 @@ const resolver = {
       })
 
     )
-    console.log(list, 'all data in list')
-    console.log(list[0].items, 'items in list')
+    // console.log(list, 'all data in list')
+    // console.log(list[0].items, 'items in list')
     return {list};
       //now to make sure this returns with matching schema. it will most likely not since reviews is now added
       //either create new schema or remove review entirely. probably best to remove reviews

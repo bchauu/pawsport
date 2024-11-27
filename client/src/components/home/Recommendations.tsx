@@ -25,7 +25,7 @@ const Recommendations = () => {
                     const response = await axios.post(
                         `${apiUrl}/graphql`, {
                             query: `query {
-                                getCuratedListPlaces(userId: "null") { 
+                                getCuratedListPlaces(listType: "curated") { 
                                     list {
                                       id
                                       name

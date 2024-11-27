@@ -91,7 +91,7 @@ exports.getListswithPlaces = async (req, res) => {
       ]
     });
 
-    console.log(travelLists[0], 'should include sublevels')
+    // console.log(travelLists[0], 'should include sublevels')
 
     if (!travelLists.length) {
       return res.status(404).json({ message: 'No travel lists found for user' });

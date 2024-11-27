@@ -82,7 +82,7 @@ const schema = buildSchema(`
     searchPlaces(location: Coordinates, type: String, radius: Int, nextPageToken: String): Response
     getPlaceReviews(placeId: String!): ReviewResponse
     resolveAndExtractPlace(url: String!): Response
-    getCuratedListPlaces(userId: String!): CuratedResponse
+    getCuratedListPlaces(listType: String!): CuratedResponse
   }
 `);
 
