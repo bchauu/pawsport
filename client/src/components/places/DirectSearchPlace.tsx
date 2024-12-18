@@ -1,12 +1,14 @@
 import React, {useState, useEffect} from "react";
-import { View, Modal, Button, Text, StyleSheet, Dimensions, ScrollView, Image } from "react-native";
+import { View, Modal, Button, Text, StyleSheet, Dimensions, ScrollView, Image, TouchableOpacity } from "react-native";
 import useApiConfig from "../../utils/apiConfig";
 import { Card } from 'react-native-paper';
 import ListSelector from "./BottomSheet";
+import { useTheme } from "../../context/ThemeContext";
 import axios from "axios";
 
-const DirectSearchPlace = ({directSearchResult}) => {
+const DirectSearchPlace = ({directSearchResult, submitGoogleUrl}) => {
     const {token, apiUrl} = useApiConfig();
+    const { theme } = useTheme();
     console.log(token, apiUrl, 'test')
     const [modalVisible, setModalVisible] = useState(false);
     const [isBottomVisible, setIsBottomVisible] = useState(false);
@@ -47,6 +49,7 @@ const DirectSearchPlace = ({directSearchResult}) => {
       }, [token, apiUrl])      
 
     const handleGoogleUrl = () => {
+        submitGoogleUrl()
         setModalVisible(true)
         console.log('modal should show up')
     }
@@ -64,7 +67,16 @@ const DirectSearchPlace = ({directSearchResult}) => {
     
     return (
         <View>
-            <Button title="Search from Google Link" onPress={() =>handleGoogleUrl()} />
+            <TouchableOpacity
+                onPress={() =>handleGoogleUrl()}
+                style={[theme.ctaButton.default, styles.buttonContainer]}
+            >
+                <Text
+                    style={[theme.ctaButton.text]}
+                >
+                    Find Location
+                </Text>
+            </TouchableOpacity>
             <Modal
                 animationType="slide"
                 transparent={true}  // Set to true to allow background visibility
@@ -131,6 +143,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.5)'  // Semi-transparent black background
     },
+    buttonContainer: {
+        flex: 1,
+        width: '33%',
+        alignSelf: 'flex-end',
+     },
     container: {
         height: height / 2, 
         // flexGrow: 1,

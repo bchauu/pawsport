@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import TripsScreen from '../screens/TripsScreen';
 import CoopTripsScreen from '../screens/CoopTripsScreen';
 import { SearchProvider } from '../context/SearchContext';
-import flipAnimation from '../styles/styles'
+import flipAnimation from '../styles/flipAnimation'
 
 type TripStackParamList = {
   Trip: undefined;

@@ -10,13 +10,21 @@ import TravelListDropdown from '../components/trips/TravelListDropDown';
 import ChatModal from '../components/trips/Chat/ChatModal';
 import { useNavigation } from "@react-navigation/native";
 import CollapsibleDropdown from '../components/trips/CollapsibleDropDown';
+import { useTheme } from "../context/ThemeContext";
+import CollaboratorsModal from "../components/trips/TravelBuddiesButton";
 import io from 'socket.io-client';
 
 
 const TripsScreen =  () => {
   const navigation = useNavigation();
+  const { theme } = useTheme();
+
+  const handleViewTravlers = () => {
+    setIsTravelersViewed((prevState) => !prevState)
+  }
 
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  const [isTravelersViewed, setIsTravelersViewed] = useState(false);
 
   const [allTravelList, setAllTravelList] = useState([]);
   const [isCreateNewList, setIsCreateNewList] = useState(false);
@@ -190,26 +198,28 @@ const TripsScreen =  () => {
     <View>
       <ScrollView>
         {/* <Button title='test' onPress={test}/> */}
-        <CreateTravelListModal 
-          setIsCreateNewList={setIsCreateNewList}
-          setInputName={setInputName}
-          InputName={InputName}
-        />
-        <CollapsibleDropdown
-            setIsSharedList={setIsSharedList}
-            allTravelList={allTravelList}
-            selectedTrip={selectedTrip}
-            setSelectedTrip={setSelectedTrip}
-            handleSelect={handleSelect}
-            sharedListWithUser={sharedListWithUser}
-        />
+        <View style={[theme.topHeaderContainer, {zIndex: 100}]}>
+          <CreateTravelListModal 
+            setIsCreateNewList={setIsCreateNewList}
+            setInputName={setInputName}
+            InputName={InputName}
+          />
+          <CollapsibleDropdown
+              setIsSharedList={setIsSharedList}
+              allTravelList={allTravelList}
+              selectedTrip={selectedTrip}
+              setSelectedTrip={setSelectedTrip}
+              handleSelect={handleSelect}
+              sharedListWithUser={sharedListWithUser}
+          />
+        </View>
+        <View>
           <Trips
             trip={selectedTrip}
             getList={getList}
             isSharedList={isSharedList}
-            
           />
-              {/* </ScrollView> */}
+        </View>
         <View style={styles.mapContainer}>
           <MyMap selectedTrip={selectedTrip} />
         </View>

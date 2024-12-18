@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-
+import { useTheme } from "../../../context/ThemeContext";
 
 const NotesSection = ({isItemNotesCollapsed, notes, item}) => {
-
-    console.log(notes[0], 'notesection')
+  const { theme } = useTheme();
+    // console.log(notes[0], 'notesection')
 
      return (
         <View> 
@@ -15,7 +15,7 @@ const NotesSection = ({isItemNotesCollapsed, notes, item}) => {
             .map((note, index) => (
               // console.log(note, 'test note')
               <View key={index}>
-                <Text >
+                <Text style={theme.personalList.notesItem}>
                   {note.message}
                 </Text>
                 <Text> {note.user}</Text>

@@ -1,13 +1,16 @@
-import { View, Button, TextInput } from "react-native";
+import { View, Button, TextInput, Touchable, TouchableOpacity, Text } from "react-native";
 import { useState, useEffect } from "react";
 import { getToken } from "../../../utils/authStorage";
 import config from "../../../../src/config";
+import { useTheme } from "../../../context/ThemeContext";
 import axios from "axios";
 
 const SubLevelInput = ({trip}) => {
     const [subLevelInput, setSubLevelInput] = useState('')
+    const { theme } = useTheme();
 
     const addSubLevel = async () => {
+        
         console.log(subLevelInput, 'subLevelInput')
         console.log(trip.id, 'trip.id')
         setSubLevelInput('');
@@ -35,8 +38,21 @@ const SubLevelInput = ({trip}) => {
 
     return (
         <View>
-            <TextInput placeholder="Add SubLevel" onChangeText={(value) => setSubLevelInput(value)} value={subLevelInput}></TextInput>
-            <Button title="addSubLevel" onPress={() => addSubLevel()}></Button>
+            <TextInput 
+                placeholder="Add SubLevel" 
+                onChangeText={(value) => setSubLevelInput(value)} 
+                value={subLevelInput}
+                style={theme.textInput.default}
+                />
+            <TouchableOpacity
+                onPress={() => addSubLevel()}
+                style={[theme.actionButton.default, {width: '100%'}]}
+            >
+                <Text style={[theme.actionButton.text]}>
+                    Add Sub-level
+                </Text>
+            </TouchableOpacity>
+
         </View>
     )
 }

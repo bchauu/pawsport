@@ -1,15 +1,17 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
-import {View, Button, TextInput, TouchableOpacity, Text} from 'react-native';
+import {View, Button, TextInput, TouchableOpacity, Text, StyleSheet} from 'react-native';
 import LocationSearch from "../search/LocationSearch";
 import ButtonSlider from "../search/TypeButton";
 import Place from "../places/Place";
-import List from "../places/list";
+import List from "../places/List";
 import { getToken } from "../../utils/authStorage";
 import config from "../../config";
 import { useSearch } from "../../context/SearchContext";
 import { useTrip } from "../../context/TripContext";
 import DirectSearchPlace from "../places/DirectSearchPlace";
+import SearchOptions from "../search/SearchOptions";
+import { useTheme } from "../../context/ThemeContext";
 
 type EnteredQuery = {
     Location: {},
@@ -37,10 +39,12 @@ interface Place {
 }
 
 const Search = () => {
+    const { theme } = useTheme();
     const {locations, setLocation} = useTrip();
-    console.log(locations, 'what is location')
+    // console.log(locations, 'what is location')
     const [isSearchInitiated, setIsSearchInitiated] = useState(false);
-    const [directSearchResult, setDirectSearchResult] = useState([])
+    const [directSearchResult, setDirectSearchResult] = useState([]);
+    const [selectedSearchOption, setSelectedSearchOption] = useState('findNearby');
     const {searchValue} = useSearch();
 
     const [enteredQuery, setEnteredQuery] = useState({
@@ -50,7 +54,6 @@ const Search = () => {
         },
         type: ""
     });
-
     const [places, setPlaces] = useState<Place[]>([]);
     const [nextPage, setNextPage] = useState<String>('');
     const [googleMapUrl, setGoogleMapUrl] = useState('');
@@ -184,29 +187,31 @@ const Search = () => {
     const submitGoogleUrl = async () => {
         const token = await getToken();
         //https://maps.app.goo.gl/1MqRkAnThoXY2eqbA?g_st=com.google.maps.preview.copy`  to test
+        // https://maps.app.goo.gl/DQHkLhNGJ2Y5zDer8    --> for desktop. seems to give full details
+            //need to be handled differently
         //resolveAndExtractPlace(url: "${googleMapUrl}") {
         try {
             const { apiUrl } = await config();
             const response = await axios.post(
                 `${apiUrl}/graphql`, {
                     query: `query {
-                        resolveAndExtractPlace(url: "https://maps.app.goo.gl/1MqRkAnThoXY2eqbA?g_st=com.google.maps.preview.copy") {
+                        resolveAndExtractPlace(url: "https://maps.app.goo.gl/DQHkLhNGJ2Y5zDer8") {
                                 result {
                                     name
                                     location {
                                         lat
                                         lng
                                     }
-                                    business_status
-                                    place_id
+                                    businessStatus
+                                    address
+                                    placeId
                                     rating
                                     vicinity
                                     types
-                                    address
-                                    user_ratings_total
+                                    userRatingTotal
                                     photos {
                                         height
-                                        photo_reference
+                                        photoReference
                                         width
                                         photoUrl
                                     }
@@ -228,44 +233,94 @@ const Search = () => {
             if (error.response.data.error === 'Token expired') {
                 console.log(error.error, 'new token needed');
             } else {
-
+                console.log(error, 'not working')
             }
         }
     }    
 
     return (
-        <View>
-            <LocationSearch enteredQuery={enteredQuery} updateQuery={updateQuery}></LocationSearch>
-            <ButtonSlider enteredQuery={enteredQuery} updateQuery={updateQuery}></ButtonSlider>
-            <List 
-                places={places} 
-                setIsSearchInitiated={setIsSearchInitiated} 
-                isSearchInitiated={isSearchInitiated} 
-            >
-            </List>
-            <Button title="Search" onPress={handleSubmit}></Button>
-  
-            {nextPage ? 
-                <Button title="next:" 
-                onPress={handleNextPage}
-                />
-                :
-                <></>
-            }
-            <TextInput 
-                placeholder="paste googlemaps url..."
-                onChangeText={(value) => handleGoogleUrl(value)}
-                value={googleMapUrl}
+        <View style={[styles.searchContainer, ]}>
+            <SearchOptions
+                selectedSearchOption={selectedSearchOption}
+                setSelectedSearchOption={setSelectedSearchOption}
             />
-            <TouchableOpacity onPress={() => submitGoogleUrl()}>
-                <Text>Submit Google Urls</Text>
-            </TouchableOpacity>
+            {
+                selectedSearchOption === 'googleMapsLink' ? (
+                    <View>
+                        <TextInput 
+                            placeholder="Paste a location’s Google Maps link"
+                            onChangeText={(value) => handleGoogleUrl(value)}
+                            value={googleMapUrl}
+                            style={[theme.textInput.default]}
+                        />
+                        <View
+                            style={[theme.padding.default]}
+                        >
+                        </View>
+
             <DirectSearchPlace 
                 directSearchResult={directSearchResult}
+                submitGoogleUrl={submitGoogleUrl}
             >
             </DirectSearchPlace>
+                    </View>
+                ) : selectedSearchOption === 'findNearby' && (
+                    <View>
+                        <LocationSearch enteredQuery={enteredQuery} updateQuery={updateQuery}></LocationSearch>
+                        <ButtonSlider enteredQuery={enteredQuery} updateQuery={updateQuery}></ButtonSlider>
+                        <List 
+                            places={places} 
+                            setIsSearchInitiated={setIsSearchInitiated} 
+                            isSearchInitiated={isSearchInitiated}
+                        >
+                        </List>
+                        <View
+                            style={theme.padding.default}
+                        >
+                            <TouchableOpacity
+                                onPress={handleSubmit}
+                                style={[theme.ctaButton.default, styles.buttonContainer]}
+                            >
+                                <Text
+                                    style={[theme.ctaButton.text]}
+                                >
+                                    Search Location
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        {nextPage ? 
+                            <Button title="next:" 
+                            onPress={handleNextPage}
+                            />
+                            :
+                            <></>
+                        }
+                    </View>
+                )
+            }
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    searchContainer: {
+    //   marginBottom: 16,
+    //   paddingHorizontal: 16,
+    flexDirection: 'column',
+    width: '95%',
+    alignSelf: 'center'
+    },
+    buttonContainer: {
+       flex: 1,
+       width: '33%',
+       alignSelf: 'flex-end',
+    },
+    input: {
+      borderWidth: 1,
+      borderRadius: 8,
+      padding: 12,
+      fontSize: 16,
+    },
+  });
 
 export default Search;

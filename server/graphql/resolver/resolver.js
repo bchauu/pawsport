@@ -101,8 +101,24 @@ const getCoordinatesAndPlaceId = async (address) => {
   }
 }
 
+const extractTextCoordinatesFromUrl = (url) => {
+   //this extracts for desktop Url from googlemaps 
+
+  const descriptionMatch = url.match(/place\/([^\/]+)/);
+  const description = descriptionMatch ? descriptionMatch[1] : null;
+
+  const coordinatesMatch = url.match(/@([-\d.]+),([-\d.]+)/);
+  const latitude = coordinatesMatch ? parseFloat(coordinatesMatch[1]) : null;
+  const longitude = coordinatesMatch ? parseFloat(coordinatesMatch[2]) : null;
+
+  console.log(description, latitude, longitude, 'extractTextCoordinatesFromUrl')
+  console.log({location: `${latitude},${longitude}`, address: description}, 'return extractTextCoordinatesFromUrl')
+  return {location: `${latitude},${longitude}`, address: description}
+}
+
 const resolveUrl = async (url) => {
     //redirect
+
     try {
       const response = await axios.get(url, {
         maxRedirects: 0,
@@ -111,7 +127,13 @@ const resolveUrl = async (url) => {
 
       if (response.status === 301 || response.status === 302) {
         const fullUrl = response.headers.location;
+
+          if (!fullUrl.endsWith('com.google.maps.preview.copy')) {
+            return extractTextCoordinatesFromUrl(fullUrl);
+          }
+
         const address = await extractQueryFromUrl(fullUrl)
+        console.log(address, 'address')
         return await getCoordinatesAndPlaceId(address);
       }
 
@@ -122,6 +144,7 @@ const resolveUrl = async (url) => {
 
 const getTextSearch = async (location, address) => {
     try {
+      console.log(location, 'getTextSearch')
       const response = await axios.get('https://maps.googleapis.com/maps/api/place/textsearch/json', {
         params: {
           query: address,
@@ -365,6 +388,7 @@ const resolver = {
   },
 
   resolveAndExtractPlace: async ({url}) => {
+    console.log(url, 'resolveAndExtractPlace')
     const {location, address} = await resolveUrl(url);
     const {results} = await getTextSearch(location, address);
     const resultPlaces = await filteredResults(results);

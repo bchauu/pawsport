@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Modal, View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { useTrip } from "../../context/TripContext";
-import axios from 'axios';
+import { Modal, View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { useTheme } from "../../context/ThemeContext";
 
 const CreateTravelListModal = ({setIsCreateNewList, InputName, setInputName}) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const { theme } = useTheme();
 
   const handleAddtoTravelList = () => {
     setModalVisible(false);
@@ -17,10 +17,14 @@ const CreateTravelListModal = ({setIsCreateNewList, InputName, setInputName}) =>
 
   return (
     <View >
-      {/* Button to open the modal */}
-      <Button title="Add to Travels" onPress={() => setModalVisible(true)} />
-
-      {/* The Modal */}
+      <TouchableOpacity
+        onPress={() => setModalVisible(true)}
+        style={[theme.ctaButton.default, styles.buttonContainer, {width: '40%'}]}
+      >
+        <Text style={[theme.ctaButton.text]}>
+          Create New Travel List
+        </Text>
+      </TouchableOpacity>
       <Modal
         animationType="slide" // Animation type can be 'slide', 'fade', or 'none'
         transparent={true} // Allows content behind the modal to be visible
@@ -31,15 +35,44 @@ const CreateTravelListModal = ({setIsCreateNewList, InputName, setInputName}) =>
       >
         <View style={styles.overlay}>
           <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>Add to which Travels?</Text>
+            {/* <Text style={styles.modalTitle}>Add to which Travels?</Text> */}
             <TextInput 
                 placeholder='Enter Travel Name' 
                 value={InputName} 
                 onChangeText={handleInputName}
-                style={styles.input}
+                style={theme.textInput.default}
             />
-            <Button title="Create New List" onPress={handleAddtoTravelList} />
-            <Button title="Hide" onPress={() => setModalVisible(false)} />
+            {/* <Button title="Create New List" onPress={handleAddtoTravelList} /> */}
+            <View>
+              <TouchableOpacity
+                onPress={handleAddtoTravelList}
+                style={[theme.ctaButton.default, styles.buttonContainer, {maxHeight: '40%'}]}
+              >
+                <Text style={[theme.ctaButton.text, { color: '#FFFFFF' }]}>
+                  Submit
+                </Text>
+              </TouchableOpacity>
+            </View>
+            {/* <TouchableOpacity
+              onPress={handleAddtoTravelList}
+              // style={[theme.ctaButton.default, styles.buttonContainer]}
+            >
+              <Text
+                style={[theme.ctaButton.text]}
+              >
+                Submit
+              </Text>
+            </TouchableOpacity> */}
+            <TouchableOpacity
+              onPress={() => setModalVisible(false)}
+              // style={[theme.ctaButton.default, styles.buttonContainer]}
+            >
+              <Text
+              >
+                Hide
+              </Text>
+            </TouchableOpacity>
+            {/* <Button title="Hide" onPress={() => setModalVisible(false)} /> */}
           </View>
         </View>
       </Modal>
@@ -60,7 +93,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContainer: {
-    width: '80%',
+    width: '60%',
+    height: '30%',
     backgroundColor: 'white',
     borderRadius: 10,
     padding: 20,

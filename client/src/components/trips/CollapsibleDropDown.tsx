@@ -72,10 +72,8 @@ const CustomDropdown = ({setIsSharedList, allTravelList, selectedTrip, setSelect
     <View style={styles.container}>
       {/* Dropdown Trigger */}
       <TouchableOpacity style={styles.dropdownTrigger} onPress={toggleDropdown}>
-        <Text>
-        Select List
-        </Text>
-    <Text style={styles.arrow}>⬇️</Text>
+        <Text style={styles.mainText}> Select List </Text>
+        <Text style={styles.arrow}> ⬇️ </Text>
       </TouchableOpacity>
 
       {/* shows dropdown option when set to true */}
@@ -118,23 +116,30 @@ const styles = StyleSheet.create({
     container: {
       position: 'absolute',
       justifyContent: 'center',
-      left: '50%',
+      color: '#ffffff', 
+      left: '53%',
       top: '5%',
+      paddingTop: '1.5%',
       alignItems: 'flex-end',
-      width: '40%',     //this needs to be defined or it shifts when expanded
+      width: '50%',     //this needs to be defined or it shifts when expanded
     //   height: '10%', //cant have height
       zIndex: 10, // Ensure dropdown container is also above others
+    },
+    mainText: {
+      color: '#ffffff', // White text for contrast
+      fontSize: 12,
+      fontWeight: 'bold',
     },
     dropdownTrigger: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'space-between',
-      width: '40%',
-      padding: 10,
-      backgroundColor: '#007bff',
+      justifyContent: 'space-evenly',
+      width: '50%',
+      padding: 7,
+      backgroundColor: '#ff9800',
       borderRadius: 5,
       borderWidth: 1,
-      borderColor: '#007bff',
+      borderColor: '#ff9800',
     },
     dropdownTriggerText: {
       color: '#ffffff',
@@ -145,7 +150,7 @@ const styles = StyleSheet.create({
     },
     dropdownMenu: {
       width: '60%',
-      left: '20%',
+      // left: '20%',
       backgroundColor: '#ffffff',
       borderRadius: 5,
       borderWidth: 1,

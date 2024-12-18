@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from "react";
-import { View, Modal, Button, Text, StyleSheet, Dimensions, ScrollView } from "react-native";
+import { View, Modal, Button, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from "react-native";
 import useApiConfig from "../../utils/apiConfig";
 import { Card } from 'react-native-paper';
 import axios from "axios";
-import { black } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
+import { useTheme } from "../../context/ThemeContext"
 
 const PlaceDetails = ({placeId, reviews, setReviews}) => {
+    const { theme } = useTheme();
     const {token, apiUrl} = useApiConfig();
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -74,8 +75,17 @@ const PlaceDetails = ({placeId, reviews, setReviews}) => {
     }
     
     return (
-        <View>
-            <Button title="View Reviews" onPress={() => handleViewDetails()} />
+        <View style={theme.card.buttonContainer}>
+            <TouchableOpacity
+                onPress={() => handleViewDetails()}
+                style={[theme.card.button]}
+            >
+                <Text
+                    style={[theme.card.buttonText]}
+                >
+                    View Reviews
+                </Text>
+            </TouchableOpacity>
             <Modal
                 animationType="slide"
                 transparent={true}  // Set to true to allow background visibility

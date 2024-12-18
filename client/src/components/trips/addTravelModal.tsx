@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
-import axios from 'axios';
+import { useTheme } from "../../context/ThemeContext";
 
 const AddTravelModal = ({allTravelList, handleAddTrip}) => {
+  const { theme } = useTheme();
   const [selectedList, setSelectedList] = useState({});
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -17,10 +18,17 @@ const AddTravelModal = ({allTravelList, handleAddTrip}) => {
   }
 
   return (
-    <View>
-      {/* Button to open the modal */}
-      <Button title="Add to Travels" onPress={() => setModalVisible(true)} />
-
+    <View style={theme.card.buttonContainer}>
+      <TouchableOpacity
+              onPress={() => setModalVisible(true)} 
+              style={[theme.card.button]}
+            >
+              <Text
+                 style={[theme.card.buttonText]}
+              >
+                Add to Travels
+              </Text>
+            </TouchableOpacity>
       {/* The Modal */}
       {modalVisible && (
         <Modal
@@ -43,7 +51,16 @@ const AddTravelModal = ({allTravelList, handleAddTrip}) => {
                   <Text>{list.name}</Text>
                 </TouchableOpacity>
             ))}
-            <Button title="Add to Travel List" onPress={handleAddtoTravelList} />
+            <TouchableOpacity
+              onPress={handleAddtoTravelList}
+              style={[{...theme.actionButton.default}]}
+            >
+              <Text
+                 style={[{...theme.actionButton.text}]}
+              >
+                Add to Travel List
+              </Text>
+            </TouchableOpacity>
             <Button title="Hide" onPress={() => setModalVisible(!modalVisible)} />
           </View>
         </View>

@@ -2,10 +2,12 @@ import {useState, useEffect} from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import axios from "axios";
 import useApiConfig from "../../utils/apiConfig";
-import List from "../places/list";
+import List from "../places/List";
+import { useTheme } from "../../context/ThemeContext";
 
 
 const Recommendations = () => {
+    const { theme } = useTheme();
     const [curatedList, setCuratedList] = useState([]);
     // const [isSearchInitiated, setIsSearchInitiated] = useState(false);
     const {token, apiUrl} = useApiConfig();
@@ -72,23 +74,32 @@ const Recommendations = () => {
 
       }, [token, apiUrl])
     return (
-        <View>
-            <Text>
-                Curated lists
-            </Text>
+        <View style={theme.list.listContainer}>
+            <View style={theme.list.mainHeaderContainer}>
+                <Text style={theme.list.mainHeader}>
+                    Curated Lists
+                </Text>
+            </View>
+            <View style={theme.list.list}>
             {
                 curatedList.map((list, index)=> (
-                    <View key={index} >
-                        <Text>
-                            {list.name}
-                        </Text>
-                        <TouchableOpacity>
-                            <Text>
-                                Save curated Trip
+                    <View 
+                        key={index}
+                        style={theme.list.sectionCard}
+                    >
+                        <View style={theme.list.titleRow}>
+                            <Text style={theme.list.titleText}>
+                                {list.name}
+                                {list.id}
                             </Text>
-                            {/* ability to add entire list and all its trips to the user --> copy travelList and assign to specificied userID*/}
-                            {/* items need to be cloned as well*/}
-                        </TouchableOpacity>
+                            <TouchableOpacity style={theme.list.saveButton}>
+                                <Text style={theme.list.saveButtonText}>
+                                    Copy Itinerary
+                                </Text>
+                                {/* ability to add entire list and all its trips to the user --> copy travelList and assign to specificied userID*/}
+                                {/* items need to be cloned as well*/}
+                            </TouchableOpacity>
+                        </View>
                         <List 
                             places={list.items} 
                         >
@@ -96,6 +107,7 @@ const Recommendations = () => {
                     </View>
                 ))
             }
+            </View>
         </View>
     )
 }

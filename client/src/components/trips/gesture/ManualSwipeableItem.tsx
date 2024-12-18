@@ -1,7 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, PanResponder, Animated } from 'react-native';
+import { useTheme } from "../../../context/ThemeContext";
 
 const ManualSwipeableRow = ({item, index, handleDeleteItem, setItemIsNotesCollapsed }) => {
+  const { theme } = useTheme();
   const translateX = useRef(new Animated.Value(0)).current; // Animated value for translation
   const [isSwipedLeft, setIsSwipedLeft] = useState(false);  
 
@@ -71,9 +73,9 @@ const ManualSwipeableRow = ({item, index, handleDeleteItem, setItemIsNotesCollap
             onPress={() => handleCollapse()}
           >
             <Text>{'>'}</Text>
-          </TouchableOpacity>
+          </TouchableOpacity >
           <Text style={styles.number}>{index}.</Text>  
-          <Text style={styles.itemText}>{item.name}</Text>
+          <Text style={theme.personalList.listItem}>{item.name}</Text>
         </View>
         {
           isSwipedLeft &&
@@ -93,7 +95,7 @@ const ManualSwipeableRow = ({item, index, handleDeleteItem, setItemIsNotesCollap
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    width: '100%',
+    width: '99.5%',
     justifyContent: "space-between",
     backgroundColor: '#fff',
     shadowColor: 'rgba(0, 0, 0, 0.2)', 
@@ -103,9 +105,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     flexDirection: 'row',
-    padding: 8,
     backgroundColor: '#fff',
-    borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
   title: {

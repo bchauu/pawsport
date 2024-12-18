@@ -12,6 +12,8 @@ router.post('/list', addCreate);
 
 router.get('/list', getList);
 
+// router.post('/list/copy', copyItinerary);
+
 router.get('/lists/shared', getSharedList)
 
 router.post('/lists/addSubLevel', addSubLevel)

@@ -1,20 +1,101 @@
 const { TravelList, TravelItems, ListPermission, ItemNotes, TravelListSubLevels } = require('../models'); // Correct way to import
+const {addPlaceToList} = require('./travelItemController');
+
+const createTravelList = async (name, userId) => {
+  const listName = await TravelList?.findOne({where: {name, userId}});
+  if (listName) {
+    return 'travel list already exist';
+  }
+
+  return await TravelList.create({ name, userId });
+}
 
 exports.addCreate = async (req, res) => {
     const { name } = req.body;
     const {userId} = req.user;
     try {
         let listName;
-        listName = await TravelList?.findOne({where: {name, userId}});
+        // listName = await TravelList?.findOne({where: {name, userId}});
+        listName = await createTravelList(name, userId);
 
-        if (listName) return res.status(400).json({ message: 'travel list already exist' });
+        if (listName === 'travel list already exist') return res.status(400).json({ message: 'travel list already exist' });
 
-        listName = await TravelList.create({ name, userId });
+        // listName = await TravelList.create({ name, userId });
         res.status(201).json({ message: "Success adding new list", listName });
     } catch (error) {
         res.status(500).json({ error: 'Failed to register new list' });
     }
 };
+
+// exports.copyItinerary = async (req, res) => {
+  
+//   const {userId} = req.user;
+  
+
+//   // const travelLists = await TravelList.findAll({
+//   //   where: { userId },
+//   //   include: [
+//   //     {
+//   //       model: TravelItems,
+//   //       as: 'items', 
+//   //     },
+//   //     {
+//   //       model: TravelListSubLevels, 
+//   //       as: 'subLevels'
+//   //     }
+//   //   ]
+//   // });
+//       //get travelList with all items. 
+//           //id of each list exist
+//           //just need to send that Id here
+//           //use findOne with id instead of findAll
+
+//         //this will retrieve the list 
+//         //extract listName to pass into createTravelList
+
+//         //then once successful from listName
+//           //use listName id to addPlaces to each by mapping listName    --> addPlaceToList
+  
+//   //step 1. findOne from travelList with listId of curatedList that needs to be copied
+//   //step 2. map through and extract all info needed from each item in list after creation
+//   //step 3. TravelItems.create with each of the info. 
+
+
+
+//   let listName;
+//   try {
+//     listName = await createTravelList(name, userId);
+
+//     if (listName === 'travel list already exist') return res.status(400).json({ message: 'travel list already exist' });
+
+//     //then map through and createItem
+//       // const { travelListId, placeId, name, lat, lng, notes } = req.body; 
+//         //extract each of these to create
+//         // try {
+//         //   const { travelListId, placeId, name, lat, lng, notes } = req.body; 
+      
+//         //   const newItem = await TravelItems.create({
+//         //     travelListId,
+//         //     name,
+//         //     lat,
+//         //     lng,
+//         //     notes,
+//         //     placeId
+//         //   });
+      
+//         //   res.status(201).json({ message: 'Successfully added item to list', item: newItem });
+//         // } catch (error) {
+//         //   console.error('Error adding item:', error);
+//         //   res.status(500).json({ error: 'Failed to add item to list' });
+//         // }
+    
+
+//   } catch (error) {
+//       res.status(500).json({ error: 'Failed to register new list' });
+//   }
+
+  
+// }
 
 
 exports.getList = async (req, res) => {

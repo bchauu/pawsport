@@ -3,14 +3,16 @@ import { View, Text, TextInput, ScrollView, FlatList, StyleSheet, TouchableOpaci
 import axios from 'axios';
 import useApiConfig from "../../utils/apiConfig";
 import Share from "./Share";
-import CollaboratorsModal from "./CollaboratorsModal";
+import TravelBuddiesButton from "./TravelBuddiesButton";
 import ManualSwipeableRow from "./gesture/ManualSwipeableItem";
 import NotesSection from "./notes/NotesSection";
 import NoteInput from './notes/NoteInput';
 import SubLevelInput from "./subLevels/SubLevelInput";
 import RemoveSubLevel from "./subLevels/RemoveSubLevel";
+import { useTheme } from "../../context/ThemeContext";
 
 const Trips = ({trip, getList, isSharedList}) => {
+  const { theme } = useTheme();
   const [hasUpdatedSharedUser, setHasUpdatedSharedUser] = useState(false);
   const [allTrip, setAllTrip] = useState([]);   // this needs to change with 
   const [deletedTrip, setDeletedTrip] = useState('');
@@ -22,8 +24,13 @@ const Trips = ({trip, getList, isSharedList}) => {
   const [isItemNotesCollapsed, setItemIsNotesCollapsed] = useState({});
   const [isTravelersViewed, setIsTravelersViewed] = useState(false);
   const [subLevels, setSubLevels] = useState([]);
+  const [listActions, setListActions] = useState({
+    viewBuddies: false,
+    invite: false,
+    addLevel: false
+  })
 
-  console.log(trip, 'checking trip')
+  // console.log(trip, 'checking trip')
 
   //need to have socket open to refresh when new notes are added
     //but also if new items in list are listed as well?
@@ -218,8 +225,8 @@ const Trips = ({trip, getList, isSharedList}) => {
   }
 
   const renderPlaces = ({ item, index }) => {
-    console.log(item, 'what is item')
-    console.log(subLevels, 'subLevels in renderPlaces')
+    // console.log(item, 'what is item')
+    // console.log(subLevels, 'subLevels in renderPlaces')
   
       return (
         <View style={styles.itemContainer}>
@@ -248,92 +255,110 @@ const Trips = ({trip, getList, isSharedList}) => {
       );
   };
 
+  const handleActionButton = (action) => {
+    setListActions((prev) => ({
+      viewBuddies: action === "viewBuddies" ? !prev.viewBuddies : false,
+      invite: action === "invite" ? !prev.invite : false,
+      addLevel: action === "addLevel" ? !prev.addLevel : false,
+    }));
+  
+    console.log(action, 'action triggered');
+    console.log(listActions,'listActions')
+  };
+
   //isSharedList --> conditionally render if shared is true or false. to allow rendering of guest of admin look
     return (
         <View>
           <View>
-            <TouchableOpacity 
-                  // onPress={() => onSelect(trip)}
-                  style={[
-                    styles.item, 
-                    // isSelected && styles.selectedItem
-                  ]}
-              >
-                  <Text>{trip?.name}</Text>
-                  {!isSharedList?
-                    <Share handleShare={handleShare}></Share>
-                    :
-                    <View></View>
-                  
-                  }
-
-              </TouchableOpacity>
-              <View>
-                <TouchableOpacity onPress={handleViewTravlers}>
-                  {
-                    !isTravelersViewed ?
-                      <Text>View Co-Travelers</Text>
-                      :
-                      <Text>Hide Co-Travelers</Text>
-                  }
-                  </TouchableOpacity>
-                  {isTravelersViewed &&
-                    <CollaboratorsModal
-                      trip={trip}
-                      hasUpdatedSharedUser={hasUpdatedSharedUser}
-                      setHasUpdatedSharedUser={setHasUpdatedSharedUser}
-                      isSharedList={isSharedList}
-                      isTravelersViewed={isTravelersViewed}
-                      apiUrl={apiUrl}
-                      token={token}
-                    />
-                  }
-
+            <View style={theme.list.mainHeaderContainer}>
+              <Text style={theme.list.mainHeader}>{trip?.name}</Text>
+              <View style={theme.list.mainHeaederButtons}>
+                <TouchableOpacity 
+                onPress={() => handleActionButton('invite')}
+                style={[theme.actionButton.default]}
+                >
+                  <Text style={[theme.actionButton.text]}>Invite</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  onPress={() => handleActionButton('viewBuddies')}
+                  style={[theme.actionButton.default]}
+                  >
+                  <Text style={[theme.actionButton.text]}>Travel Buddies</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  onPress={() => handleActionButton('addLevel')}
+                  style={[theme.actionButton.default]}
+                  >
+                  <Text style={[theme.actionButton.text]}>Add Intinerary Block</Text>
+                </TouchableOpacity>
               </View>
+              <View style={theme.list.mainHeaederDetails}>
+              {!isSharedList && listActions.invite ?
+                <Share handleShare={handleShare}></Share>
+              :
+              listActions.viewBuddies ?
+                <TravelBuddiesButton
+                  trip={trip}
+                  hasUpdatedSharedUser={hasUpdatedSharedUser}
+                  setHasUpdatedSharedUser={setHasUpdatedSharedUser}
+                  isSharedList={isSharedList}
+                  isTravelersViewed={isTravelersViewed}
+                  apiUrl={apiUrl}
+                  token={token}
+                />
+              : listActions.addLevel &&
+                <SubLevelInput trip={trip}/>
+              }
+              </View>
+            </View>
           </View>
-            <View>
+            <View style={theme.personalList.mainContainer}>
               {subLevels.length > 0 &&
                 subLevels
                 .sort((a, b) => a.id - b.id)
                 .map((subLevel, index) => (
-                  <View key={index}>
-                    <Text>
-                      {subLevel.name}
-                    </Text>
-                    <RemoveSubLevel 
-                      subLevel={subLevel}
-                      setSubLevels={setSubLevels}
+                  <View key={index} style={theme.personalList.list}>
+                    <View style={theme.personalList.subListHeaderContainer}>
+                      <Text style={theme.personalList.subListHeaderText}>
+                        {subLevel.name}
+                      </Text>
+                      <RemoveSubLevel 
+                        subLevel={subLevel}
+                        setSubLevels={setSubLevels}
+                        />
+                    </View>
+                    <View>
+                      <FlatList 
+                        data={allTrip.filter((trip) => subLevel.name === trip.subLevelName)}
+                        renderItem={renderPlaces}
+                        keyExtractor={(item)=> item.id }
+                        contentContainerStyle={theme.personalList.subList}
+                        scrollEnabled={false} 
                       />
-                    <FlatList 
-                      data={allTrip.filter((trip) => subLevel.name === trip.subLevelName)}
-                      renderItem={renderPlaces}
-                      keyExtractor={(item)=> item.id }
-                      contentContainerStyle={styles.listContainer}
-                      scrollEnabled={false} 
-                    />
+                    </View>
                   </View>
                 ))
               }
-              <FlatList
-                data={allTrip.filter((trip) => trip.subLevelName === null)}
-                renderItem={renderPlaces}
-                keyExtractor={(item)=> item.id }
-                contentContainerStyle={styles.listContainer}
-                scrollEnabled={false} 
-              />
+              <View style={theme.personalList.list}>
+                <FlatList
+                  data={allTrip.filter((trip) => trip.subLevelName === null)}
+                  renderItem={renderPlaces}
+                  keyExtractor={(item)=> item.id }
+                  contentContainerStyle={theme.personalList.subList}
+                  scrollEnabled={false} 
+                />
+              </View>
             </View>
-            <SubLevelInput trip={trip}></SubLevelInput>
+
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    listContainer: {
-      padding: 20,
-    },
     itemContainer: {
       flexDirection: 'column',  // Align number and text horizontally
       marginBottom: 5,
+      // padding: 50
     },
     item: {
       padding: 15,
@@ -359,6 +384,10 @@ const styles = StyleSheet.create({
       marginBottom: 20,
       paddingHorizontal: 10,
     },
+      subLevelContainer: {
+          flexDirection: 'row',
+          justifyContent: 'center',
+      }
   });
 
 export default Trips;

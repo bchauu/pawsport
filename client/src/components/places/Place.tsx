@@ -8,9 +8,11 @@ import { useTrip } from "../../context/TripContext";
 import { TripLocation } from "../../types/types";
 import { getToken } from "../../utils/authStorage";
 import config from "../../config";
+import { useTheme } from "../../context/ThemeContext";
 
 
 const Place = ({reviews, setReviews, placeDetail, index, setIsSearchInitiated, isSearchInitiated}) => {
+    const { theme } = useTheme();
     const {locations, setLocation} = useTrip<TripLocation[]>([]);
     // const [reviews, setReviews] = useState([]);
 
@@ -94,16 +96,15 @@ const Place = ({reviews, setReviews, placeDetail, index, setIsSearchInitiated, i
 
     }
     return (
-        <View
-        >
+        <View>
             <Image
                 source={{ uri: `${placeDetail.photos[0]?.photoUrl}` }}
-                style={{width: 100, height: 100}}
+                style={[theme.card.cardImage]}
             />
-            <Text>
+            <Text style={[theme.card.cardTitle]}>
                 {placeDetail.name}
             </Text>
-            <Paragraph>
+            <Paragraph style={[theme.card.cardDetails]}>
                 Rating: {placeDetail.rating}
                 Total: {placeDetail.userRatingTotal}
             </Paragraph>

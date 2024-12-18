@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from "react";
-import { View, Modal, Button, Text, StyleSheet, Dimensions } from "react-native";
+import { View, Modal, Button, Text, StyleSheet, Dimensions, Touchable, TouchableOpacity } from "react-native";
+import { useTheme } from "../../context/ThemeContext";
 import axios from "axios";
 
-const CollaboratorsModal = ({
+const TravelBuddiesButton = ({
     trip, 
     hasUpdatedSharedUser, 
     setHasUpdatedSharedUser, 
@@ -11,6 +12,7 @@ const CollaboratorsModal = ({
     apiUrl, 
     token
 }) => {
+    const { theme } = useTheme();
     const [modalVisible, setModalVisible] = useState(false);
     const [permissedUsers, setPermissedUsers] = useState([]);
 
@@ -69,7 +71,15 @@ const CollaboratorsModal = ({
                     <View key={user.userId} style={styles.userRow}>
                         <Text>{user.email}</Text>
                         {!isSharedList &&
-                            <Button title="Remove" onPress={() => handleRemove(user.listPermissionId)} />
+                            <TouchableOpacity
+                                onPress={() => handleRemove(user.listPermissionId)}
+                                style={theme.list.removeButton}
+                            >
+                                <Text style={theme.list.removeButtonText}>
+                                    Remove
+                                </Text>
+                            </TouchableOpacity>
+                            // <Button title="Remove" onPress={() => handleRemove(user.listPermissionId)} />
                         }
                     </View>
                 )) :
@@ -135,7 +145,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export default CollaboratorsModal;
+export default TravelBuddiesButton;
 
 //map points are not adjusting when dragged
 //and last thing is to make sure this shared list can be accesed by other users
