@@ -90,6 +90,8 @@ const Trips = ({trip, getList, isSharedList}) => {
         });
 
         console.log(response.data.travelList[0].notes[0].user.username, 'response for notes')
+          //remove sending password from backend
+        console.log(response.data.travelList[0].notes[0], 'check category')
           //this works. i have each username and id.
               //store inside state of notes so can be displayed alongside each note
 
@@ -98,6 +100,7 @@ const Trips = ({trip, getList, isSharedList}) => {
               parentId: travelItem.id,
               notes: travelItem.notes.map(note => {
                 return {
+                  category: note.category,
                   message: note.notes,
                   user: note.user.username
                 }

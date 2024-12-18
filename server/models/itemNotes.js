@@ -16,6 +16,10 @@ module.exports = (sequelize) => {
       type: DataTypes.TEXT,
       allowNull: true, // Note content
     },
+    category: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
     userId: {
         type: DataTypes.BIGINT,
         field: 'user_id',
