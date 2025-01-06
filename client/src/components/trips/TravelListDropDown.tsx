@@ -5,16 +5,9 @@ import DropDownPicker from 'react-native-dropdown-picker';
 const TravelListDropdown = ({allTravelList, selectedTrip, setSelectedTrip, handleSelect}) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null); // --> this needs to be in parent so i can update and pass to trip
-  // const [test, setTest] = useState({});
 
   const [items, setItems] = useState([
   ]);
-    //fetch from data list
-
-  // const dropdownItems = allTravelList.map(trip => ({
-  //     label: trip.name,  // Display the trip name
-  //     value: trip.id     // Use the trip id as the value
-  //   }));
 
     useEffect(() => {
       if (allTravelList.length > 0) {
@@ -30,9 +23,6 @@ const TravelListDropdown = ({allTravelList, selectedTrip, setSelectedTrip, handl
     useEffect(() => {
       if (value) {
         const chosenTripList = allTravelList.filter(trip => trip.id === value);
-        // match value to allTravelList
-          //filter --> then that should be set state to selected list
-          // setTest(chosenTripList[0])
           setSelectedTrip(chosenTripList[0])
       }
     }, [value]); 

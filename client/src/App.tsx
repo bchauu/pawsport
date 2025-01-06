@@ -4,16 +4,25 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppNavigator from './navigations/AppNavigator';
 import {AuthProvider} from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { TravelListProvider } from './context/AllTravelListContext';
+import { AllTripsProvider } from './context/AllTripsContext';
+import {ApiConfigProvider} from './context/ApiConfigContext'
 
 const App = () => {
   return (
     <SafeAreaProvider>
       <AuthProvider>
-        <ThemeProvider>
-          <NavigationContainer>
-            <AppNavigator />
-          </NavigationContainer>
-        </ThemeProvider>
+        <ApiConfigProvider>
+          <TravelListProvider>
+            <AllTripsProvider>
+              <ThemeProvider>
+                <NavigationContainer>
+                  <AppNavigator/>
+                </NavigationContainer>
+              </ThemeProvider>
+            </AllTripsProvider>
+          </TravelListProvider>
+        </ApiConfigProvider>
       </AuthProvider>
     </SafeAreaProvider>
   );

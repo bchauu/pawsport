@@ -6,19 +6,17 @@ import AddTravelModal from "../trips/AddTravelModal";
 import PlaceDetails from "./PlaceDetails";
 import { useTrip } from "../../context/TripContext";
 import { TripLocation } from "../../types/types";
-import { getToken } from "../../utils/authStorage";
-import config from "../../config";
 import { useTheme } from "../../context/ThemeContext";
+import { useAllTrips } from "../../context/AllTripsContext";
+import { useApiConfigContext } from "../../context/ApiConfigContext";
 
 
 const Place = ({reviews, setReviews, placeDetail, index, setIsSearchInitiated, isSearchInitiated}) => {
     const { theme } = useTheme();
     const {locations, setLocation} = useTrip<TripLocation[]>([]);
-    // const [reviews, setReviews] = useState([]);
+    const { apiUrl, token } = useApiConfigContext();
 
-    console.log(placeDetail.name, placeDetail.placeId, 'placeDetails')
-
-    const {lat, lng } = placeDetail.location,
+    const {lat, lng} = placeDetail.location,
     {name, placeId} = placeDetail;
 
     //dont need photo, they can click more details which will pull up photos along with details
@@ -30,11 +28,10 @@ const Place = ({reviews, setReviews, placeDetail, index, setIsSearchInitiated, i
     };
 
     const [allTravelList, setAllTravelList] = useState([]);
+    const { allTrip, setAllTrip } = useAllTrips();
 
     useEffect(() => {
         const getList = async () => {
-            const token = await getToken();
-            const { apiUrl } = await config();
             const response = await axios.get(`${apiUrl}/trips/lists/places`, {
                 headers: {
                   'authorization': `Bearer ${token}`
@@ -63,29 +60,50 @@ const Place = ({reviews, setReviews, placeDetail, index, setIsSearchInitiated, i
 
     const handleAddTrip = async (selectedList) => {
 
-        //post request to save to specific list.
-        const token = await getToken();
-        const { apiUrl } = await config();
-
         try {
-            console.log(placeId, 'placeId in place')
             const response = await axios.post(`${apiUrl}/trips/lists/places`,{
                 name: name,
                 lat: lat,
                 lng: lng,
                 travelListId: selectedList.id,
-                placeId: placeId 
+                placeId: placeId
             }, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
 
+            if (response.status === 201) {
+                allTravelList.map((list, index) => {
+                    if (list.id === selectedList.id) {
+                        console.log('found', index)
+                        const descendingItemOrder = list.items
+                            .filter((trip) => trip.subLevelName === 'default')
+                            .sort((a,b) => Number(a.order) - Number(b.order))
+                            console.log(descendingItemOrder, 'highestOrder')
+                        
+                        const highestOrder = descendingItemOrder[descendingItemOrder.length - 1].order;
+                        console.log(highestOrder, 'number')
+    
+                        setAllTrip((prev) => [
+                            ...prev,
+                            {
+                              order: Number(highestOrder) + 1,
+                              name: name,
+                              lat: lat,
+                              lng: lng,
+                              travelListId: selectedList.id,
+                              placeId: placeId,
+                              subLevelName: 'default',
+                            },
+                          ]);
+                    }
+                })
+            }
+
         } catch (error) {
             console.log(error)
         }
-
-      
         
         setLocation((prevLocations) => {   
             const updatedLocations = [...prevLocations, currentPlace];

@@ -14,8 +14,6 @@ const PlaceDetails = ({placeId, reviews, setReviews}) => {
             //this format to open up on google maps --> this way they can get even more info if needed
 
     const handleViewDetails = async () => {
-        //api call
-        console.log(placeId, 'test tokens')
         try {
             const response = await axios.post(
                 `${apiUrl}/graphql`,
@@ -144,7 +142,6 @@ const styles = StyleSheet.create({
     },
     container: {
         height: height / 2, 
-        // flexGrow: 1,
         width: '90%',       
         backgroundColor: 'white', 
         justifyContent: 'center',

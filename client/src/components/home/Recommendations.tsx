@@ -1,16 +1,15 @@
 import {useState, useEffect} from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import axios from "axios";
-import useApiConfig from "../../utils/apiConfig";
 import List from "../places/List";
 import { useTheme } from "../../context/ThemeContext";
+import { useApiConfigContext } from "../../context/ApiConfigContext";
 
 
 const Recommendations = () => {
     const { theme } = useTheme();
     const [curatedList, setCuratedList] = useState([]);
-    // const [isSearchInitiated, setIsSearchInitiated] = useState(false);
-    const {token, apiUrl} = useApiConfig();
+    const { apiUrl, token } = useApiConfigContext();
 
     useEffect(() => {
         const getCuratedList = async () => {
@@ -57,7 +56,6 @@ const Recommendations = () => {
                             }
                         }
                     )
-                    console.log(response.data.data.getCuratedListPlaces.list[0].items, 'handleGoogleUrl from graphql');
                     setCuratedList(response.data.data.getCuratedListPlaces.list)
            
                 } catch (error: any) {
@@ -84,7 +82,7 @@ const Recommendations = () => {
             {
                 curatedList.map((list, index)=> (
                     <View 
-                        key={index}
+                        key={list.id}
                         style={theme.list.sectionCard}
                     >
                         <View style={theme.list.titleRow}>
@@ -100,7 +98,8 @@ const Recommendations = () => {
                                 {/* items need to be cloned as well*/}
                             </TouchableOpacity>
                         </View>
-                        <List 
+                        <List
+                            key={index}
                             places={list.items} 
                         >
                         </List>

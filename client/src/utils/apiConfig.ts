@@ -1,8 +1,8 @@
 // utils/apiConfig.js
 
 import { useState, useEffect } from 'react';
-import { getToken } from './authStorage'; // Adjust the path according to your project structure
-import config from '../config'; // Adjust the path according to your project structure
+import { getToken } from './authStorage'; 
+import config from '../config'; 
 
 const useApiConfig = () => {
   const [apiUrl, setApiUrl] = useState('');

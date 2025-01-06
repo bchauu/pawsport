@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { View, Text, TextInput, ScrollView, FlatList, StyleSheet, TouchableOpacity, Button, Alert } from "react-native";
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import axios from 'axios';
 import useApiConfig from "../../utils/apiConfig";
 import Share from "./Share";
@@ -9,12 +9,14 @@ import NotesSection from "./notes/NotesSection";
 import NoteInput from './notes/NoteInput';
 import SubLevelInput from "./subLevels/SubLevelInput";
 import RemoveSubLevel from "./subLevels/RemoveSubLevel";
+import { useAllTrips } from "../../context/AllTripsContext";
 import { useTheme } from "../../context/ThemeContext";
 
 const Trips = ({trip, getList, isSharedList}) => {
   const { theme } = useTheme();
   const [hasUpdatedSharedUser, setHasUpdatedSharedUser] = useState(false);
-  const [allTrip, setAllTrip] = useState([]);   // this needs to change with 
+  const { allTrip, setAllTrip } = useAllTrips();
+  const [tripOrder, setTripOrder] = useState({});
   const [deletedTrip, setDeletedTrip] = useState('');
   const [notes, setNotes] = useState([]);
   const [tripsEnteredNotes, setTripsEnteredNotes] = useState('');
@@ -24,44 +26,32 @@ const Trips = ({trip, getList, isSharedList}) => {
   const [isItemNotesCollapsed, setItemIsNotesCollapsed] = useState({});
   const [isTravelersViewed, setIsTravelersViewed] = useState(false);
   const [subLevels, setSubLevels] = useState([]);
+  const [highestValueSubLevel, setHighestValueSubLevel] = useState({});
   const [listActions, setListActions] = useState({
     viewBuddies: false,
     invite: false,
     addLevel: false
-  })
-
-  // console.log(trip, 'checking trip')
-
-  //need to have socket open to refresh when new notes are added
-    //but also if new items in list are listed as well?
-
-
-  //if selecting 'shared with you'
-    //share button should not be displayed
-
-    //japan travels
-        //null
-      //or
-        //Id 1  --> array 
-          // Day 1
-          // Day 2
-          // Day 3
-      
-      //japan hotel
-        // Day 1
-
-      //just matching string name with levels available on array of list
-
-
+  });
 
   useEffect(() => {
-      if (trip) {
-        setAllTrip([...trip?.items])
-        setSubLevels([...trip?.subLevels])
-      }
-      getList();  //ensures list is latest from database --> list wont be old from switching list
+    if (trip) {
+      setAllTrip([...trip?.items]);
 
-  }, [trip]) // now the list of trips is stored in its own state which renders based on this state
+      const initialOrder = {};
+      trip.items.forEach((item) => {
+        initialOrder[item.id] = {
+          value: item.order, 
+          subLevel: item.subLevelName
+        }; // Assign key-value pairs directly to the object
+      });  
+
+      setTripOrder(initialOrder);
+
+      setSubLevels([...trip?.subLevels]);
+    }
+    getList();  //ensures list is latest from database --> list wont be old from switching list
+
+}, [trip]) // now the list of trips is stored in its own state which renders based on this state
 
 
   useEffect(() => {
@@ -76,7 +66,7 @@ const Trips = ({trip, getList, isSharedList}) => {
 
   useEffect(() => { //individual notes fro each place
     if (trip) {
-     
+    
       const getNotes = async () => {
         console.log(trip.id, 'hitting getNotes')
         try {
@@ -88,12 +78,6 @@ const Trips = ({trip, getList, isSharedList}) => {
               travelListId: trip.id,
             }
         });
-
-        console.log(response.data.travelList[0].notes[0].user.username, 'response for notes')
-          //remove sending password from backend
-        console.log(response.data.travelList[0].notes[0], 'check category')
-          //this works. i have each username and id.
-              //store inside state of notes so can be displayed alongside each note
 
           const arrangedNotes = response.data.travelList.map((travelItem) => (
             {
@@ -114,21 +98,65 @@ const Trips = ({trip, getList, isSharedList}) => {
               // user: travelItem.user
             }
           ))
-          console.log(arrangedNotes[0].notes, 'arrangedNotes')
+          // console.log(arrangedNotes[0].notes, 'arrangedNotes')
 
           setNotes(arrangedNotes);
           setNewNoteAdded(false);
         } catch (error) {
           console.log(error, 'error in getNotes')
         }
-  
+
       };
 
-   
+  
 
       getNotes();
     }
   }, [trip, newNoteAdded])
+
+  const checkOrder = () => {
+    console.log(tripOrder, 'check tripOrder')
+    console.log(allTrip, 'allTrips')
+  }
+
+  const changeItemCategory = (item) => {    //leaving here for now. should work if i add shiftupOrder. going with delete all if confirm
+    // console.log(tripOrder, 'sublevel')
+    // const subLevelName = item.name, 
+    //       subLevelId = item.id;
+    //       // tripToUpdate = [];
+
+    
+
+    // allTrip.forEach((item, index) => { //changing to null
+    //   if (item.subLevelName === subLevelName) {
+
+    //         console.log(tripOrder[item.id], 'here')
+    //         console.log({[index]: item},  'the item in allTrip')
+    //         item.subLevelName = null;   //bypassing reacts state re-render
+    //         // tripToUpdate.push({[index]: item})
+
+
+    //         const newNull = { // this is fine
+    //           [item.id.toString()]: {
+    //             subLevel: null, 
+    //             value: 10   //need to find right value is last thing. need to find last value of null list
+    //           }
+    //         }
+ 
+
+    //         setTripOrder((prev) => (    //issue is not order but alltrips since thats used to filter. since split by category. need to fetch again most likely
+    //           {
+    //             ...prev,   
+    //             ... newNull
+    //           }
+    //         ))
+    //   }
+    // }) 
+    // setAllTrip(allTrip)
+
+  }
+
+
 
   const {token, apiUrl} = useApiConfig();
 
@@ -164,6 +192,17 @@ const Trips = ({trip, getList, isSharedList}) => {
       const index = allTrip.indexOf(deletedTripItem[0]) //holding the index of whats deleted
       setDeletedTripIndex(index)
       setAllTrip([...withoutDeletedItemTrip]) // this set removes from state and updates
+      const test = deletedTripItem[0].id;
+      const shiftUpTripOrder = {};
+
+      for (const id in tripOrder) {
+        if (tripOrder[id].value > tripOrder[test].value && tripOrder[id].subLevel == deletedTripItem[0].subLevelName) {
+          shiftUpTripOrder[id] =  {subLevel: tripOrder[id].subLevel, value: tripOrder[id].value - 1}
+        }
+      }
+      setTripOrder((prev) => (
+        {...prev, ...shiftUpTripOrder}
+      ))
 
     try {
       const response = await axios.delete(`${apiUrl}/trips/lists/places/delete`, {
@@ -191,13 +230,112 @@ const Trips = ({trip, getList, isSharedList}) => {
     setIsTravelersViewed((prevState) => !prevState)
   }
 
+  const queryUpdateOrderUp = async (payload) => {
+
+    //setup backend to update list order
+    try {
+      const response = await axios.post(`${apiUrl}/trips/lists/places/moveup`, payload, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+      }
+      })
+      console.log(response.data.message, 'response')
+      return 'Update succeeded';
+
+    } catch (error) {
+      console.log(error, 'error')
+      return 'fail swap'
+    }
+  }
+
+
+  const handleTripOrderChange = (tripOrder, item) => {
+    const currentOrder = tripOrder[item.id].value,  //here also using value
+          currentSubLevel = tripOrder[item.id].subLevel || null,
+          currentTrip = item.id;
+    let switchedSubLevel = null,
+        orderToSwitch = (tripOrder[item.id].value - 1).toString(), //this should be number cuz minusing   --> using value
+        tripToSwap,
+        found = false;
+
+    for (const id in tripOrder) {
+      if (tripOrder[id].value == orderToSwitch && tripOrder[id].subLevel == currentSubLevel.toString()) { //because there is no zero in order. this is highest
+        found = true;
+        tripToSwap = id;
+
+        if (tripOrder[tripToSwap].subLevel === null) {
+          switchedSubLevel = null;
+        } else {
+          switchedSubLevel = tripOrder[tripToSwap].subLevel //becomes day 1 if first clicked
+        }
+
+      } else {
+        console.log('not found', `for this id: ${id}`)
+      }
+    }
+
+    if (!found ) {
+      console.log('sublevels dont match')
+      return;
+    }
+  
+    if (switchedSubLevel == currentSubLevel) {  // still undefined but works cuz not deeply equal
+      let swapped = { //sublevels dont switch. only value
+        [tripToSwap?.toString()]: {value: currentOrder, subLevel: switchedSubLevel},
+        [currentTrip.toString()]: {value: orderToSwitch, subLevel: currentSubLevel}
+      }
+
+    setTripOrder((prev) => (
+      {
+        ...prev,
+        ...swapped
+      }
+    ));
+
+    const handleOrderUpdate = async () => {
+      try {
+        const result = await queryUpdateOrderUp({
+          currentTrip: { id: currentTrip, value: orderToSwitch },
+          tripToSwap: { id: tripToSwap, value: currentOrder },
+        });
+    
+        // Conditional check on the result
+        if (result === 'Update succeeded') {
+          console.log('Update succeeded:');
+        } else if (result === 'fail swap') {
+          console.error('moving up failed');
+
+          let swapBack = { //sublevels dont switch. only value
+            [tripToSwap?.toString()]: {value: orderToSwitch, subLevel: switchedSubLevel},
+            [currentTrip.toString()]: {value: currentOrder, subLevel: currentSubLevel}
+          }
+
+
+          setTripOrder((prev) => (
+            {
+              ...prev,
+              ...swapBack
+            }
+          ));
+          //revert client swap
+
+        }
+      } catch (error) {
+        console.error('Error occurred:', error.message || error);
+      }
+    };
+    if (found) {
+      handleOrderUpdate();
+    }
+
+    } else {
+      console.log("can't swawp due to different sublevels") 
+    }
+
+  }
+
 
   const addNotes = async () => {
-
-    console.log(tripsEnteredNotes, 'TripsenteredNotes')
-
-    console.log(selectedNoteTrip, 'selected item for note')
-
     
     try {
       const response = await axios.post(
@@ -213,7 +351,6 @@ const Trips = ({trip, getList, isSharedList}) => {
           }
         }
     )
-      console.log(response.data.message, 'successfully added notes to item from list')
       setTripsEnteredNotes('');
       setNewNoteAdded(true);
 
@@ -228,16 +365,24 @@ const Trips = ({trip, getList, isSharedList}) => {
   }
 
   const renderPlaces = ({ item, index }) => {
-    // console.log(item, 'what is item')
-    // console.log(subLevels, 'subLevels in renderPlaces')
   
       return (
         <View style={styles.itemContainer}>
+          <TouchableOpacity onPress={checkOrder}>
+            <Text>Test</Text>
+          </TouchableOpacity>
           <ManualSwipeableRow
             item={item} 
             index={index+1}
             handleDeleteItem={handleDeleteItem}
             setItemIsNotesCollapsed={setItemIsNotesCollapsed}
+            handleTripOrderChange={handleTripOrderChange}
+            tripOrder={tripOrder}
+            setTripOrder={setTripOrder}
+            allTrip={allTrip}
+            highestValueSubLevel={highestValueSubLevel}
+            setHighestValueSubLevel={setHighestValueSubLevel}
+            subLevels={subLevels}
           />
           <NotesSection 
             isItemNotesCollapsed={isItemNotesCollapsed}
@@ -264,12 +409,8 @@ const Trips = ({trip, getList, isSharedList}) => {
       invite: action === "invite" ? !prev.invite : false,
       addLevel: action === "addLevel" ? !prev.addLevel : false,
     }));
-  
-    console.log(action, 'action triggered');
-    console.log(listActions,'listActions')
   };
 
-  //isSharedList --> conditionally render if shared is true or false. to allow rendering of guest of admin look
     return (
         <View>
           <View>
@@ -277,8 +418,8 @@ const Trips = ({trip, getList, isSharedList}) => {
               <Text style={theme.list.mainHeader}>{trip?.name}</Text>
               <View style={theme.list.mainHeaederButtons}>
                 <TouchableOpacity 
-                onPress={() => handleActionButton('invite')}
-                style={[theme.actionButton.default]}
+                  onPress={() => handleActionButton('invite')}
+                  style={[theme.actionButton.default]}
                 >
                   <Text style={[theme.actionButton.text]}>Invite</Text>
                 </TouchableOpacity>
@@ -325,14 +466,18 @@ const Trips = ({trip, getList, isSharedList}) => {
                       <Text style={theme.personalList.subListHeaderText}>
                         {subLevel.name}
                       </Text>
-                      <RemoveSubLevel 
+                      <RemoveSubLevel
+                        changeItemCategory={changeItemCategory}
                         subLevel={subLevel}
                         setSubLevels={setSubLevels}
-                        />
+                      />
                     </View>
                     <View>
                       <FlatList 
-                        data={allTrip.filter((trip) => subLevel.name === trip.subLevelName)}
+                        data={allTrip
+                          ?.filter((trip) => subLevel.name === trip.subLevelName)
+                          ?.sort((a,b) => tripOrder[a.id]?.value - tripOrder[b.id]?.value)
+                        }
                         renderItem={renderPlaces}
                         keyExtractor={(item)=> item.id }
                         contentContainerStyle={theme.personalList.subList}
@@ -344,7 +489,10 @@ const Trips = ({trip, getList, isSharedList}) => {
               }
               <View style={theme.personalList.list}>
                 <FlatList
-                  data={allTrip.filter((trip) => trip.subLevelName === null)}
+                  data={allTrip?.
+                    filter((trip) => trip.subLevelName === 'default')
+                    ?.sort((a,b) => tripOrder[a.id]?.value - tripOrder[b.id]?.value)
+                  }
                   renderItem={renderPlaces}
                   keyExtractor={(item)=> item.id }
                   contentContainerStyle={theme.personalList.subList}

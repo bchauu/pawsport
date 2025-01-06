@@ -7,11 +7,13 @@ import config from '../../src/config';
 import AuthNavigator from './AuthNavigator';
 import MainNavigator from './MainNavigator';
 import LoadingScreen from '../screens/LoadingScreen';
+// import useApiConfig from "../utils/apiConfig";
 
 const AppNavigator = () => {
   //check for token first, if token exist, then login which sets isAuthenticated to true
   const {login, isAuthenticated} = useAuth();
   const [loading, setLoading] = useState(true);
+  // const {token, apiUrl} = useApiConfig();
   
   useEffect(() => {
     const checkToken = async () => {
@@ -19,8 +21,8 @@ const AppNavigator = () => {
 
      try {
       const { apiUrl } = await config();
-        console.log('try block')
-        console.log(apiUrl)
+        // console.log('try block')
+        // console.log(apiUrl)
        const response = await axios.get(`${apiUrl}/navigate`, {
           headers: {
             'authorization': `Bearer ${token}`

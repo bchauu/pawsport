@@ -3,11 +3,13 @@ import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { Card } from 'react-native-paper';
 import Place from "./Place";
 import { useTheme } from "../../context/ThemeContext";
+import useApiConfig from "../../utils/apiConfig";
 
 const List = ({places, isSearchInitiated, setIsSearchInitiated}) => {
     const { theme } = useTheme();
     const [hasList, setHasList] = useState(true)
     const [reviews, setReviews] = useState({});
+    const {token} = useApiConfig();
 
     useEffect(() => {
         if (places.length > 0) {
@@ -22,10 +24,9 @@ const List = ({places, isSearchInitiated, setIsSearchInitiated}) => {
           {hasList ? (
             <ScrollView 
             horizontal
-            // style={[{...theme.list.container}]}
             >
               {places?.map((place, index) => (
-                <Card key={place.place_id} style={styles.container} >
+                <Card key={place.place_id || place.placeId} style={styles.container} >
                   <Card.Content style={theme.card.cardContainer}>
                     <Place
                       reviews={reviews}
@@ -34,6 +35,7 @@ const List = ({places, isSearchInitiated, setIsSearchInitiated}) => {
                       index={index}
                       setIsSearchInitiated={setIsSearchInitiated}
                       isSearchInitiated={isSearchInitiated}
+                      token={token}
                     />
                   </Card.Content>
                 </Card>
@@ -48,7 +50,6 @@ const List = ({places, isSearchInitiated, setIsSearchInitiated}) => {
 
 const styles = StyleSheet.create({
     container: {
-      // backgroundColor: '#ffffff', // Ensure correct color
       padding: 16,
       margin: 8,
       borderRadius: 8,
@@ -58,20 +59,7 @@ const styles = StyleSheet.create({
       shadowRadius: 4,
       elevation: 3,
     },
-    itemContainer: {
-      // backgroundColor: '#fff',
-      // borderRadius: 12, // Rounded corners
-      // shadowColor: '#000', // Subtle shadow
-      // shadowOffset: { width: 0, height: 2 },
-      // shadowOpacity: 0.1,
-      // shadowRadius: 4,
-      // elevation: 2, // Shadow for Android
-      // padding: 12, // Space inside the card
-      // marginBottom: 16, // Space between cards
-      // // width: '48%', // Responsive width for two cards per row
-    },
     itemText: {
-      // color: colors.main.text,
       fontSize: 16,
       fontFamily: 'Roboto-Regular',
     },

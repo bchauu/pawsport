@@ -5,13 +5,12 @@ import LocationSearch from "../search/LocationSearch";
 import ButtonSlider from "../search/TypeButton";
 import Place from "../places/Place";
 import List from "../places/List";
-import { getToken } from "../../utils/authStorage";
-import config from "../../config";
 import { useSearch } from "../../context/SearchContext";
 import { useTrip } from "../../context/TripContext";
 import DirectSearchPlace from "../places/DirectSearchPlace";
 import SearchOptions from "../search/SearchOptions";
 import { useTheme } from "../../context/ThemeContext";
+import useApiConfig from "../../utils/apiConfig";
 
 type EnteredQuery = {
     Location: {},
@@ -41,7 +40,7 @@ interface Place {
 const Search = () => {
     const { theme } = useTheme();
     const {locations, setLocation} = useTrip();
-    // console.log(locations, 'what is location')
+    const {token, apiUrl} = useApiConfig();
     const [isSearchInitiated, setIsSearchInitiated] = useState(false);
     const [directSearchResult, setDirectSearchResult] = useState([]);
     const [selectedSearchOption, setSelectedSearchOption] = useState('findNearby');
@@ -72,10 +71,7 @@ const Search = () => {
 
 
     const handleSubmit = async () => {
-        console.log('handleSubmit')
-        const token = await getToken();
         try {
-            const { apiUrl } = await config();
             const {location, type} = searchValue;
             const response = await axios.post(
                 `${apiUrl}/graphql`, {
@@ -128,10 +124,8 @@ const Search = () => {
     };
 
     const handleNextPage = async () => {
-        const token = await getToken();
         
         try {
-            const { apiUrl } = await config();
             const response = await axios.post(
                 `${apiUrl}/graphql`, {
                     query: `query {
@@ -185,13 +179,12 @@ const Search = () => {
     }
 
     const submitGoogleUrl = async () => {
-        const token = await getToken();
+        // const token = await getToken();
         //https://maps.app.goo.gl/1MqRkAnThoXY2eqbA?g_st=com.google.maps.preview.copy`  to test
         // https://maps.app.goo.gl/DQHkLhNGJ2Y5zDer8    --> for desktop. seems to give full details
             //need to be handled differently
         //resolveAndExtractPlace(url: "${googleMapUrl}") {
         try {
-            const { apiUrl } = await config();
             const response = await axios.post(
                 `${apiUrl}/graphql`, {
                     query: `query {
@@ -304,8 +297,6 @@ const Search = () => {
 
 const styles = StyleSheet.create({
     searchContainer: {
-    //   marginBottom: 16,
-    //   paddingHorizontal: 16,
     flexDirection: 'column',
     width: '95%',
     alignSelf: 'center'

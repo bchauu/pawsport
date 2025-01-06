@@ -20,11 +20,9 @@ const CustomDropdown = ({setIsSharedList, allTravelList, selectedTrip, setSelect
   };
 
   const handleDropDownValue = (label, value, category) => {
-    console.log(label, value, category, 'setDropDownValue')
     if (category === 'travelList') {
       setIsSharedList(false)
     } else if ('sharedList') {
-      console.log('shows sharedList')
       setIsSharedList(true);
     }
     setValue(value);
@@ -59,9 +57,6 @@ const CustomDropdown = ({setIsSharedList, allTravelList, selectedTrip, setSelect
             ))
 
             dropDownShared.push({ label: 'Shared With You', value: 'sharedList', category: null })
-
-            console.log(dropDownTravel, 'dropDownTravel')
-            console.log(dropDownShared, 'dropDownShared')
 
             setItems([...dropDownTravel, ...dropDownShared ])
         }

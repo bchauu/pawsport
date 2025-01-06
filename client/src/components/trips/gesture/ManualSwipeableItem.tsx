@@ -1,12 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, PanResponder, Animated } from 'react-native';
+import MoveSubLevelModal from '../subLevels/MoveSubLevelModal';
 import { useTheme } from "../../../context/ThemeContext";
 
-const ManualSwipeableRow = ({item, index, handleDeleteItem, setItemIsNotesCollapsed }) => {
+const ManualSwipeableRow = ({item, index, handleDeleteItem, setItemIsNotesCollapsed, handleTripOrderChange, tripOrder, setTripOrder, allTrip, highestValueSubLevel, setHighestValueSubLevel, subLevels }) => {
   const { theme } = useTheme();
   const translateX = useRef(new Animated.Value(0)).current; // Animated value for translation
   const [isSwipedLeft, setIsSwipedLeft] = useState(false);  
-
 
   const handleSwipeLeft = () => {
     setIsSwipedLeft(true);
@@ -66,16 +66,24 @@ const ManualSwipeableRow = ({item, index, handleDeleteItem, setItemIsNotesCollap
     <Animated.View
       {...panResponder.panHandlers} // Attach the pan responder
       style={[styles.container, { transform: [{ translateX }] }]}>
-        <View
-          style={styles.itemContainer} 
-        >
-          <TouchableOpacity
-            onPress={() => handleCollapse()}
-          >
+        <View style={styles.itemContainer}>
+          <TouchableOpacity onPress={() => handleCollapse()}>
             <Text>{'>'}</Text>
           </TouchableOpacity >
           <Text style={styles.number}>{index}.</Text>  
           <Text style={theme.personalList.listItem}>{item.name}</Text>
+          <TouchableOpacity onPress={() => handleTripOrderChange(tripOrder, item)}>
+            <Text>Up Arrow</Text>
+          </TouchableOpacity>
+          <MoveSubLevelModal
+            item={item}
+            allTrip={allTrip}
+            tripOrder={tripOrder}
+            setTripOrder={setTripOrder}
+            setHighestValueSubLevel={setHighestValueSubLevel}
+            highestValueSubLevel={highestValueSubLevel}
+            subLevels={subLevels}
+          />
         </View>
         {
           isSwipedLeft &&

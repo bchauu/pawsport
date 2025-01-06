@@ -4,17 +4,15 @@ import useApiConfig from "../../utils/apiConfig";
 import { Card } from 'react-native-paper';
 import ListSelector from "./BottomSheet";
 import { useTheme } from "../../context/ThemeContext";
+// import { useTravelList } from '../../context/AllTravelListContext';
 import axios from "axios";
 
 const DirectSearchPlace = ({directSearchResult, submitGoogleUrl}) => {
     const {token, apiUrl} = useApiConfig();
     const { theme } = useTheme();
-    console.log(token, apiUrl, 'test')
     const [modalVisible, setModalVisible] = useState(false);
     const [isBottomVisible, setIsBottomVisible] = useState(false);
     const [selectedItem, setSelectedItem] = useState('');
-
-
     const [allTravelList, setAllTravelList] = useState([]);
 
     useEffect(() => {
@@ -28,14 +26,11 @@ const DirectSearchPlace = ({directSearchResult, submitGoogleUrl}) => {
                         }
                     });
         
-                    console.log(response.data.travelLists[0].subLevels, 'directSearch')
-        
                     setAllTravelList([...response.data.travelLists])
         
                 }
                 getList();
             } catch (error) {
-                console.log(error, 'error in direct')
                 console.error('Error fetching travel lists:', error.message);
                 if (error.response) {
                     console.error('Response error:', error.response);
@@ -51,7 +46,6 @@ const DirectSearchPlace = ({directSearchResult, submitGoogleUrl}) => {
     const handleGoogleUrl = () => {
         submitGoogleUrl()
         setModalVisible(true)
-        console.log('modal should show up')
     }
 
     useEffect(() => {
@@ -59,7 +53,6 @@ const DirectSearchPlace = ({directSearchResult, submitGoogleUrl}) => {
     }, [directSearchResult])
 
     const handleAddDirectToList = (item) => {
-        console.log(item.place_id, 'handleAddDirectToList')
         setSelectedItem(item);
         setIsBottomVisible(true)
     }

@@ -1,5 +1,6 @@
 const { TravelList, TravelItems, ListPermission, ItemNotes, TravelListSubLevels } = require('../models'); // Correct way to import
 const {addPlaceToList} = require('./travelItemController');
+const {sequelize} = require('../models')
 
 const createTravelList = async (name, userId) => {
   const listName = await TravelList?.findOne({where: {name, userId}});
@@ -198,29 +199,55 @@ exports.addSubLevel = async (req, res) => {
 }
 
 exports.deleteSubLevel = async (req, res) => {
+  console.log('deleteSubLevel')
 
   const {id} = req.body;
 
-  try {
-    const deleteItem = await TravelListSubLevels.findOne({
-      where: {
-        id: id,
+      try {
+        console.log(id, 'id in remove')
+        const subLevel = await TravelListSubLevels.findOne({
+          attributes: ['name', 'travelListId'], // Fetch only the necessary field
+          where: {id},
+        });
+      
+        if (!subLevel) {
+          throw new Error('Sub-level not found');
+        }
+        console.log(subLevel, 'subLevel in remove')
+      
+        const subLevelName = subLevel.name;
+        const travelListId = subLevel.travelListId;
+      
+
+        try {
+          await sequelize.transaction(async (transaction) => {
+            // Delete from TravelItems
+            const deleteTravelItems = await TravelItems.destroy({
+              where: {
+                travelListId: travelListId,
+                subLevelName: subLevelName,
+              },
+              transaction,
+            });
+        
+            // Delete from SubLevels
+            const deleteSubLevels = await TravelListSubLevels.destroy({
+              where: {
+                name: subLevelName, // Adjust as per your schema
+              },
+              transaction,
+            });
+        
+            console.log(`Deleted ${deleteTravelItems} items from TravelItems`);
+            console.log(`Deleted ${deleteSubLevels} items from SubLevels`);
+          });
+
+          res.status(200).json({message: 'successfully removed sublevel and items within'})
+        } catch (error) {
+          console.error("Error in transaction:", error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
       }
-    })
 
-    console.log(deleteItem, 'deleteItem')
-  
-    if (deleteItem) {
-        await TravelListSubLevels.destroy({
-          where: {
-            id: id, 
-          }
-        })
-
-        res.status(200).json({ message: 'removed sublevel from list' });
-    }
-
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch items for list' });
-  }
 }

@@ -362,17 +362,13 @@ const resolver = {
 
   getPlaceReviews: async ({ placeId }) => {
     try {
-      // console.log(placeId, 'placeId getPlaceReviews')
       const placeDetails = await getAllReviews(placeId);
-        console.log(placeDetails.reviews[0], 'placeDetails')
         const test = {         reviews: placeDetails.reviews.map((review) => ({
           author: review.author_name,
           rating: review.rating,
           text: review.text,
           relativeTimeDescription: review.relative_time_description,
         }))}
-
-        // console.log(test, 'test placeDetails')
       return {
           reviews: placeDetails.reviews.map((review) => ({
           author: review.author_name,

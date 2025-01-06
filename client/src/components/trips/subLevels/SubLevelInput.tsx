@@ -1,22 +1,18 @@
-import { View, Button, TextInput, Touchable, TouchableOpacity, Text } from "react-native";
-import { useState, useEffect } from "react";
-import { getToken } from "../../../utils/authStorage";
-import config from "../../../../src/config";
+import { View, TextInput, TouchableOpacity, Text } from "react-native";
+import { useState } from "react";
 import { useTheme } from "../../../context/ThemeContext";
+import useApiConfig from "../../../utils/apiConfig";
 import axios from "axios";
 
 const SubLevelInput = ({trip}) => {
     const [subLevelInput, setSubLevelInput] = useState('')
     const { theme } = useTheme();
+    const {token, apiUrl} = useApiConfig();
 
     const addSubLevel = async () => {
-        
-        console.log(subLevelInput, 'subLevelInput')
-        console.log(trip.id, 'trip.id')
+
         setSubLevelInput('');
         try {
-            const token = await getToken();
-                const { apiUrl } = await config();
             const response = await axios.post(`${apiUrl}/trips/lists/addSubLevel`, 
             {
                 name: subLevelInput,

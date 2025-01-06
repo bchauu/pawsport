@@ -5,9 +5,7 @@ import { useTheme } from "../../../context/ThemeContext";
 const NotesSection = ({isItemNotesCollapsed, notes, item}) => {
   const [activeCategory, setActiveCategory] = useState("Important");
   const { theme } = useTheme();
-  console.log(notes[0], 'notesection')
 
-  // Categories to display
   const categories = [
     { label: "📌 Important Notes", value: "Important Notes" },
     { label: "📋 Logistics", value: "Logistics" },

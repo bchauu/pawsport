@@ -170,8 +170,8 @@ const theme = {
     },
     removeButton: {
       backgroundColor: '#6c757d', // Muted gray for subtle appearance
-      paddingVertical: 8,
-      paddingHorizontal: 16,
+      paddingVertical: 4,
+      paddingHorizontal: 12,
       borderRadius: 8,
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 2 }, // Minimal shadow

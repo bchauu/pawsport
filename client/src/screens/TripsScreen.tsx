@@ -1,23 +1,21 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {View, Text, Button, ScrollView, FlatList, StyleSheet} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, ScrollView, StyleSheet} from 'react-native';
 import Trips from '../components/trips/Trips';
-import axios from 'axios';
-import config from '../../src/config';
 import { getToken } from '../utils/authStorage';
 import MyMap from '../components/trips/Map';
 import CreateTravelListModal from '../components/trips/CreateTravelListModal';
-import TravelListDropdown from '../components/trips/TravelListDropDown';
 import ChatModal from '../components/trips/Chat/ChatModal';
 import { useNavigation } from "@react-navigation/native";
 import CollapsibleDropdown from '../components/trips/CollapsibleDropDown';
 import { useTheme } from "../context/ThemeContext";
-import CollaboratorsModal from "../components/trips/TravelBuddiesButton";
+import { useApiConfigContext } from "../context/ApiConfigContext";
 import io from 'socket.io-client';
-
+import axios from 'axios';
 
 const TripsScreen =  () => {
   const navigation = useNavigation();
   const { theme } = useTheme();
+  const { apiUrl, token } = useApiConfigContext();
 
   const handleViewTravlers = () => {
     setIsTravelersViewed((prevState) => !prevState)
@@ -41,19 +39,16 @@ const TripsScreen =  () => {
   const [isNewMessage, setIsNewMessage] = useState(false);
   const [sharedListWithUser, setSharedListWithUser] = useState([]);
   const [isSharedList, setIsSharedList] = useState(false);
+  
 
   const getList = async () => {
-    const token = await getToken();
-    const { apiUrl } = await config();
     const response = await axios.get(`${apiUrl}/trips/lists/places`, {
         headers: {
           'authorization': `Bearer ${token}`
         }
     });
 
-    console.log(response.data.travelLists, 'getList in TripScreen')
     setAllTravelList((prevList) => [...response.data.travelLists])
-
     await delay(50)
     setIsInitialList(true)
    
@@ -63,24 +58,17 @@ const TripsScreen =  () => {
     setSelectedTrip(trip);
   };
 
-  const handleNavigateToCoopTrips = () => {
-    navigation.navigate('CoopTrips');
-  }
-
   useEffect(() => { //initial
     getList();
   },[])
 
   useEffect(() => {
     const getSharedList = async () => {
-      const token = await getToken();
-      const { apiUrl } = await config();
       const response = await axios.get(`${apiUrl}/trips/lists/shared`, {
           headers: {
             'authorization': `Bearer ${token}`
           }
       });
-      console.log(response.data.listPermission, 'allTravelList')
 
       setSharedListWithUser(response.data.listPermission);
     }
@@ -168,8 +156,6 @@ const TripsScreen =  () => {
     if (isCreateNewList) {
   
       const postList = async () => {
-        const token = await getToken();
-        const { apiUrl } = await config();
         const response = await axios.post(`${apiUrl}/trips/list`, {
           name: InputName,
         }, 
@@ -178,8 +164,7 @@ const TripsScreen =  () => {
             'authorization': `Bearer ${token}`
           }
         });
-    
-        console.log(response, 'adding new list')
+  
       }
       postList();
       setIsCreateNewList(false);
@@ -188,10 +173,6 @@ const TripsScreen =  () => {
     }
 
   }, [isCreateNewList]) 
-
-  // const test = () => {
-  //   console.log(allTravelList[1], 'allTravelList in trip Screen')
-  // }
 
 
   return (

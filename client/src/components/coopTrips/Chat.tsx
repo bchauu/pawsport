@@ -4,7 +4,6 @@ import config from '../../config';
 import { getToken } from '../../utils/authStorage';
 import axios from 'axios';
 import io from 'socket.io-client';
-import ChatMessages from './ChatMessages';
 
 const SOCKET_SERVER_URL = "http://localhost:3000";  // Your backend URL
 
@@ -14,8 +13,6 @@ const SOCKET_SERVER_URL = "http://localhost:3000";  // Your backend URL
 const Chat = ({userEmail, setUserEmail, chat, setChat}) => {
   const [socket, setSocket] = useState(null);
   const [message, setMessage] = useState('');
-  // const [userEmail, setUserEmail] = useState('');
-  // const [chat, setChat] = useState([]);
   const [roomId, setRoomId] = useState('');
   const [isRoomCreated, setIsRoomCreated] = useState(false);
   const [isMinimized, setIsMinimized] = useState(true);  // New state for minimization

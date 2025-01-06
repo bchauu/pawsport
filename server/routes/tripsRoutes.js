@@ -1,6 +1,21 @@
 const express = require('express');
-const {addCreate, getList, getListswithPlaces, getSharedList, addSubLevel, deleteSubLevel} = require('../controllers/travelListController');
-const {addPlaceToList, getPlace, deletePlaceFromList, addNote, getNotes} = require('../controllers/travelItemController');
+const {
+    addCreate, 
+    getList, 
+    getListswithPlaces, 
+    getSharedList, 
+    addSubLevel, 
+    deleteSubLevel
+} = require('../controllers/travelListController');
+const {
+    addPlaceToList, 
+    getPlace, 
+    deletePlaceFromList, 
+    addNote, 
+    getNotes, 
+    moveUpOrder,
+    changeSubLevel
+} = require('../controllers/travelItemController');
 
 const router = express.Router();
 
@@ -28,6 +43,10 @@ router.post('/lists/places', addPlaceToList);
 
 router.post('/lists/places/note', addNote); 
 
-router.get('/list/places/allnotes', getNotes)
+router.get('/list/places/allnotes', getNotes);
+
+router.post('/lists/places/moveup', moveUpOrder);
+
+router.post('/lists/places/changesublevel', changeSubLevel);
 
 module.exports = router;

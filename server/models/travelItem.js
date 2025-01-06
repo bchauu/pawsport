@@ -32,7 +32,12 @@ module.exports = (sequelize) => {
         },
         subLevelName: {
             type: DataTypes.STRING,
-            field: 'sub_level_name'
+            field: 'sub_level_name',
+        },
+        order: {
+            type: DataTypes.INTEGER,
+            // defaultValue: 1,
+            allowNull: false
         },
         lat: {
             type: DataTypes.FLOAT,

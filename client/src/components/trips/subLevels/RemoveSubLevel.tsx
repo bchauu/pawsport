@@ -1,19 +1,15 @@
-import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
-import {useState, useEffect} from 'react';
+import { View } from "react-native";
 import axios from "axios";
-import { getToken } from "../../../utils/authStorage";
-import config from "../../../../src/config";
+import ConfirmationModal from "../../../components/sharedModals/ConfirmationModal";
+import useApiConfig from "../../../utils/apiConfig";
 import { useTheme } from "../../../context/ThemeContext";
 
-const RemoveSubLevel = ({subLevel, setSubLevels}) => {
+const RemoveSubLevel = ({changeItemCategory, subLevel, setSubLevels}) => {
     const { theme } = useTheme();
-    // const [refreshSubLevel, setRefreshSubLevel] = useState(false)
+    const {token, apiUrl} = useApiConfig();
 
     const handleRemoveSubLevel = async () => {
-
             try {
-                const token = await getToken();
-                const { apiUrl } = await config();
                 const response = await axios.delete(`${apiUrl}/trips/lists/deleteSubLevel`,
                 {
                     data: {
@@ -25,11 +21,14 @@ const RemoveSubLevel = ({subLevel, setSubLevels}) => {
                     }
                 })
 
+                console.log(response, 'response')
+
                 //filter out this sublevel
                 setSubLevels((prevValue) => prevValue.filter((name) => name.id !== subLevel.id))
-                // refreshSubLevel 
-    
-                console.log(response, 'response from posting sublevels')
+                console.log('does this get called')
+  
+                // changeItemCategory(subLevel);    
+                    //future feature
             } catch (error) {
                 console.log(error, 'error in deleting sub level')
             }
@@ -37,12 +36,7 @@ const RemoveSubLevel = ({subLevel, setSubLevels}) => {
 
     return (
         <View>
-            <TouchableOpacity
-                onPress={handleRemoveSubLevel}
-                style={theme.list.removeButton}
-            >
-            <Text style={theme.list.removeButtonText}>Remove Sub-level</Text>
-            </TouchableOpacity>
+            <ConfirmationModal handleConfirmation={handleRemoveSubLevel}></ConfirmationModal>
         </View>
     )
 }
