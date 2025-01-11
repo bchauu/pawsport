@@ -103,7 +103,7 @@ const MoveSubLevelModal = ({ item, allTrip, tripOrder, setTripOrder,setHighestVa
         style={[theme.card.button]}
       >
         <Text style={[theme.card.buttonText]}>
-          Move Intinerary
+          Move Level
         </Text>
       </TouchableOpacity>
       {/* The Modal */}

@@ -6,7 +6,8 @@ import {AuthProvider} from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { TravelListProvider } from './context/AllTravelListContext';
 import { AllTripsProvider } from './context/AllTripsContext';
-import {ApiConfigProvider} from './context/ApiConfigContext'
+import {ApiConfigProvider} from './context/ApiConfigContext';
+import {SelectedTripListProvider} from './context/SelectedTripListContext';
 
 const App = () => {
   return (
@@ -14,13 +15,15 @@ const App = () => {
       <AuthProvider>
         <ApiConfigProvider>
           <TravelListProvider>
-            <AllTripsProvider>
-              <ThemeProvider>
-                <NavigationContainer>
-                  <AppNavigator/>
-                </NavigationContainer>
-              </ThemeProvider>
-            </AllTripsProvider>
+            <SelectedTripListProvider>
+              <AllTripsProvider>
+                <ThemeProvider>
+                  <NavigationContainer>
+                    <AppNavigator/>
+                  </NavigationContainer>
+                </ThemeProvider>
+              </AllTripsProvider>
+            </SelectedTripListProvider>
           </TravelListProvider>
         </ApiConfigProvider>
       </AuthProvider>

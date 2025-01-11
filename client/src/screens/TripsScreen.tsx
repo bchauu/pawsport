@@ -9,6 +9,8 @@ import { useNavigation } from "@react-navigation/native";
 import CollapsibleDropdown from '../components/trips/CollapsibleDropDown';
 import { useTheme } from "../context/ThemeContext";
 import { useApiConfigContext } from "../context/ApiConfigContext";
+import { useSelectedTripListContext } from "../context/SelectedTripListContext";
+import { useTravelList } from '../context/AllTravelListContext';
 import io from 'socket.io-client';
 import axios from 'axios';
 
@@ -24,11 +26,13 @@ const TripsScreen =  () => {
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
   const [isTravelersViewed, setIsTravelersViewed] = useState(false);
 
-  const [allTravelList, setAllTravelList] = useState([]);
+  // const [allTravelList, setAllTravelList] = useState([]);   // i need this one
+  const {allTravelList, setAllTravelList} = useTravelList(); 
   const [isCreateNewList, setIsCreateNewList] = useState(false);
   const [InputName, setInputName] = useState(''); //lift state up from modal
   const [hasNewList, setHasNewList] = useState(false); // control rendering of list
-  const [selectedTrip, setSelectedTrip] = useState(null);   //entire trip --> this is what should be passed
+  // const [selectedTrip, setSelectedTrip] = useState(null);   //entire trip --> this is what should be passed
+  const {selectedTrip, setSelectedTrip} = useSelectedTripListContext();
   const [roomId, setRoomId] = useState('');
   const [isInitialList, setIsInitialList] = useState(false);
   const [userEmail, setUserEmail] = useState('');
@@ -197,6 +201,7 @@ const TripsScreen =  () => {
         <View>
           <Trips
             trip={selectedTrip}
+            setTrip={setSelectedTrip}
             getList={getList}
             isSharedList={isSharedList}
           />

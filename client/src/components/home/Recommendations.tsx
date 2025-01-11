@@ -90,13 +90,13 @@ const Recommendations = () => {
                                 {list.name}
                                 {list.id}
                             </Text>
-                            <TouchableOpacity style={theme.list.saveButton}>
+                            {/* <TouchableOpacity style={theme.list.saveButton}>
                                 <Text style={theme.list.saveButtonText}>
                                     Copy Itinerary
-                                </Text>
+                                </Text> */}
                                 {/* ability to add entire list and all its trips to the user --> copy travelList and assign to specificied userID*/}
                                 {/* items need to be cloned as well*/}
-                            </TouchableOpacity>
+                            {/* </TouchableOpacity> */}
                         </View>
                         <List
                             key={index}

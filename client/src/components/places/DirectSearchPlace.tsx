@@ -4,7 +4,7 @@ import useApiConfig from "../../utils/apiConfig";
 import { Card } from 'react-native-paper';
 import ListSelector from "./BottomSheet";
 import { useTheme } from "../../context/ThemeContext";
-// import { useTravelList } from '../../context/AllTravelListContext';
+import { useTravelList } from '../../context/AllTravelListContext';
 import axios from "axios";
 
 const DirectSearchPlace = ({directSearchResult, submitGoogleUrl}) => {
@@ -13,7 +13,8 @@ const DirectSearchPlace = ({directSearchResult, submitGoogleUrl}) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [isBottomVisible, setIsBottomVisible] = useState(false);
     const [selectedItem, setSelectedItem] = useState('');
-    const [allTravelList, setAllTravelList] = useState([]);
+    // const [allTravelList, setAllTravelList] = useState([]);
+    const {allTravelList, setAllTravelList} = useTravelList(); 
 
     useEffect(() => {
 

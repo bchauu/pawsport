@@ -12,7 +12,7 @@ import RemoveSubLevel from "./subLevels/RemoveSubLevel";
 import { useAllTrips } from "../../context/AllTripsContext";
 import { useTheme } from "../../context/ThemeContext";
 
-const Trips = ({trip, getList, isSharedList}) => {
+const Trips = ({trip, getList, isSharedList, setTrip}) => {
   const { theme } = useTheme();
   const [hasUpdatedSharedUser, setHasUpdatedSharedUser] = useState(false);
   const { allTrip, setAllTrip } = useAllTrips();
@@ -33,6 +33,10 @@ const Trips = ({trip, getList, isSharedList}) => {
     addLevel: false
   });
 
+  console.log(trip, 'selectedTrip')
+    //we need trips to be updated. i.e. with removed values
+        //setTrip
+          //this works. its not too deeply nested so it re-renders
   useEffect(() => {
     if (trip) {
       setAllTrip([...trip?.items]);
@@ -114,10 +118,6 @@ const Trips = ({trip, getList, isSharedList}) => {
     }
   }, [trip, newNoteAdded])
 
-  const checkOrder = () => {
-    console.log(tripOrder, 'check tripOrder')
-    console.log(allTrip, 'allTrips')
-  }
 
   const changeItemCategory = (item) => {    //leaving here for now. should work if i add shiftupOrder. going with delete all if confirm
     // console.log(tripOrder, 'sublevel')
@@ -192,17 +192,26 @@ const Trips = ({trip, getList, isSharedList}) => {
       const index = allTrip.indexOf(deletedTripItem[0]) //holding the index of whats deleted
       setDeletedTripIndex(index)
       setAllTrip([...withoutDeletedItemTrip]) // this set removes from state and updates
-      const test = deletedTripItem[0].id;
+      const deletedTripId = deletedTripItem[0].id;
       const shiftUpTripOrder = {};
+      console.log(deletedTripItem[0], 'all info in here?')
 
       for (const id in tripOrder) {
-        if (tripOrder[id].value > tripOrder[test].value && tripOrder[id].subLevel == deletedTripItem[0].subLevelName) {
+        if (tripOrder[id].value > tripOrder[deletedTripId].value && tripOrder[id].subLevel == deletedTripItem[0].subLevelName) {
           shiftUpTripOrder[id] =  {subLevel: tripOrder[id].subLevel, value: tripOrder[id].value - 1}
         }
       }
       setTripOrder((prev) => (
         {...prev, ...shiftUpTripOrder}
       ))
+
+
+      setTrip((prevTrip) => {
+        return {
+          ...prevTrip, // Copy the rest of the trip object
+          items: prevTrip.items.filter((item) => item.id !== deletedTripId), // Remove the item with the specified ID
+        };
+      });
 
     try {
       const response = await axios.delete(`${apiUrl}/trips/lists/places/delete`, {
@@ -368,9 +377,6 @@ const Trips = ({trip, getList, isSharedList}) => {
   
       return (
         <View style={styles.itemContainer}>
-          <TouchableOpacity onPress={checkOrder}>
-            <Text>Test</Text>
-          </TouchableOpacity>
           <ManualSwipeableRow
             item={item} 
             index={index+1}
