@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useTheme } from "../../../context/ThemeContext";
 
-const NotesSection = ({isItemNotesCollapsed, notes, item}) => {
+const NotesSection = ({isItemNotesCollapsed, handleCategoryChange, notes, item}) => {
   const [activeCategory, setActiveCategory] = useState("Important");
   const { theme } = useTheme();
 
@@ -11,6 +11,11 @@ const NotesSection = ({isItemNotesCollapsed, notes, item}) => {
     { label: "📋 Logistics", value: "Logistics" },
     { label: "📦 Misc", value: "Misc" }
   ];
+
+  const updateCategory = (selectedCategory) => {
+    setActiveCategory(selectedCategory)
+    handleCategoryChange(selectedCategory, item.id)
+  };
 
   return (
     <View>
@@ -25,7 +30,7 @@ const NotesSection = ({isItemNotesCollapsed, notes, item}) => {
                   styles.categoryButton,
                   activeCategory === category.value && styles.activeButton,
                 ]}
-                onPress={() => setActiveCategory(category.value)} // Update active category
+                onPress={() => updateCategory(category.value)} // Update active category
               >
                 <Text
                   style={[
@@ -66,38 +71,8 @@ const NotesSection = ({isItemNotesCollapsed, notes, item}) => {
       )}
     </View>
   );
-
-
-    //  return (
-    //   <View> 
-    //     {isItemNotesCollapsed[item.id]?.isCollapsed &&
-    //       <View>
-    //         <ScrollView>
-    //           notesCategories.map((category) => 
-
-    //           )
-    //         </ScrollView>
-    //         <Text>Categories</Text>
-    //       {notes
-    //         .filter((listItem) => listItem.parentId === item.id)
-    //         .flatMap((item) => item.notes)
-    //         .map((note, index) => (
-    //           // console.log(note, 'test note')
-    //           <View key={index}>
-    //             <Text style={theme.personalList.notesItem}>
-    //               {note.message}
-    //             </Text>
-    //             <Text> {note.user}</Text>
-    //           </View>
-    //         ))}
-    //       </View>
-    //         //can make it collapsible to make it simpler
-    //           // do i need conditional check if notes changes?
-
-    //     }
-    //   </View>
-    //  )
 }
+
 const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",

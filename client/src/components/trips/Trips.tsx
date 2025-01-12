@@ -26,6 +26,7 @@ const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder}) 
   const [isItemNotesCollapsed, setItemIsNotesCollapsed] = useState({});
   const [isTravelersViewed, setIsTravelersViewed] = useState(false);
   const [subLevels, setSubLevels] = useState([]);
+  const [inputCategory, setInputCategory] = useState({});
   const [highestValueSubLevel, setHighestValueSubLevel] = useState({});
   const [listActions, setListActions] = useState({
     viewBuddies: false,
@@ -33,10 +34,6 @@ const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder}) 
     addLevel: false
   });
 
-  console.log(trip, 'selectedTrip')
-    //we need trips to be updated. i.e. with removed values
-        //setTrip
-          //this works. its not too deeply nested so it re-renders
   useEffect(() => {
     if (trip) {
       setAllTrip([...trip?.items]);
@@ -72,7 +69,6 @@ const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder}) 
     if (trip) {
     
       const getNotes = async () => {
-        console.log(trip.id, 'hitting getNotes')
         try {
           const response = await axios.get(`${apiUrl}/trips/list/places/allnotes`, {
             headers: {
@@ -194,7 +190,6 @@ const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder}) 
       setAllTrip([...withoutDeletedItemTrip]) // this set removes from state and updates
       const deletedTripId = deletedTripItem[0].id;
       const shiftUpTripOrder = {};
-      console.log(deletedTripItem[0], 'all info in here?')
 
       for (const id in tripOrder) {
         if (tripOrder[id].value > tripOrder[deletedTripId].value && tripOrder[id].subLevel == deletedTripItem[0].subLevelName) {
@@ -343,8 +338,18 @@ const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder}) 
 
   }
 
+  const handleCategoryChange = (selectedCategory, id) => {
+    setInputCategory((prev) => (
+      {
+        ...prev,
+        [id]: selectedCategory
+      }
+    ))
+  };
 
-  const addNotes = async () => {
+
+  const addNotes = async (id) => {
+    const selectedCategory = inputCategory[id];
     
     try {
       const response = await axios.post(
@@ -352,7 +357,8 @@ const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder}) 
         {
             travelListId: selectedNoteTrip.travelListId,  //these two need to be taken from item
             itemId: selectedNoteTrip.id,
-            note: tripsEnteredNotes
+            note: tripsEnteredNotes, 
+            category: selectedCategory,
         }, 
         {
           headers: {
@@ -360,6 +366,8 @@ const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder}) 
           }
         }
     )
+
+      // console.log(response, 'response for notes')
       setTripsEnteredNotes('');
       setNewNoteAdded(true);
 
@@ -392,6 +400,7 @@ const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder}) 
           />
           <NotesSection 
             isItemNotesCollapsed={isItemNotesCollapsed}
+            handleCategoryChange={handleCategoryChange}
             notes={notes}
             item={item}
           />

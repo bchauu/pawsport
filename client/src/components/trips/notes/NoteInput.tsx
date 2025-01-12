@@ -25,7 +25,7 @@ const NoteInput = ({item, newNoteAdded, handleEnteredNotes, addNotes, isItemNote
               onChangeText={value => handleNoteInput(value)} 
               value={enteredNotes} 
             />
-            <Button title="add notes" onPress={addNotes} />
+            <Button title="add notes" onPress={()=> addNotes(item.id)} />
           </View>
         )}
       </>

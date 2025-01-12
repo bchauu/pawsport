@@ -34,7 +34,7 @@ const Place = ({reviews, setReviews, placeDetail, index, setIsSearchInitiated, i
     const {selectedTrip, setSelectedTrip} = useSelectedTripListContext();
     const { allTrip, setAllTrip } = useAllTrips();
 
-    console.log(allTrip, 'all trips in places')
+    // console.log(allTrip, 'all trips in places')
 
     useEffect(() => {
         const getList = async () => {

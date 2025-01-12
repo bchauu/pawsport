@@ -80,7 +80,7 @@ exports.deletePlaceFromList = async (req, res) => {
 }
 
 exports.addNote = async (req, res) => {
-  const {travelListId, itemId, note} = req.body;
+  const {travelListId, itemId, note, category} = req.body;
   const {userId} = req.user
 
   try {
@@ -95,7 +95,8 @@ exports.addNote = async (req, res) => {
           const newNote = await ItemNotes.create({
             travelItemId: itemId,
             notes: note, 
-            userId: userId
+            userId: userId, 
+            category
           })
       }
 
