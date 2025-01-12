@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { View, StyleSheet, Text, Dimensions, Button } from 'react-native';
+import { View, StyleSheet, Text, Dimensions, Button, TouchableOpacity } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
-const { width, height } = Dimensions.get('window');
+// const { width, height } = Dimensions.get('window');
 
 const initial = {
   latitude: 13.7563,
@@ -11,16 +11,31 @@ const initial = {
   longitudeDelta: 0.1,
 };
 
-const MyMap = ({ selectedTrip }) => {
+const MyMap = ({ selectedTrip, tripOrder, setTripOrder }) => {
+  // console.log(selectedTrip, 'selectedTrip in MyMap')
+  // console.log(tripOrder, 'tripOrder in maps')
+ 
   const [region, setRegion] = useState(initial);
   const mapRef = useRef(null);
   const [markerPositions, setMarkerPositions] = useState([]);
+  const [isDisplayedName, setIsDisplayedName] = useState([]);
+  // console.log(markerPositions, 'marked positions')
 
   useEffect(() => {
     if (selectedTrip) {
       const transformedMarkers = transformPlaces(selectedTrip.items);
       const newRegion = calculateInitialRegion(transformedMarkers);
       setRegion(newRegion);
+
+      const tripId = Object.keys(tripOrder);
+      const updates = {};
+      
+      tripId.forEach((id) => {
+        updates[id] = false;
+      });
+      
+      setIsDisplayedName((prev) => ({ ...prev, ...updates }));
+      
   
       if (mapRef.current && newRegion) {
         mapRef.current.animateToRegion(newRegion, 1000);
@@ -29,7 +44,7 @@ const MyMap = ({ selectedTrip }) => {
         }, 500); // Delay to ensure the map has updated
       }
     }
-  }, [selectedTrip]);
+  }, [selectedTrip, tripOrder]);
 
   const transformPlaces = (places) => {
     const transformedPlaces = places.map(place => ({
@@ -43,7 +58,19 @@ const MyMap = ({ selectedTrip }) => {
     return transformedPlaces;
   };
 
-  const handleRegionChange = (newRegion) => {
+  const debounce = (func, delay) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => func(...args), delay);
+    };
+  };
+
+  const handleRegionChange = debounce((newRegion) => {
+    setRegion(newRegion);
+  }, 50);
+
+  const handleRegionChangeComplete = (newRegion) => {
     setRegion(newRegion); 
 
     if (selectedTrip) {
@@ -57,18 +84,24 @@ const MyMap = ({ selectedTrip }) => {
   };
 
   // Function to calculate the marker positions on the screen
-  const calculateMarkerPositions = async (placesToUse) => {
+  const calculateMarkerPositions = async (placesToUse, ) => {
     if (mapRef.current) {
       try {
         const positions = await Promise.all(placesToUse.map(async (place) => {
+          const value = tripOrder[place.id]?.value;
+          const subLevel = tripOrder[place.id]?.subLevel;
+          const id = place.id;
+    
           try {
             const point = await mapRef.current.pointForCoordinate(place.coordinate);
-            return { ...point, title: place.title };
+            return { ...point, title: place.title, id: place.id, value, subLevel };
+
           } catch (error) {
             console.error('Error calculating position:', error);
             return null;
           }
         }));
+
   
         setMarkerPositions(positions.filter(position => position !== null));
       } catch (error) {
@@ -121,6 +154,14 @@ const MyMap = ({ selectedTrip }) => {
     }));
   };
 
+  const handleClickPin = (id) => {
+    setIsDisplayedName((prev) => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+
+  }
+
   return (
     <View style={styles.container}>
       {/* Render the MapView */}
@@ -130,25 +171,38 @@ const MyMap = ({ selectedTrip }) => {
           provider={PROVIDER_GOOGLE}
           style={styles.map}
           region={region}  // Use controlled region state
-          onRegionChangeComplete={handleRegionChange}  // Recalculate positions on region change
-          scrollEnabled={false}  // Disable dragging
+          onRegionChange={handleRegionChange}
+          onRegionChangeComplete={handleRegionChangeComplete}  // Recalculate positions on region change
+          scrollEnabled={true}  // Disable dragging
         />
       )}
   
       {/* Render the marker positions as overlays on the map */}
-      {markerPositions.map((position, index) => (
+      {markerPositions
+      .sort((a,b) => Number(a.value) - Number(b.value))
+      .map((position, index) => (
         <View
           key={index}
           style={[
-            styles.customPin,
+            styles.location,
             {
               top: position.y - 20, // Adjust for pin size
               left: position.x - 20, // Adjust for pin size
             },
           ]}
         >
-          <Text style={styles.pinText}>📍</Text>
-          <Text style={styles.pinLabel}>{position.title}</Text>
+          <View style={styles.customPinContainer}>
+            <TouchableOpacity onPress={()=> handleClickPin(position.id)}>
+              <Text style={styles.customPin}>📍</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.nameContainer}>
+            {isDisplayedName[position.id] && (
+              <Text style={styles.nameLabel}>
+                {position.title}
+              </Text>
+            )}
+          </View>
         </View>
       ))}
   
@@ -169,19 +223,33 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 300,  // Adjust map height if needed
   },
-  customPin: {
-    position: 'absolute',  // Make the pins float on the map
-    alignItems: 'center',
+  location: {
+    position: 'absolute', // Detach from the layout
+    alignItems: 'center', // Center the pin horizontally
   },
-  pinText: {
+  customPinContainer: {
+    position: 'relative', // Keep relative for positioning the absolute children
+  },
+  customPin: {
     fontSize: 18,
     color: 'blue',
   },
-  pinLabel: {
-    fontSize: 12,
-    color: 'black',
+  nameLabel: {
+    position: 'absolute',
+    left: '50%',
+    transform: [{ translateX: -60 }], // Adjust based on width
+    width: 100,
     textAlign: 'center',
-    marginTop: -10,
+    fontSize: 12,
+    backgroundColor: 'white', // Clean, neutral background
+    color: 'black', // High contrast for readability
+    padding: 5, 
+    borderRadius: 5, // Optional: for a smoother appearance
+    shadowColor: '#000', // Optional: shadow for better visibility
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 1, height: 1 },
+    shadowRadius: 2,
+    zIndex: 10, // Ensure it stays above other elements
   },
   zoomControls: {
     position: 'absolute',  // Make the zoom controls float on the map

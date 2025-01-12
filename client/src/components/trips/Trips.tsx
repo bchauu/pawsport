@@ -12,11 +12,11 @@ import RemoveSubLevel from "./subLevels/RemoveSubLevel";
 import { useAllTrips } from "../../context/AllTripsContext";
 import { useTheme } from "../../context/ThemeContext";
 
-const Trips = ({trip, getList, isSharedList, setTrip}) => {
+const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder}) => {
   const { theme } = useTheme();
   const [hasUpdatedSharedUser, setHasUpdatedSharedUser] = useState(false);
   const { allTrip, setAllTrip } = useAllTrips();
-  const [tripOrder, setTripOrder] = useState({});
+  // const [tripOrder, setTripOrder] = useState({});
   const [deletedTrip, setDeletedTrip] = useState('');
   const [notes, setNotes] = useState([]);
   const [tripsEnteredNotes, setTripsEnteredNotes] = useState('');

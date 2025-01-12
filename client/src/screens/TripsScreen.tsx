@@ -43,6 +43,7 @@ const TripsScreen =  () => {
   const [isNewMessage, setIsNewMessage] = useState(false);
   const [sharedListWithUser, setSharedListWithUser] = useState([]);
   const [isSharedList, setIsSharedList] = useState(false);
+  const [tripOrder, setTripOrder] = useState({});
   
 
   const getList = async () => {
@@ -204,10 +205,16 @@ const TripsScreen =  () => {
             setTrip={setSelectedTrip}
             getList={getList}
             isSharedList={isSharedList}
+            tripOrder={tripOrder}
+            setTripOrder={setTripOrder}
           />
         </View>
         <View style={styles.mapContainer}>
-          <MyMap selectedTrip={selectedTrip} />
+          <MyMap 
+            selectedTrip={selectedTrip}
+            tripOrder={tripOrder}
+            setTripOrder={setTripOrder}
+          />
         </View>
         {isRoomJoined &&
         <View style={styles.chatContainer}>
