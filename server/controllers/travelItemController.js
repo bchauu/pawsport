@@ -63,59 +63,59 @@ exports.deletePlaceFromList = async (req, res) => {
   const {travelListId, itemId} = req.body;
   const { sequelize } = require('../models'); // Import Sequelize instance
 
-try {
-  // Start a transaction
   const transaction = await sequelize.transaction();
+  try {
+    // Start a transaction
 
-  // Step 1: Delete all associated notes within the transaction
-  const notesDeleted = await ItemNotes.destroy({
-    where: {
-      travel_item_id: itemId,
-    },
-    transaction, // Pass the transaction
-  });
-  console.log(`Deleted ${notesDeleted} notes associated with itemId: ${itemId}`);
+    // Step 1: Delete all associated notes within the transaction
+    const notesDeleted = await ItemNotes.destroy({
+      where: {
+        travel_item_id: itemId,
+      },
+      transaction, // Pass the transaction
+    });
+    console.log(`Deleted ${notesDeleted} notes associated with itemId: ${itemId}`);
 
-  // Step 2: Find the travel item within the transaction
-  const deleteItem = await TravelItems.findOne({
-    where: {
-      id: itemId,
-      travel_list_id: travelListId,
-    },
-    transaction, // Pass the transaction
-  });
+    // Step 2: Find the travel item within the transaction
+    const deleteItem = await TravelItems.findOne({
+      where: {
+        id: itemId,
+        travel_list_id: travelListId,
+      },
+      transaction, // Pass the transaction
+    });
 
-  if (!deleteItem) {
-    // Rollback the transaction and return a 404
-    await transaction.rollback();
-    return res.status(404).json({ message: 'Item not found or already deleted.' });
+    if (!deleteItem) {
+      // Rollback the transaction and return a 404
+      await transaction.rollback();
+      return res.status(404).json({ message: 'Item not found or already deleted.' });
+    }
+
+    // Step 3: Delete the travel item within the transaction
+    await TravelItems.destroy({
+      where: {
+        id: itemId,
+        travel_list_id: travelListId,
+      },
+      transaction, // Pass the transaction
+    });
+
+    // Commit the transaction
+    await transaction.commit();
+
+    console.log(deleteItem, 'item to be passed to emit')
+
+    emitUpdate('updateListItems', deleteItem, 'deleteItem');
+
+    console.log(`Deleted itemId: ${itemId}`);
+    res.status(200).json({ message: 'Item and associated notes deleted successfully.' });
+
+  } catch (error) {
+    // Rollback the transaction in case of error
+    if (transaction) await transaction.rollback();
+    console.error('Error deleting item or notes:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
-
-  // Step 3: Delete the travel item within the transaction
-  await TravelItems.destroy({
-    where: {
-      id: itemId,
-      travel_list_id: travelListId,
-    },
-    transaction, // Pass the transaction
-  });
-
-  // Commit the transaction
-  await transaction.commit();
-
-  console.log(deleteItem, 'item to be passed to emit')
-
-  emitUpdate('updateListItems', deleteItem, 'deleteItem');
-
-  console.log(`Deleted itemId: ${itemId}`);
-  res.status(200).json({ message: 'Item and associated notes deleted successfully.' });
-
-} catch (error) {
-  // Rollback the transaction in case of error
-  if (transaction) await transaction.rollback();
-  console.error('Error deleting item or notes:', error);
-  res.status(500).json({ error: 'Internal Server Error' });
-}
 
 }
 
