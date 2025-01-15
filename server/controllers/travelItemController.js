@@ -1,5 +1,6 @@
 const { TravelItems, ItemNotes, TravelList, User } = require('../models'); 
-const {sequelize} = require('../models')
+const { emitUpdate } = require('../sockets/socket')
+const {sequelize} = require('../models');
 exports.addPlaceToList = async (req, res) => {
     try {
       const { travelListId, placeId, name, lat, lng, notes } = req.body;
@@ -25,6 +26,12 @@ exports.addPlaceToList = async (req, res) => {
         order,
         subLevelName
       });
+
+      //start here call listItemEvents to trigger the change
+      if (newItem) {
+        emitUpdate('updateListItems', newItem, 'addItem');
+      }
+
   
       res.status(201).json({ message: 'Successfully added item to list', item: newItem });
     } catch (error) {
@@ -54,29 +61,62 @@ exports.getPlace = async (req, res) => {
 
 exports.deletePlaceFromList = async (req, res) => {
   const {travelListId, itemId} = req.body;
-  
-  try {
-    const deleteItem = await TravelItems.findOne({
-      where: {
-        id: itemId,
-        travel_list_id: travelListId
-      }
-    })
-  
-    if (deleteItem) {
-        await TravelItems.destroy({
-          where: {
-            id: itemId, 
-            travel_list_id: travelListId
-          }
-        })
+  const { sequelize } = require('../models'); // Import Sequelize instance
 
-        res.status(200).json({ message: 'from delete places' });
-    }
+try {
+  // Start a transaction
+  const transaction = await sequelize.transaction();
 
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch items for list' });
+  // Step 1: Delete all associated notes within the transaction
+  const notesDeleted = await ItemNotes.destroy({
+    where: {
+      travel_item_id: itemId,
+    },
+    transaction, // Pass the transaction
+  });
+  console.log(`Deleted ${notesDeleted} notes associated with itemId: ${itemId}`);
+
+  // Step 2: Find the travel item within the transaction
+  const deleteItem = await TravelItems.findOne({
+    where: {
+      id: itemId,
+      travel_list_id: travelListId,
+    },
+    transaction, // Pass the transaction
+  });
+
+  if (!deleteItem) {
+    // Rollback the transaction and return a 404
+    await transaction.rollback();
+    return res.status(404).json({ message: 'Item not found or already deleted.' });
   }
+
+  // Step 3: Delete the travel item within the transaction
+  await TravelItems.destroy({
+    where: {
+      id: itemId,
+      travel_list_id: travelListId,
+    },
+    transaction, // Pass the transaction
+  });
+
+  // Commit the transaction
+  await transaction.commit();
+
+  console.log(deleteItem, 'item to be passed to emit')
+
+  emitUpdate('updateListItems', deleteItem, 'deleteItem');
+
+  console.log(`Deleted itemId: ${itemId}`);
+  res.status(200).json({ message: 'Item and associated notes deleted successfully.' });
+
+} catch (error) {
+  // Rollback the transaction in case of error
+  if (transaction) await transaction.rollback();
+  console.error('Error deleting item or notes:', error);
+  res.status(500).json({ error: 'Internal Server Error' });
+}
+
 }
 
 exports.addNote = async (req, res) => {
@@ -91,13 +131,31 @@ exports.addNote = async (req, res) => {
           travel_list_id: travelListId
         }})
 
+        let newNote;
+
       if (travelItem) {
-          const newNote = await ItemNotes.create({
+          newNote = await ItemNotes.create({
             travelItemId: itemId,
             notes: note, 
             userId: userId, 
             category
           })
+      }
+
+      if (newNote) {
+        console.log(newNote.dataValues, 'newNotes')
+
+        // ItemNotes {
+        //   dataValues: {
+        //     id: '55',
+        //     travelItemId: '4',
+        //     notes: 'Asd',
+        //     userId: '4',
+        //     category: 'Important Notes',
+        //     updatedAt: 2025-01-15T10:58:12.069Z,
+        //     createdAt: 2025-01-15T10:58:12.069Z
+        //   },
+        emitUpdate('updateNotes', newNote.dataValues, 'addNote');
       }
 
       res.status(200).json({message: 'added notes successfully'})
@@ -106,8 +164,6 @@ exports.addNote = async (req, res) => {
   } catch (error) {
     console.log(error, 'error')
   }
-
-
 
 }
 

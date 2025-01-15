@@ -11,14 +11,16 @@ import SubLevelInput from "./subLevels/SubLevelInput";
 import RemoveSubLevel from "./subLevels/RemoveSubLevel";
 import { useAllTrips } from "../../context/AllTripsContext";
 import { useTheme } from "../../context/ThemeContext";
+import { useEmittedItems } from '../../context/EmittedItemsContext';
 
-const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder}) => {
+const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder, isRoomJoined, notes, setNotes}) => {
   const { theme } = useTheme();
   const [hasUpdatedSharedUser, setHasUpdatedSharedUser] = useState(false);
   const { allTrip, setAllTrip } = useAllTrips();
   // const [tripOrder, setTripOrder] = useState({});
+  const { emittedItems, setEmittedItems } = useEmittedItems()
   const [deletedTrip, setDeletedTrip] = useState('');
-  const [notes, setNotes] = useState([]);
+  // const [notes, setNotes] = useState([]);
   const [tripsEnteredNotes, setTripsEnteredNotes] = useState('');
   const [selectedNoteTrip, setSelectedNoteTrip] = useState('');
   const [newNoteAdded, setNewNoteAdded] = useState(false);
@@ -98,8 +100,7 @@ const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder}) 
               // user: travelItem.user
             }
           ))
-          // console.log(arrangedNotes[0].notes, 'arrangedNotes')
-
+          console.log('successfully fetched notes')
           setNotes(arrangedNotes);
           setNewNoteAdded(false);
         } catch (error) {
@@ -112,7 +113,7 @@ const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder}) 
 
       getNotes();
     }
-  }, [trip, newNoteAdded])
+  }, [trip, newNoteAdded, emittedItems, isRoomJoined])
 
 
   const changeItemCategory = (item) => {    //leaving here for now. should work if i add shiftupOrder. going with delete all if confirm

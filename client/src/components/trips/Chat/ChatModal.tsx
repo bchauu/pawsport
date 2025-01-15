@@ -9,45 +9,45 @@ const ChatModal = ({setIsNewMessage, setNewMessageCount, newMessageCount, socket
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     useEffect(() => {
-        const getNewSocketConnection = async () => {
-            try {
-                await delay(50)
-                await socket.emit('leaveRoom', roomId);
-
-                await delay(100)
-                await      socket.emit('startChat', listId, (response) => {
-                    if (response.status === 'success') { 
-                        console.log(`Successfully joined room with listId: ${listId} in chatModal`);
-                    }
-                });
-                
-            } finally {
-                setChat([]);
-            }
-        }
-        getNewSocketConnection();
-    }, [roomId])
-
-    useEffect(() => {
         if (!socket) return;
-    
+      
         const handleReceiveMessage = (data) => {
-            setChat((prevChat) => [...prevChat, data]);
+          setChat((prevChat) => [...prevChat, data]); // Update chat state
         };
-
-        socket.emit('startChat', listId, (response) => {
-            if (response.status === 'success') { 
-                console.log(`Successfully joined room with listId: ${listId} in chatModal`);
+      
+        const joinRoom = async () => {
+          try {
+            await delay(50); // Add delay to ensure other components/rendering are ready
+      
+            if (roomId) {
+              await socket.emit('leaveRoom', roomId); // Always leave the current room
+              console.log(`Left room: ${roomId}`);
             }
-        });
-    
-        socket.on('receiveMessage', handleReceiveMessage);
-    
-        return () => {
-            socket.emit('leaveRoom', roomId);
-            socket.off('receiveMessage', handleReceiveMessage); // clean up
+      
+            await delay(100); // Add delay before joining the new room
+      
+            await socket.emit('startChat', listId, (response) => {
+              if (response.status === 'success') {
+                console.log(`Successfully joined room with listId: ${listId}`);
+              } else {
+                console.error('Failed to join room:', response.reason);
+              }
+            });
+      
+            setChat([]); // Clear chat when switching rooms
+          } catch (error) {
+            console.error('Error joining room:', error);
+          }
         };
-    }, [listId, socket]);
+      
+        joinRoom();
+        socket.on('receiveMessage', handleReceiveMessage);
+      
+        return () => {
+          socket.emit('leaveRoom', roomId); // Leave the room
+          socket.off('receiveMessage', handleReceiveMessage); // Remove the listener
+        };
+      }, [listId, roomId, socket]);
 
     const handleCollab = () => {
         setNewMessageCount(0);

@@ -11,14 +11,14 @@ let cachedToken = null;
 export const getToken = async () => {
   try {
     if (cachedToken) {
-      console.log('Token retrieved from cache:', cachedToken);
+      // console.log('Token retrieved from cache:', cachedToken);
       return cachedToken;
     }
 
     const token = await SInfo.getItem('jwtToken', STORAGE_OPTIONS);
     if (token) {
       cachedToken = token; // Cache the token in memory
-      console.log('Token retrieved from storage:', token);
+      // console.log('Token retrieved from storage:', token);
       return token;
     } else {
       console.log('No token found');

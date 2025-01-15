@@ -3,7 +3,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const { sequelize } = require('./models');
 const app = require('./app'); // Import the Express app
-const { setupSocketIO } = require('./socket');
+const { setupSocketIO } = require('./sockets/socket');
 
 const PORT = process.env.PORT || 3000;
 const jwtSecret = process.env.JWT_SECRET;  // Your JWT secret key

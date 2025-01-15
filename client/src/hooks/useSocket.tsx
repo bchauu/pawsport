@@ -1,30 +1,42 @@
 import { useEffect, useState } from 'react';
-import io from 'socket.io-client';
-import { getToken } from '../utils/authStorage';
+import { io } from 'socket.io-client';
+import { getToken } from '../utils/authStorage'; // Import your token function
 
-const useSocket =  () => {
-    const [socket, setSocket] = useState(null);
+const SOCKET_SERVER_URL = 'http://localhost:3000';
 
-    const SOCKET_SERVER_URL = "http://localhost:3000";  // Your backend URL
+const useSocket = () => {
+  const [socket, setSocket] = useState(null);
 
-    useEffect(() => {
-        const establishSocketConnection = async () => {
-            const token = await getToken();
-            const newSocket = io(SOCKET_SERVER_URL, {
-                query: {token}
-            });    // socket connection
-            setSocket(newSocket);   //calling that connection   --> set in state
-    
-            return () => {
-                newSocket.close();
-            }
-        }
+  useEffect(() => {
+    const initializeSocket = async () => {
+      const token = await getToken(); // Fetch token for authentication
+      const newSocket = io(SOCKET_SERVER_URL, {
+        query: { token }, // Pass token as query parameter
+      });
 
-        establishSocketConnection();
+      newSocket.on('connect', () => {
+        console.log('Socket connected:', newSocket.id);
+      });
 
-    }, [])
+      newSocket.on('disconnect', () => {
+        console.log('Socket disconnected.');
+      });
 
-    return socket;
-}
+      setSocket(newSocket);
+
+
+    };
+    initializeSocket();
+
+    return () => {
+      console.log('Cleaning up socket connection.');
+      // newSocket.disconnect();
+    };
+
+
+  }, []); // Run once on mount
+
+  return socket;
+};
 
 export default useSocket;

@@ -127,7 +127,7 @@ const Place = ({reviews, setReviews, placeDetail, index, setIsSearchInitiated, i
                                 //do the same in directSearch
                                     //and google search and should be done
                             setAllTravelList((prev) =>
-                                prev.map((list) =>
+                                prev.map((list, key) =>
                                   list.id === selectedList.id // Check if this is the list to update
                                     ? {
                                         ...list,

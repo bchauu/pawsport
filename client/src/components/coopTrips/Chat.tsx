@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Button, FlatList, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import config from '../../config';
 import { getToken } from '../../utils/authStorage';
+import { useSocketContext } from '../../context/SocketContext';
 import axios from 'axios';
 import io from 'socket.io-client';
 
@@ -11,7 +12,8 @@ const SOCKET_SERVER_URL = "http://localhost:3000";  // Your backend URL
 //display users who are currently active 
 
 const Chat = ({userEmail, setUserEmail, chat, setChat}) => {
-  const [socket, setSocket] = useState(null);
+  // const [socket, setSocket] = useState(null);
+  const { socket } = useSocketContext();
   const [message, setMessage] = useState('');
   const [roomId, setRoomId] = useState('');
   const [isRoomCreated, setIsRoomCreated] = useState(false);
@@ -33,23 +35,52 @@ const Chat = ({userEmail, setUserEmail, chat, setChat}) => {
   getList();
   }, [])
 
+  // useEffect(() => {
+  //   const socketConnection = async () => {
+  //     const newSocket = io(SOCKET_SERVER_URL);
+  //     setSocket(newSocket);
+  
+  //     const token = await getToken();
+  //     newSocket.emit('authenticate', { token });  // Send the token after connecting
+  
+  //     newSocket.on('receiveMessage', (data) => {
+  //       setChat((prevChat) => [...prevChat, data]);  // Update chat state with new message
+  //     });
+  
+  //     return () => newSocket.close();
+  //   };
+  
+  //   socketConnection();
+  // }, []);
+
   useEffect(() => {
     const socketConnection = async () => {
-      const newSocket = io(SOCKET_SERVER_URL);
-      setSocket(newSocket);
-  
       const token = await getToken();
-      newSocket.emit('authenticate', { token });  // Send the token after connecting
   
-      newSocket.on('receiveMessage', (data) => {
-        setChat((prevChat) => [...prevChat, data]);  // Update chat state with new message
+      // Authenticate after socket connects
+      socket.on('connect', () => {
+        socket.emit('authenticate', { token }, (response) => {
+          if (response?.status === 'success') {
+            console.log('Authenticated successfully');
+          } else {
+            console.error('Authentication failed:', response?.reason);
+          }
+        });
       });
   
-      return () => newSocket.close();
+      // Listen for messages
+      socket.on('receiveMessage', (data) => {
+        setChat((prevChat) => [...prevChat, data]);
+      });
     };
   
     socketConnection();
-  }, []);
+  
+    return () => {
+      socket.off('receiveMessage'); // Cleanup listener
+      socket.off('connect'); // Cleanup connect listener if added
+    };
+  }, [socket]);
 
   //I dont need to render Enter Chat conditionally
     // it will show message on useEffect
