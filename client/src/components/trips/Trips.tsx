@@ -12,15 +12,14 @@ import RemoveSubLevel from "./subLevels/RemoveSubLevel";
 import { useAllTrips } from "../../context/AllTripsContext";
 import { useTheme } from "../../context/ThemeContext";
 import { useEmittedItems } from '../../context/EmittedItemsContext';
+import { useTravelList } from "../../context/AllTravelListContext";
 
 const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder, isRoomJoined, notes, setNotes}) => {
   const { theme } = useTheme();
   const [hasUpdatedSharedUser, setHasUpdatedSharedUser] = useState(false);
-  const { allTrip, setAllTrip } = useAllTrips();
-  // const [tripOrder, setTripOrder] = useState({});
+  const { allTrip, setAllTrip } = useAllTrips();  //this is why not refreshed
   const { emittedItems, setEmittedItems } = useEmittedItems()
   const [deletedTrip, setDeletedTrip] = useState('');
-  // const [notes, setNotes] = useState([]);
   const [tripsEnteredNotes, setTripsEnteredNotes] = useState('');
   const [selectedNoteTrip, setSelectedNoteTrip] = useState('');
   const [newNoteAdded, setNewNoteAdded] = useState(false);
@@ -36,9 +35,10 @@ const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder, i
     addLevel: false
   });
 
-  useEffect(() => {
+  useEffect(() => { 
     if (trip) {
-      setAllTrip([...trip?.items]);
+      setAllTrip(trip?.items.map((item) => ({ ...item })));
+      console.log('setting allTrips with first edit')
 
       const initialOrder = {};
       trip.items.forEach((item) => {
@@ -54,7 +54,7 @@ const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder, i
     }
     getList();  //ensures list is latest from database --> list wont be old from switching list
 
-}, [trip]) // now the list of trips is stored in its own state which renders based on this state
+  }, [trip]) // now the list of trips is stored in its own state which renders based on this state
 
 
   useEffect(() => {
@@ -180,7 +180,9 @@ const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder, i
     }
   }
 
-  const handleDeleteItem = async ({id, travelListId}) => {
+  const handleDeleteItem = async ({id, travelListId, placeId}) => {
+
+    console.log(id, travelListId, placeId, 'in handleDelete')
 
     //optimistic deletion
       const withoutDeletedItemTrip = allTrip.filter((item) => item.id !== id) 
@@ -213,7 +215,7 @@ const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder, i
       const response = await axios.delete(`${apiUrl}/trips/lists/places/delete`, {
         data: {
           travelListId: travelListId,
-          itemId: id
+          placeId,
         }
       ,
         headers: {
@@ -221,6 +223,7 @@ const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder, i
         }
     })
       console.log(response.data, 'successfully deleted item from list')
+
 
     } catch (error) {
       console.log(error.message, 'error in deleting item from list')
@@ -252,7 +255,6 @@ const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder, i
       return 'fail swap'
     }
   }
-
 
   const handleTripOrderChange = (tripOrder, item) => {
     const currentOrder = tripOrder[item.id].value,  //here also using value
@@ -349,15 +351,16 @@ const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder, i
   };
 
 
-  const addNotes = async (id) => {
-    const selectedCategory = inputCategory[id];
-    
+  const addNotes = async ({id, placeId}) => {
+    const selectedCategory = inputCategory[id]; //will have issues here
+
     try {
       const response = await axios.post(
         `${apiUrl}/trips/lists/places/note`, 
         {
             travelListId: selectedNoteTrip.travelListId,  //these two need to be taken from item
             itemId: selectedNoteTrip.id,
+            placeId,
             note: tripsEnteredNotes, 
             category: selectedCategory,
         }, 
@@ -368,7 +371,6 @@ const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder, i
         }
     )
 
-      // console.log(response, 'response for notes')
       setTripsEnteredNotes('');
       setNewNoteAdded(true);
 
@@ -491,7 +493,7 @@ const Trips = ({trip, getList, isSharedList, setTrip, tripOrder, setTripOrder, i
                     <View>
                       <FlatList 
                         data={allTrip
-                          ?.filter((trip) => subLevel.name === trip.subLevelName)
+                          ?.filter((trip) => subLevel.name === trip.subLevelName) //if its in all trip, it means its missing from trip order
                           ?.sort((a,b) => tripOrder[a.id]?.value - tripOrder[b.id]?.value)
                         }
                         renderItem={renderPlaces}

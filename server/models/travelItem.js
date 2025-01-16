@@ -47,7 +47,13 @@ module.exports = (sequelize) => {
         }
     }, {
         tableName: 'travel_item',
-        timestamps: true
+        timestamps: true,
+        indexes: [
+            {
+                unique: true,
+                fields: ['place_id', 'travel_list_id']
+            }
+        ],
     });
 
     TravelItems.associate = function(models) {

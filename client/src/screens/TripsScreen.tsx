@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, ScrollView, StyleSheet, Touchable, TouchableOpacity} from 'react-native';
 import Trips from '../components/trips/Trips';
-import { getToken } from '../utils/authStorage';
 import MyMap from '../components/trips/Map';
 import CreateTravelListModal from '../components/trips/CreateTravelListModal';
 import ChatModal from '../components/trips/Chat/ChatModal';
@@ -13,7 +12,6 @@ import { useSelectedTripListContext } from "../context/SelectedTripListContext";
 import { useTravelList } from '../context/AllTravelListContext';
 import { useSocketContext } from '../context/SocketContext';
 import { useEmittedItems } from '../context/EmittedItemsContext';
-import io from 'socket.io-client';
 import axios from 'axios';
 
 const TripsScreen =  () => {
@@ -21,7 +19,6 @@ const TripsScreen =  () => {
   const { theme } = useTheme();
   const { apiUrl, token } = useApiConfigContext();
   const { socket } = useSocketContext();
-  // const [socket, setSocket] = useState(null)
   const handleViewTravlers = () => {
     setIsTravelersViewed((prevState) => !prevState)
   }
@@ -29,12 +26,10 @@ const TripsScreen =  () => {
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
   const [isTravelersViewed, setIsTravelersViewed] = useState(false);
 
-  // const [allTravelList, setAllTravelList] = useState([]);   // i need this one
   const {allTravelList, setAllTravelList} = useTravelList(); 
   const [isCreateNewList, setIsCreateNewList] = useState(false);
   const [InputName, setInputName] = useState(''); //lift state up from modal
   const [hasNewList, setHasNewList] = useState(false); // control rendering of list
-  // const [selectedTrip, setSelectedTrip] = useState(null);   //entire trip --> this is what should be passed
   const {selectedTrip, setSelectedTrip} = useSelectedTripListContext();
   const [roomId, setRoomId] = useState('');
   const [isInitialList, setIsInitialList] = useState(false);
@@ -58,7 +53,9 @@ const TripsScreen =  () => {
         }
     });
 
-    setAllTravelList((prevList) => [...response.data.travelLists])
+    setAllTravelList((prevList) => {
+      return [...response.data.travelLists.map((list) => ({ ...list }))];
+    });
     await delay(50)
     setIsInitialList(true)
    
@@ -69,29 +66,29 @@ const TripsScreen =  () => {
   };
 
   const test =  () => {
-    console.log(notes, 'testing notes before')
+    console.log(allTravelList[0].items, 'testing notes before')
   }
 
   const updateTravelList = () => {
     setAllTravelList((prevTravelLists) =>
       prevTravelLists.map((list) => {
         if (list.id === emittedItems[0].updatedList.travelListId) {
-          console.log(
-            emittedItems[0].updatedList.id,
-            'emittedItems[0].travelListId'
-          );
   
           // Handle emitted items and update `newItems`
           const newItems = emittedItems.reduce((acc, { updatedList, action }) => {
             switch (action) {
               case 'addItem':
                 // Add new item only if it doesn't already exist
+                console.log(acc, 'acc in addItem')
+                console.log(updatedList, 'updatedList in addItem')
                 const exists = acc.some((item) => item.id === updatedList.id);
                 return exists ? acc : [...acc, updatedList];
   
               case 'deleteItem':
                 // Remove the item by ID
-                return acc.filter((item) => item.id !== updatedList.id);
+                return acc.filter((item) => {
+                  console.log(item, 'in deleteItem case') //probably shiould be .updatedList.id
+                  item.id !== updatedList.id});
   
               case 'modifyItem':
                 // Modify the item if it matches the ID
@@ -114,7 +111,6 @@ const TripsScreen =  () => {
       })
     );
   
-    // Reset emittedItems
     setEmittedItems([]);
   };
 
@@ -200,7 +196,6 @@ const TripsScreen =  () => {
 
     socket.on('updateListItems', (updatedList, eventAction) => {
       console.log('Updated list received:', updatedList);
-      console.log(eventAction, 'test in home')
 
       setEmittedItems((prev) => [...prev, { updatedList, action: eventAction }]); // Update emitted items
 
@@ -219,20 +214,6 @@ const TripsScreen =  () => {
       socket.off('updateListItems');
     };
   }, [socket]);
-    //to work for now i need to leave this here in tripscreen because it looks like i get disconnected 
-    //for either fetching notes or some other side effect activity.
-      //not the biggest issue right now besides being connected twice. but wont be duplicate because its doing the same actions
-      //the only other options is to have it in app (potentially)
-          //since so far it disconnects and doesnt reconenct for example because 
-          //i dont go back to home screen. i stay in trip screen
-      //should be okay for now at least its working
-
-      //i can have another state which tracks disconnect. 
-        //that'll only run if theres disconnect
-          //this can avoid two connections while allowing me to still have this in two places.
-            //a bit redundant but at least it removes the double connection for now
-
-            //this is no longer concern. .on was more listeners for different events not additional socket connection
 
   useEffect(() => { //initial
     getList();
@@ -260,30 +241,6 @@ const TripsScreen =  () => {
       setIsNewMessage(true);
     }
   }, [chat])
-
-
-  // Step 1: Initialize the socket only once
-  // useEffect(() => {
-  //   console.log('initialize')
-  //   const initializeSocket = async () => {
-  //     const token = await getToken();
-  //     const newSocket = io('http://localhost:3000', {
-  //       query: { token }
-  //     });
-  //     setSocket(newSocket);
-
-  //     // Cleanup on unmount
-  //     return () =>{
-  //       newSocket.disconnect()
-  //       setIsRoomJoined(false);
-  //       setChat([]);
-  //     };
-  //   };
-
-  //   if (!socket) {
-  //     initializeSocket();
-  //   }
-  // }, []);
 
   useEffect(() => {
     if (!socket) return;
@@ -358,12 +315,13 @@ const TripsScreen =  () => {
           await delay(200); 
           await getList();
         } finally {
+          console.log('editOnFirstNote changed back to false')
           setHasNewList(false)
         }
       }
     }
     fetchList();
-  }, [hasNewList])
+  }, [hasNewList]);
 
   useEffect(() => { //this is for adding newList
     if (isCreateNewList) {
@@ -396,7 +354,6 @@ const TripsScreen =  () => {
         </Text>
       </TouchableOpacity>
       <ScrollView>
-        {/* <Button title='test' onPress={test}/> */}
         <View style={[theme.topHeaderContainer, {zIndex: 100}]}>
           <CreateTravelListModal 
             setIsCreateNewList={setIsCreateNewList}

@@ -62,6 +62,10 @@ const ManualSwipeableRow = ({item, index, handleDeleteItem, setItemIsNotesCollap
     }))
   }
 
+  const test = () => {
+    console.log(item, 'item in delete') //needs to have id
+  }
+
   return (
     <Animated.View
       {...panResponder.panHandlers} // Attach the pan responder
@@ -69,6 +73,9 @@ const ManualSwipeableRow = ({item, index, handleDeleteItem, setItemIsNotesCollap
         <View style={styles.itemContainer}>
           <TouchableOpacity onPress={() => handleCollapse()}>
             <Text>{'>'}</Text>
+          </TouchableOpacity >
+          <TouchableOpacity onPress={() => test()}>
+            <Text>{'test'}</Text>
           </TouchableOpacity >
           <Text style={styles.number}>{index}.</Text>  
           <Text style={theme.personalList.listItem}>{item.name}</Text>

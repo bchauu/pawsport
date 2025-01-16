@@ -31,16 +31,17 @@ exports.addPlaceToList = async (req, res) => {
       if (newItem) {
         emitUpdate('updateListItems', newItem, 'addItem');
       }
-
   
       res.status(201).json({ message: 'Successfully added item to list', item: newItem });
     } catch (error) {
-      console.error('Error adding item:', error);
+      if (error.name === "SequelizeUniqueConstraintError") {
+        return res.status(409).json({ error: "Place already exists in this list." });   
+      }
       res.status(500).json({ error: 'Failed to add item to list' });
     }
   };
 
-exports.getPlace = async (req, res) => {
+  exports.getPlace = async (req, res) => {
     try {
       const listId = req.params.listId; 
   
@@ -60,41 +61,50 @@ exports.getPlace = async (req, res) => {
   };
 
 exports.deletePlaceFromList = async (req, res) => {
-  const {travelListId, itemId} = req.body;
+  const {travelListId, placeId, } = req.body;
   const { sequelize } = require('../models'); // Import Sequelize instance
-
+  console.log(placeId, 'itemId in delete from places')
+  console.log(req.body, 'req.body')
   const transaction = await sequelize.transaction();
   try {
-    // Start a transaction
 
-    // Step 1: Delete all associated notes within the transaction
-    const notesDeleted = await ItemNotes.destroy({
-      where: {
-        travel_item_id: itemId,
-      },
-      transaction, // Pass the transaction
-    });
-    console.log(`Deleted ${notesDeleted} notes associated with itemId: ${itemId}`);
-
-    // Step 2: Find the travel item within the transaction
+    //find first
     const deleteItem = await TravelItems.findOne({
       where: {
-        id: itemId,
+        place_id: placeId,
         travel_list_id: travelListId,
       },
-      transaction, // Pass the transaction
+      transaction, // Use transaction if necessary
     });
+
 
     if (!deleteItem) {
       // Rollback the transaction and return a 404
       await transaction.rollback();
       return res.status(404).json({ message: 'Item not found or already deleted.' });
     }
+    
+    if (deleteItem) {
+      await ItemNotes.destroy({
+        where: {
+          travel_item_id: deleteItem.id,
+        },
+        transaction, // Use the same transaction
+      });
+    
+      // Proceed to delete the travel item if necessary
+      await TravelItems.destroy({
+        where: {
+          id: deleteItem.id,
+        },
+        transaction,
+      });
+    }
 
     // Step 3: Delete the travel item within the transaction
     await TravelItems.destroy({
       where: {
-        id: itemId,
+        id: deleteItem.id,
         travel_list_id: travelListId,
       },
       transaction, // Pass the transaction
@@ -107,7 +117,6 @@ exports.deletePlaceFromList = async (req, res) => {
 
     emitUpdate('updateListItems', deleteItem, 'deleteItem');
 
-    console.log(`Deleted itemId: ${itemId}`);
     res.status(200).json({ message: 'Item and associated notes deleted successfully.' });
 
   } catch (error) {
@@ -120,22 +129,41 @@ exports.deletePlaceFromList = async (req, res) => {
 }
 
 exports.addNote = async (req, res) => {
-  const {travelListId, itemId, note, category} = req.body;
+  const {travelListId, itemId, placeId, note, category} = req.body;
   const {userId} = req.user
 
   try {
+
     if (userId) {
-      const travelItem = await TravelItems.findOne({ where: 
-        { 
-          id: itemId, 
-          travel_list_id: travelListId
-        }})
+      let travelItem;
+      if (!itemId) {
+        console.log('added without id and only placeId')
+
+        travelItem = await TravelItems.findOne({ 
+          where: 
+            { 
+              place_id: placeId,
+              travel_list_id: travelListId,
+            }
+        })
+
+      } else {
+        travelItem = await TravelItems.findOne({ 
+          where: 
+            { 
+              id: itemId, 
+              travel_list_id: travelListId
+            }
+        })
+      }
+
+      // const 
 
         let newNote;
 
       if (travelItem) {
           newNote = await ItemNotes.create({
-            travelItemId: itemId,
+            travelItemId: travelItem.id,
             notes: note, 
             userId: userId, 
             category
@@ -144,17 +172,6 @@ exports.addNote = async (req, res) => {
 
       if (newNote) {
         console.log(newNote.dataValues, 'newNotes')
-
-        // ItemNotes {
-        //   dataValues: {
-        //     id: '55',
-        //     travelItemId: '4',
-        //     notes: 'Asd',
-        //     userId: '4',
-        //     category: 'Important Notes',
-        //     updatedAt: 2025-01-15T10:58:12.069Z,
-        //     createdAt: 2025-01-15T10:58:12.069Z
-        //   },
         emitUpdate('updateNotes', newNote.dataValues, 'addNote');
       }
 
