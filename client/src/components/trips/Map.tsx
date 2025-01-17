@@ -12,14 +12,30 @@ const initial = {
 };
 
 const MyMap = ({ selectedTrip, tripOrder, setTripOrder }) => {
-  // console.log(selectedTrip, 'selectedTrip in MyMap')
-  // console.log(tripOrder, 'tripOrder in maps')
  
   const [region, setRegion] = useState(initial);
   const mapRef = useRef(null);
+  const [isUserInteracting, setIsUserInteracting] = useState(false); 
   const [markerPositions, setMarkerPositions] = useState([]);
   const [isDisplayedName, setIsDisplayedName] = useState([]);
-  // console.log(markerPositions, 'marked positions')
+  const interactionCount = useRef(0); 
+
+  const MAX_UPDATES = 5;
+    //fix infinite loop
+
+  const resetInteractionCounter = () => {
+    interactionCount.current = 0;
+  };
+
+  useEffect(() => {
+    if (isUserInteracting) {
+      console.log(isUserInteracting, 'true')
+      resetInteractionCounter();
+    } else {
+      console.log(isUserInteracting, 'false')
+    }
+
+  }, [isUserInteracting])
 
   useEffect(() => {
     if (selectedTrip) {
@@ -67,10 +83,21 @@ const MyMap = ({ selectedTrip, tripOrder, setTripOrder }) => {
   };
 
   const handleRegionChange = debounce((newRegion) => {
+    setIsUserInteracting(true); // User is interacting with the map
     setRegion(newRegion);
   }, 50);
 
   const handleRegionChangeComplete = (newRegion) => {
+    interactionCount.current += 1;
+
+    // Check if updates should stop
+    console.log(interactionCount, 'count')
+    if (interactionCount.current > MAX_UPDATES) {
+      console.log('Maximum updates reached. Ignoring further changes.');
+      return;
+    }
+
+    setIsUserInteracting(false); // User is interacting with the map
     setRegion(newRegion); 
 
     if (selectedTrip) {
@@ -137,6 +164,7 @@ const MyMap = ({ selectedTrip, tripOrder, setTripOrder }) => {
   };
 
   const handleZoomIn = () => {
+    setIsUserInteracting(true);
     // Decrease the latitudeDelta and longitudeDelta for zooming in
     setRegion((prevRegion) => ({
       ...prevRegion,
@@ -146,6 +174,7 @@ const MyMap = ({ selectedTrip, tripOrder, setTripOrder }) => {
   };
 
   const handleZoomOut = () => {
+    setIsUserInteracting(true);
     // Increase the latitudeDelta and longitudeDelta for zooming out
     setRegion((prevRegion) => ({
       ...prevRegion,
