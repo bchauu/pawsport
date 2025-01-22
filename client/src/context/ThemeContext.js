@@ -230,8 +230,17 @@ const theme = {
       letterSpacing: 0.5, // Slight spacing for a polished look
     },
     listItem: {
+      // width: '60%',
+      width: 160,
       paddingVertical: 6, // Reduce vertical padding
-      paddingHorizontal: 8, // Slightly reduce horizontal padding
+    },
+    itemTitle: {
+      flexDirection: 'row',
+      marginRight: '0'
+    },
+    itemButtons: {
+      flexDirection: 'row',
+      marginLeft: 30,
     },
     notesItem: {
       padding: 8,

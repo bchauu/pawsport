@@ -71,26 +71,31 @@ const ManualSwipeableRow = ({item, index, handleDeleteItem, setItemIsNotesCollap
       {...panResponder.panHandlers} // Attach the pan responder
       style={[styles.container, { transform: [{ translateX }] }]}>
         <View style={styles.itemContainer}>
-          <TouchableOpacity onPress={() => handleCollapse()}>
-            <Text>{'>'}</Text>
-          </TouchableOpacity >
-          <TouchableOpacity onPress={() => test()}>
-            <Text>{'test'}</Text>
-          </TouchableOpacity >
-          <Text style={styles.number}>{index}.</Text>  
-          <Text style={theme.personalList.listItem}>{item.name}</Text>
-          <TouchableOpacity onPress={() => handleTripOrderChange(tripOrder, item)}>
-            <Text>Up Arrow</Text>
-          </TouchableOpacity>
-          <MoveSubLevelModal
-            item={item}
-            allTrip={allTrip}
-            tripOrder={tripOrder}
-            setTripOrder={setTripOrder}
-            setHighestValueSubLevel={setHighestValueSubLevel}
-            highestValueSubLevel={highestValueSubLevel}
-            subLevels={subLevels}
-          />
+          <View style={theme.personalList.itemTitle}>
+            <TouchableOpacity onPress={() => handleCollapse()}>
+              <Text>{'>'}</Text>
+            </TouchableOpacity >
+            <TouchableOpacity onPress={() => test()}>
+              <Text>{'test'}</Text>
+            </TouchableOpacity >
+            <Text style={styles.number}>{index}.</Text>  
+            <Text style={theme.personalList.listItem}>{item.name}</Text>
+          </View>
+          <View style={theme.personalList.itemButtons}>
+            <TouchableOpacity onPress={() => handleTripOrderChange(tripOrder, item)}>
+              <Text>Up Arrow</Text>
+            </TouchableOpacity>
+            <MoveSubLevelModal
+              item={item}
+              allTrip={allTrip}
+              tripOrder={tripOrder}
+              setTripOrder={setTripOrder}
+              setHighestValueSubLevel={setHighestValueSubLevel}
+              highestValueSubLevel={highestValueSubLevel}
+              subLevels={subLevels}
+            />
+          </View>
+
         </View>
         {
           isSwipedLeft &&
@@ -122,6 +127,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#fff',
     borderBottomColor: '#ccc',
+    justifyContent: 'space-between',
+    alignContent: 'center',
   },
   title: {
     fontSize: 18,
