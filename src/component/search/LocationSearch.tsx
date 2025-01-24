@@ -1,9 +1,9 @@
 import React from 'react';
 import {View, TextInput} from 'react-native';
-import {SearchField} from '../types/types';
+import {SearchField} from '../../types/types';
 import {useNavigation} from '@react-navigation/native';
-import {useSearch} from '../context/SearchContext';
-import {useTheme} from '../context/ThemeContext';
+import {useSearch} from '../../context/SearchContext';
+import {useTheme} from '../../context/ThemeContext';
 
 const LocationSearch: React.FC<SearchField> = ({enteredQuery, updateQuery}) => {
   const {theme} = useTheme();

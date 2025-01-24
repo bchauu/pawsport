@@ -1,6 +1,6 @@
 import React from 'react';
-import {getToken, deleteToken} from '../utils/authStorage';
-import {useAuth} from '../context/AuthContext';
+import {getToken, deleteToken} from '../../utils/authStorage';
+import {useAuth} from '../../context/AuthContext';
 import {View, Button} from 'react-native';
 
 const LogOut = () => {

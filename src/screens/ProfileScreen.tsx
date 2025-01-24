@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 // import LogOut from '../components/account/LogOut';
-import LogOut from '../account/LogOut';
+import LogOut from '../component/account/LogOut';
 
 const ProfileScreen = () => {
   return (

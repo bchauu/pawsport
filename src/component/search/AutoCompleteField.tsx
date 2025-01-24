@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Button, Text} from 'react-native';
-import {useSearch} from '../context/SearchContext';
+import {useSearch} from '../../context/SearchContext';
 import {useNavigation} from '@react-navigation/native';
 
 type AutoCompleteFieldProps = {

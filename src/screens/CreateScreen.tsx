@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, Button} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import CreateAccountForm from '../account/CreateAccountForm';
+import CreateAccountForm from '../component/account/CreateAccountForm';
 import {AuthStackParamList} from '../types/types';
 
 type LoginScreenNavigationProp = StackNavigationProp<

@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
-import {useSearch} from '../context/SearchContext';
-import {useTheme} from '../context/ThemeContext';
+import {useSearch} from '../../context/SearchContext';
+import {useTheme} from '../../context/ThemeContext';
 
 const SearchOptions = ({selectedSearchOption, setSelectedSearchOption}) => {
   const {theme} = useTheme();

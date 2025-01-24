@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {TextInput, Text, ScrollView} from 'react-native';
 import {useSearch} from '../context/SearchContext';
 // import AutoCompleteField from '../components/search/AutoCompleteField';
-import AutoCompleteField from '../search/AutoCompleteField';
+import AutoCompleteField from '../component/search/AutoCompleteField';
 import config from '../config';
 import {getToken} from '../utils/authStorage';
 import axios from 'axios';

@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import {useAuth} from '../context/AuthContext';
+import {useAuth} from '../../context/AuthContext';
 import {View, TextInput, Button, Alert} from 'react-native';
-import {storeToken, getToken} from '../utils/authStorage';
-import config from '../config';
+import {storeToken, getToken} from '../../utils/authStorage';
+import config from '../../config';
 
 interface FormData {
   username: string;
