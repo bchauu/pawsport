@@ -90,9 +90,9 @@ const ManualSwipeableRow = ({
           <TouchableOpacity onPress={() => handleCollapse()}>
             <Text>{'>'}</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => test()}>
+          {/* <TouchableOpacity onPress={() => test()}>
             <Text>{'test'}</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <Text style={styles.number}>{index}.</Text>
           <Text style={theme.personalList.listItem}>{item.name}</Text>
         </View>

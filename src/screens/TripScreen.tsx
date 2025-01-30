@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Trips from '../component/trips/Trips';
-// import MyMap from '../component/trips/Map';
+import MyMap from '../component/trips/Map';
 import CreateTravelListModal from '../component/trips/CreateTravelListModal';
 import ChatModal from '../component/trips/Chat/ChatModal';
 // import {useNavigation} from '@react-navigation/native';
@@ -334,9 +334,9 @@ const TripsScreen = () => {
 
   return (
     <View>
-      <TouchableOpacity onPress={test}>
+      {/* <TouchableOpacity onPress={test}>
         <Text>Test</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <ScrollView>
         <View style={[theme.topHeaderContainer, {zIndex: 100}]}>
           <CreateTravelListModal
@@ -367,11 +367,11 @@ const TripsScreen = () => {
           />
         </View>
         <View style={styles.mapContainer}>
-          {/* <MyMap
+          <MyMap
             selectedTrip={selectedTrip}
             tripOrder={tripOrder}
             setTripOrder={setTripOrder}
-          /> */}
+          />
         </View>
         {isRoomJoined && (
           <View style={styles.chatContainer}>

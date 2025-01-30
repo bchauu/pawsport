@@ -5,21 +5,23 @@ require Pod::Executable.execute_command('node', ['-p',
     {paths: [process.argv[1]]},
   )', __dir__]).strip
 
-platform :ios, min_ios_version_supported
+platform :ios, 15
 prepare_react_native_project!
 
-linkage = ENV['USE_FRAMEWORKS']
-if linkage != nil
-  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
-  use_frameworks! :linkage => linkage.to_sym
-end
-
 target 'travelCollabApp' do
+
+  rn_maps_path = '../node_modules/react-native-maps'
+  pod 'react-native-maps', :path => rn_maps_path
+
   config = use_native_modules!
+
+  pod 'GoogleMaps', '7.4.0'
+  pod 'Google-Maps-iOS-Utils'
 
   use_react_native!(
     :path => config[:reactNativePath],
     # An absolute path to your application root.
+    :hermes_enabled => false,
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 

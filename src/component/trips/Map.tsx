@@ -166,8 +166,8 @@ const MyMap = ({selectedTrip, tripOrder, setTripOrder}) => {
     const midLatitude = (minLatitude + maxLatitude) / 2;
     const midLongitude = (minLongitude + maxLongitude) / 2;
 
-    const latitudeDelta = maxLatitude - minLatitude + 0.02; // Add padding
-    const longitudeDelta = maxLongitude - minLongitude + 0.02; // Add padding
+    const latitudeDelta = maxLatitude - minLatitude + 0.01; // Add padding
+    const longitudeDelta = maxLongitude - minLongitude + 0.01; // Add padding
 
     return {
       latitude: midLatitude,
@@ -180,21 +180,41 @@ const MyMap = ({selectedTrip, tripOrder, setTripOrder}) => {
   const handleZoomIn = () => {
     setIsUserInteracting(true);
     // Decrease the latitudeDelta and longitudeDelta for zooming in
-    setRegion(prevRegion => ({
-      ...prevRegion,
-      latitudeDelta: prevRegion.latitudeDelta / 2,
-      longitudeDelta: prevRegion.longitudeDelta / 2,
-    }));
+    setRegion(prevRegion => {
+      const newRegion = {
+        ...prevRegion,
+        latitudeDelta: prevRegion.latitudeDelta / 2,
+        longitudeDelta: prevRegion.longitudeDelta / 2,
+      };
+
+      // Recalculate marker positions based on the new region
+      if (selectedTrip) {
+        const transformedMarkers = transformPlaces(selectedTrip.items);
+        setTimeout(() => calculateMarkerPositions(transformedMarkers), 100);
+      }
+
+      return newRegion;
+    });
   };
 
   const handleZoomOut = () => {
     setIsUserInteracting(true);
     // Increase the latitudeDelta and longitudeDelta for zooming out
-    setRegion(prevRegion => ({
-      ...prevRegion,
-      latitudeDelta: prevRegion.latitudeDelta * 2,
-      longitudeDelta: prevRegion.longitudeDelta * 2,
-    }));
+    setRegion(prevRegion => {
+      const newRegion = {
+        ...prevRegion,
+        latitudeDelta: prevRegion.latitudeDelta * 2,
+        longitudeDelta: prevRegion.longitudeDelta * 2,
+      };
+
+      // Recalculate marker positions based on the new region
+      if (selectedTrip) {
+        const transformedMarkers = transformPlaces(selectedTrip.items);
+        setTimeout(() => calculateMarkerPositions(transformedMarkers), 100);
+      }
+
+      return newRegion;
+    });
   };
 
   const handleClickPin = id => {
@@ -210,7 +230,7 @@ const MyMap = ({selectedTrip, tripOrder, setTripOrder}) => {
       {region && (
         <MapView
           ref={mapRef}
-          provider={PROVIDER_GOOGLE}
+          // provider={MapView.PROVIDER_GOOGLE} currently using apple maps
           style={styles.map}
           region={region} // Use controlled region state
           onRegionChange={handleRegionChange}
