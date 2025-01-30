@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import MoveSubLevelModal from '../subLevels/MoveSubLevelModal';
 import {useTheme} from '../../../context/ThemeContext';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const ManualSwipeableRow = ({
   item,
@@ -90,16 +91,18 @@ const ManualSwipeableRow = ({
           <TouchableOpacity onPress={() => handleCollapse()}>
             <Text>{'>'}</Text>
           </TouchableOpacity>
-          {/* <TouchableOpacity onPress={() => test()}>
+          <TouchableOpacity onPress={() => test()}>
             <Text>{'test'}</Text>
-          </TouchableOpacity> */}
+            <Icon name="home" size={30} color="#900" />
+          </TouchableOpacity>
           <Text style={styles.number}>{index}.</Text>
           <Text style={theme.personalList.listItem}>{item.name}</Text>
         </View>
         <View style={theme.personalList.itemButtons}>
           <TouchableOpacity
             onPress={() => handleTripOrderChange(tripOrder, item)}>
-            <Text>Up Arrow</Text>
+            {/* <Text>Up Arrow</Text> */}
+            <Icon name="keyboard-arrow-up" size={30} color="black" />
           </TouchableOpacity>
           <MoveSubLevelModal
             item={item}

@@ -16,9 +16,9 @@
 		428905392D4A817E0035ED53 /* GoogleMapsBase.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 428905382D4A817E0035ED53 /* GoogleMapsBase.xcframework */; };
 		4289053B2D4A817E0035ED53 /* GoogleMapsCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4289053A2D4A817E0035ED53 /* GoogleMapsCore.xcframework */; };
 		429327A72D4B99FF009EBC5D /* libreact-native-maps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 429327A62D4B99FF009EBC5D /* libreact-native-maps.a */; };
+		4948A69CB35A721F57D4CA84 /* libPods-travelCollabApp-travelCollabAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B9DB2810A1555EF0FF21262 /* libPods-travelCollabApp-travelCollabAppTests.a */; };
+		6AEDED626B293A0193EB2FC3 /* libPods-travelCollabApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8526729552B0357D0791CF56 /* libPods-travelCollabApp.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		C501E94C139391F97426AC13 /* libPods-travelCollabApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B529CF0D7C467BC94F26C57A /* libPods-travelCollabApp.a */; };
-		F878236AFBE072FD5B12C3C8 /* libPods-travelCollabApp-travelCollabAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78BA0DE145EAA19D058A6CBA /* libPods-travelCollabApp-travelCollabAppTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,7 +35,7 @@
 		00E356EE1AD99517003FC87E /* travelCollabAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = travelCollabAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* travelCollabAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = travelCollabAppTests.m; sourceTree = "<group>"; };
-		010668E270562FEAFBC512DA /* Pods-travelCollabApp-travelCollabAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-travelCollabApp-travelCollabAppTests.debug.xcconfig"; path = "Target Support Files/Pods-travelCollabApp-travelCollabAppTests/Pods-travelCollabApp-travelCollabAppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		10586B64954118C7DFFF7C42 /* Pods-travelCollabApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-travelCollabApp.release.xcconfig"; path = "Target Support Files/Pods-travelCollabApp/Pods-travelCollabApp.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* travelCollabApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = travelCollabApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = travelCollabApp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = travelCollabApp/AppDelegate.mm; sourceTree = "<group>"; };
@@ -43,18 +43,18 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = travelCollabApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = travelCollabApp/main.m; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = travelCollabApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		33A5B2B4C2DB572FFDC513A5 /* Pods-travelCollabApp-travelCollabAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-travelCollabApp-travelCollabAppTests.release.xcconfig"; path = "Target Support Files/Pods-travelCollabApp-travelCollabAppTests/Pods-travelCollabApp-travelCollabAppTests.release.xcconfig"; sourceTree = "<group>"; };
+		14E94649501ACA4531AA9C28 /* Pods-travelCollabApp-travelCollabAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-travelCollabApp-travelCollabAppTests.debug.xcconfig"; path = "Target Support Files/Pods-travelCollabApp-travelCollabAppTests/Pods-travelCollabApp-travelCollabAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		428905362D4A811C0035ED53 /* GoogleMaps.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleMaps.xcframework; path = Pods/GoogleMaps/Maps/Frameworks/GoogleMaps.xcframework; sourceTree = "<group>"; };
 		428905382D4A817E0035ED53 /* GoogleMapsBase.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleMapsBase.xcframework; path = Pods/GoogleMaps/Base/Frameworks/GoogleMapsBase.xcframework; sourceTree = "<group>"; };
 		4289053A2D4A817E0035ED53 /* GoogleMapsCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleMapsCore.xcframework; path = Pods/GoogleMaps/Maps/Frameworks/GoogleMapsCore.xcframework; sourceTree = "<group>"; };
 		429327A62D4B99FF009EBC5D /* libreact-native-maps.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-maps.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		78BA0DE145EAA19D058A6CBA /* libPods-travelCollabApp-travelCollabAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-travelCollabApp-travelCollabAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B9DB2810A1555EF0FF21262 /* libPods-travelCollabApp-travelCollabAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-travelCollabApp-travelCollabAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E0AB4F7BCA930EDFA11D999 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = travelCollabApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = travelCollabApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		B529CF0D7C467BC94F26C57A /* libPods-travelCollabApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-travelCollabApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C264A3F875282827FFF9B072 /* Pods-travelCollabApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-travelCollabApp.debug.xcconfig"; path = "Target Support Files/Pods-travelCollabApp/Pods-travelCollabApp.debug.xcconfig"; sourceTree = "<group>"; };
+		8526729552B0357D0791CF56 /* libPods-travelCollabApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-travelCollabApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		955E433E00FBACE25603E1BE /* Pods-travelCollabApp-travelCollabAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-travelCollabApp-travelCollabAppTests.release.xcconfig"; path = "Target Support Files/Pods-travelCollabApp-travelCollabAppTests/Pods-travelCollabApp-travelCollabAppTests.release.xcconfig"; sourceTree = "<group>"; };
+		BC0D73BBD81886F50428B5C0 /* Pods-travelCollabApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-travelCollabApp.debug.xcconfig"; path = "Target Support Files/Pods-travelCollabApp/Pods-travelCollabApp.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F362FE32DF3CA77433043516 /* Pods-travelCollabApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-travelCollabApp.release.xcconfig"; path = "Target Support Files/Pods-travelCollabApp/Pods-travelCollabApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,7 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F878236AFBE072FD5B12C3C8 /* libPods-travelCollabApp-travelCollabAppTests.a in Frameworks */,
+				4948A69CB35A721F57D4CA84 /* libPods-travelCollabApp-travelCollabAppTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,7 +74,7 @@
 				428905392D4A817E0035ED53 /* GoogleMapsBase.xcframework in Frameworks */,
 				4289053B2D4A817E0035ED53 /* GoogleMapsCore.xcframework in Frameworks */,
 				428905372D4A811C0035ED53 /* GoogleMaps.xcframework in Frameworks */,
-				C501E94C139391F97426AC13 /* libPods-travelCollabApp.a in Frameworks */,
+				6AEDED626B293A0193EB2FC3 /* libPods-travelCollabApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,8 +121,8 @@
 				4289053A2D4A817E0035ED53 /* GoogleMapsCore.xcframework */,
 				428905362D4A811C0035ED53 /* GoogleMaps.xcframework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				B529CF0D7C467BC94F26C57A /* libPods-travelCollabApp.a */,
-				78BA0DE145EAA19D058A6CBA /* libPods-travelCollabApp-travelCollabAppTests.a */,
+				8526729552B0357D0791CF56 /* libPods-travelCollabApp.a */,
+				4B9DB2810A1555EF0FF21262 /* libPods-travelCollabApp-travelCollabAppTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -161,10 +161,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				C264A3F875282827FFF9B072 /* Pods-travelCollabApp.debug.xcconfig */,
-				F362FE32DF3CA77433043516 /* Pods-travelCollabApp.release.xcconfig */,
-				010668E270562FEAFBC512DA /* Pods-travelCollabApp-travelCollabAppTests.debug.xcconfig */,
-				33A5B2B4C2DB572FFDC513A5 /* Pods-travelCollabApp-travelCollabAppTests.release.xcconfig */,
+				BC0D73BBD81886F50428B5C0 /* Pods-travelCollabApp.debug.xcconfig */,
+				10586B64954118C7DFFF7C42 /* Pods-travelCollabApp.release.xcconfig */,
+				14E94649501ACA4531AA9C28 /* Pods-travelCollabApp-travelCollabAppTests.debug.xcconfig */,
+				955E433E00FBACE25603E1BE /* Pods-travelCollabApp-travelCollabAppTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -176,11 +176,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "travelCollabAppTests" */;
 			buildPhases = (
-				E4386D31D8946A3BEA2D4FE8 /* [CP] Check Pods Manifest.lock */,
+				64C0957F17362529B167899E /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				5ADFEE9CA54E70881FB38033 /* [CP] Copy Pods Resources */,
+				974D0D90E02083D280909327 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -196,12 +196,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "travelCollabApp" */;
 			buildPhases = (
-				132E76F1D66FBD5820686590 /* [CP] Check Pods Manifest.lock */,
+				AF8B68257CA7C07E881EC991 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				750F5847366FAD06232FAF29 /* [CP] Copy Pods Resources */,
+				CAEA04C4FC2A0026C689EF34 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -285,7 +285,46 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"$REACT_NATIVE_PATH/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"$REACT_NATIVE_PATH/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		132E76F1D66FBD5820686590 /* [CP] Check Pods Manifest.lock */ = {
+		64C0957F17362529B167899E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-travelCollabApp-travelCollabAppTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		974D0D90E02083D280909327 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-travelCollabApp-travelCollabAppTests/Pods-travelCollabApp-travelCollabAppTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-travelCollabApp-travelCollabAppTests/Pods-travelCollabApp-travelCollabAppTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-travelCollabApp-travelCollabAppTests/Pods-travelCollabApp-travelCollabAppTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AF8B68257CA7C07E881EC991 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -307,24 +346,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5ADFEE9CA54E70881FB38033 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-travelCollabApp-travelCollabAppTests/Pods-travelCollabApp-travelCollabAppTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-travelCollabApp-travelCollabAppTests/Pods-travelCollabApp-travelCollabAppTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-travelCollabApp-travelCollabAppTests/Pods-travelCollabApp-travelCollabAppTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		750F5847366FAD06232FAF29 /* [CP] Copy Pods Resources */ = {
+		CAEA04C4FC2A0026C689EF34 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -339,28 +361,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-travelCollabApp/Pods-travelCollabApp-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E4386D31D8946A3BEA2D4FE8 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-travelCollabApp-travelCollabAppTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -396,7 +396,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 010668E270562FEAFBC512DA /* Pods-travelCollabApp-travelCollabAppTests.debug.xcconfig */;
+			baseConfigurationReference = 14E94649501ACA4531AA9C28 /* Pods-travelCollabApp-travelCollabAppTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -423,7 +423,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 33A5B2B4C2DB572FFDC513A5 /* Pods-travelCollabApp-travelCollabAppTests.release.xcconfig */;
+			baseConfigurationReference = 955E433E00FBACE25603E1BE /* Pods-travelCollabApp-travelCollabAppTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -447,7 +447,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C264A3F875282827FFF9B072 /* Pods-travelCollabApp.debug.xcconfig */;
+			baseConfigurationReference = BC0D73BBD81886F50428B5C0 /* Pods-travelCollabApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -559,7 +559,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F362FE32DF3CA77433043516 /* Pods-travelCollabApp.release.xcconfig */;
+			baseConfigurationReference = 10586B64954118C7DFFF7C42 /* Pods-travelCollabApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -736,10 +736,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = false;
@@ -812,10 +809,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = false;

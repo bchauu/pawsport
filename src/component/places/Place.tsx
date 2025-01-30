@@ -242,7 +242,7 @@ const Place = ({
       //     })
       // }
     } catch (error) {
-      console.log(error);
+      console.log(error, 'error in places');
       if (error.status === 409) {
         Alert.alert('This place has already been added to the specified list');
       }
