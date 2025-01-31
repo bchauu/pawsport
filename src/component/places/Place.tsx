@@ -35,7 +35,7 @@ const Place = ({
 
     setSelectedTrip(prevSelectedTrip => ({
       ...prevSelectedTrip,
-      items: [...prevSelectedTrip.items, addedItem],
+      items: [...prevSelectedTrip?.items, addedItem],
     }));
 
     setAllTravelList(prevTravelLists =>
@@ -125,6 +125,12 @@ const Place = ({
       setIsSearchInitiated(false);
     }
   }, [isSearchInitiated]);
+
+  //moving sublevels not updating correctly --> adding to place
+  //after moving sublevels out of default, and then adding places, sublevels revert back. but only on clientside
+  //if refreshed its fine
+  //since its only when adding means, its using old order
+  //which looks like this messes up order for moving around
 
   const handleAddTrip = async selectedList => {
     try {
