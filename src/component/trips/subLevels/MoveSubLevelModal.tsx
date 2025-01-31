@@ -10,6 +10,7 @@ import {
 import {useTheme} from '../../../context/ThemeContext';
 import useApiConfig from '../../../utils/apiConfig';
 import axios from 'axios';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const MoveSubLevelModal = ({
   item,
@@ -126,7 +127,7 @@ const MoveSubLevelModal = ({
       <TouchableOpacity
         onPress={() => setModalVisible(true)}
         style={[theme.card.button]}>
-        <Text style={[theme.card.buttonText]}>Move Level</Text>
+        <Icon name="swap-vert" size={20} color="black" />
       </TouchableOpacity>
       {/* The Modal */}
       {modalVisible && (

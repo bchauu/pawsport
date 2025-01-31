@@ -239,6 +239,7 @@ const theme = {
     },
     itemButtons: {
       flexDirection: 'row',
+      // backgroundColor: 'red',
       marginLeft: 30,
     },
     notesItem: {

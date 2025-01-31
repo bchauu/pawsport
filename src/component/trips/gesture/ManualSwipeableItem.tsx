@@ -10,6 +10,7 @@ import {
 import MoveSubLevelModal from '../subLevels/MoveSubLevelModal';
 import {useTheme} from '../../../context/ThemeContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import FontIcon from 'react-native-vector-icons/FontAwesome';
 
 const ManualSwipeableRow = ({
   item,
@@ -27,6 +28,7 @@ const ManualSwipeableRow = ({
   const {theme} = useTheme();
   const translateX = useRef(new Animated.Value(0)).current; // Animated value for translation
   const [isSwipedLeft, setIsSwipedLeft] = useState(false);
+  const [collapsedItemDetails, setCollapsedItemDetails] = useState(false);
 
   const handleSwipeLeft = () => {
     setIsSwipedLeft(true);
@@ -38,18 +40,18 @@ const ManualSwipeableRow = ({
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: (evt, gestureState) => {
-        return Math.abs(gestureState.dx) > 20; // Start swipe if moved enough
+        return Math.abs(gestureState.dx) > 35; // Start swipe if moved enough
       },
       onPanResponderMove: (evt, gestureState) => {
         translateX.setValue(gestureState.dx); // Update the translation
       },
       onPanResponderRelease: (evt, gestureState) => {
-        if (gestureState.dx < -20) {
+        if (gestureState.dx < -35) {
           handleSwipeLeft();
           // setIsSwipedLeft(true)
 
           Animated.spring(translateX, {
-            toValue: -20, // Swipe item to the right, adjust as needed
+            toValue: -35, // Swipe item to the right, adjust as needed
             useNativeDriver: true,
           }).start();
         }
@@ -76,6 +78,7 @@ const ManualSwipeableRow = ({
       ...prevState,
       [item.id]: {isCollapsed: !prevState[item.id].isCollapsed},
     }));
+    setCollapsedItemDetails(prev => !prev);
   };
 
   const test = () => {
@@ -88,20 +91,21 @@ const ManualSwipeableRow = ({
       style={[styles.container, {transform: [{translateX}]}]}>
       <View style={styles.itemContainer}>
         <View style={theme.personalList.itemTitle}>
-          <TouchableOpacity onPress={() => handleCollapse()}>
-            <Text>{'>'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => test()}>
-            <Text>{'test'}</Text>
-            <Icon name="home" size={30} color="#900" />
-          </TouchableOpacity>
+          {!collapsedItemDetails ? (
+            <TouchableOpacity onPress={() => handleCollapse()}>
+              <Icon name="keyboard-arrow-right" size={15} color="black" />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={() => handleCollapse()}>
+              <Icon name="keyboard-arrow-down" size={15} color="black" />
+            </TouchableOpacity>
+          )}
           <Text style={styles.number}>{index}.</Text>
           <Text style={theme.personalList.listItem}>{item.name}</Text>
         </View>
         <View style={theme.personalList.itemButtons}>
           <TouchableOpacity
             onPress={() => handleTripOrderChange(tripOrder, item)}>
-            {/* <Text>Up Arrow</Text> */}
             <Icon name="keyboard-arrow-up" size={30} color="black" />
           </TouchableOpacity>
           <MoveSubLevelModal
@@ -139,7 +143,9 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     flexDirection: 'row',
+    width: '97%',
     backgroundColor: '#fff',
+    // backgroundColor: 'blue',
     borderBottomColor: '#ccc',
     justifyContent: 'space-between',
     alignContent: 'center',

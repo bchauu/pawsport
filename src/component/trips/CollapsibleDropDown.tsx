@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Button} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const CustomDropdown = ({
+const CollapsibleDropdown = ({
   setIsSharedList,
   allTravelList,
   selectedTrip,
@@ -79,7 +80,8 @@ const CustomDropdown = ({
       {/* Dropdown Trigger */}
       <TouchableOpacity style={styles.dropdownTrigger} onPress={toggleDropdown}>
         <Text style={styles.mainText}> Select List </Text>
-        <Text style={styles.arrow}> ⬇️ </Text>
+        {/* <Text style={styles.arrow}> ⬇️ </Text> */}
+        <Icon name="keyboard-arrow-down" size={20} color="black" />
       </TouchableOpacity>
 
       {/* shows dropdown option when set to true */}
@@ -193,4 +195,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomDropdown;
+export default CollapsibleDropdown;

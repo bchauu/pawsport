@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {View, Modal, Button, Text, StyleSheet, Dimensions} from 'react-native';
 import Chat from './Chat';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import AntIcon from 'react-native-vector-icons/AntDesign';
 
 const ChatModal = ({
   setIsNewMessage,
@@ -79,7 +81,10 @@ const ChatModal = ({
       <TouchableOpacity
         onPress={() => handleCollab()}
         style={styles.planButton}>
-        <Text style={styles.planButtonText}>Plan Together ✈️</Text>
+        <Text style={styles.planButtonText}>Plan Together</Text>
+        {/* <Icon name="chatbubble-outline" size={24} color="black" /> */}
+        <Icon name="flight" size={24} color="black" />
+        {/* <AntIcon name="message1" size={24} color="blue" /> */}
       </TouchableOpacity>
       <Modal
         animationType="slide"
