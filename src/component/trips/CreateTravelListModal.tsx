@@ -36,7 +36,7 @@ const CreateTravelListModal = ({
           styles.buttonContainer,
           {width: '40%'},
         ]}>
-        <Text style={[theme.ctaButton.text]}>Create New Travel List</Text>
+        <Text style={[theme.ctaButton.text]}>Create Travel List</Text>
       </TouchableOpacity>
       <Modal
         animationType="slide" // Animation type can be 'slide', 'fade', or 'none'

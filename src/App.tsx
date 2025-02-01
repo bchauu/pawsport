@@ -1,7 +1,8 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import AppNavigator from './navigations/AppNavigator';
+// import AppNavigator from './navigations/AppNavigator';
+import MainNavigator from './navigations/MainNavigator';
 import {AuthProvider} from './context/AuthContext';
 import {ThemeProvider} from './context/ThemeContext';
 import {TravelListProvider} from './context/AllTravelListContext';
@@ -23,7 +24,8 @@ const App = () => {
                   <AllTripsProvider>
                     <ThemeProvider>
                       <NavigationContainer>
-                        <AppNavigator />
+                        {/* <AppNavigator /> */}
+                        <MainNavigator />
                       </NavigationContainer>
                     </ThemeProvider>
                   </AllTripsProvider>

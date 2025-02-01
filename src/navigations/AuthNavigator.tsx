@@ -1,17 +1,17 @@
-import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import CreateScreen from '../screens/CreateScreen';
-import LoginScreen from '../screens/LoginScreen';
+// import React from 'react';
+// import {createStackNavigator} from '@react-navigation/stack';
+// import CreateScreen from '../screens/CreateScreen';
+// import LoginScreen from '../screens/LoginScreen';
 
-const Stack = createStackNavigator();
+// const Stack = createStackNavigator();
 
-const AuthNavigator = () => {
-  return (
-    <Stack.Navigator initialRouteName="Login">
-      <Stack.Screen name="Create" component={CreateScreen} />
-      <Stack.Screen name="Login" component={LoginScreen} />
-    </Stack.Navigator>
-  );
-};
+// const AuthNavigator = () => {
+//   return (
+//     <Stack.Navigator initialRouteName="Login">
+//       <Stack.Screen name="Create" component={CreateScreen} />
+//       <Stack.Screen name="Login" component={LoginScreen} />
+//     </Stack.Navigator>
+//   );
+// };
 
-export default AuthNavigator;
+// export default AuthNavigator;

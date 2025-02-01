@@ -12,10 +12,10 @@ const Recommendations = () => {
 
   useEffect(() => {
     const getCuratedList = async () => {
-      if (token && apiUrl) {
+      if (apiUrl) {
         try {
           const response = await axios.post(
-            `${apiUrl}/graphql`,
+            `${apiUrl}/curatedgraphql`,
             {
               query: `query {
                                 getCuratedListPlaces(listType: "curated") { 
@@ -50,11 +50,11 @@ const Recommendations = () => {
                                 
                             }`,
             },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            },
+            // {
+            //   headers: {
+            //     Authorization: `Bearer ${token}`,
+            //   },
+            // },
           );
           setCuratedList(response.data.data.getCuratedListPlaces.list);
         } catch (error: any) {
