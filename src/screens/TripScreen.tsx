@@ -189,6 +189,13 @@ const TripsScreen = () => {
   };
 
   useEffect(() => {
+    if (token) {
+      //initial
+      getList();
+    }
+  }, [token]); //this is for very first time
+
+  useEffect(() => {
     //emitting from tripscreen
     if (emittedItems.length > 0 && emittedItems[0]?.updatedList) {
       console.log(emittedItems, 'in tripscreen for emitted items');
@@ -229,11 +236,6 @@ const TripsScreen = () => {
       socket.off('updateListItems');
     };
   }, [socket]);
-
-  useEffect(() => {
-    //initial
-    getList();
-  }, []);
 
   useEffect(() => {
     const getSharedList = async () => {
