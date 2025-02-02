@@ -4,9 +4,11 @@ import {View, Button, TextInput, Alert} from 'react-native';
 import {useAuth} from '../../context/AuthContext';
 import {storeToken, getToken} from '../../utils/authStorage';
 import config from '../../config';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 
 const LoginField = () => {
   const {login} = useAuth();
+  const navigation = useNavigation(); // Get navigation object
   const [cred, setCred] = useState({
     email: '',
     password: '',
@@ -17,6 +19,15 @@ const LoginField = () => {
       ...prevState,
       [credName]: value,
     }));
+  };
+
+  const resetNavigation = ({navigation}) => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{name: 'Search'}], // Replace with your desired initial screen
+      }),
+    );
   };
 
   const handleLogin = async () => {
@@ -33,6 +44,7 @@ const LoginField = () => {
         console.log('Login Failed', response.data.message);
       }
       login();
+      resetNavigation({navigation});
     } catch (error: any) {
       console.log('error message', error);
       Alert.alert('Error Message:', 'Error loggin in.');

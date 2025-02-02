@@ -11,6 +11,9 @@ import {useAllTrips} from '../../context/AllTripsContext';
 import {useApiConfigContext} from '../../context/ApiConfigContext';
 import {useSelectedTripListContext} from '../../context/SelectedTripListContext';
 import {useTravelList} from '../../context/AllTravelListContext';
+import useApiConfig from '../../utils/apiConfig';
+import {useAuth} from '../../context/AuthContext'; //because this can be lost. token is stored
+import AuthModal from '../sharedModals/AuthModal';
 
 const Place = ({
   reviews,
@@ -27,6 +30,7 @@ const Place = ({
   const {allTravelList, setAllTravelList} = useTravelList();
   const {selectedTrip, setSelectedTrip} = useSelectedTripListContext();
   const {allTrip, setAllTrip} = useAllTrips();
+  const {isAuthenticated, setIsAuthenticated} = useAuth();
 
   const getAddedPlace = async addedItem => {
     //this is everything that needs to be updated for list to be changed
@@ -276,10 +280,14 @@ const Place = ({
         reviews={reviews}
         setReviews={setReviews}
       />
-      <AddTravelModal
-        allTravelList={allTravelList}
-        handleAddTrip={handleAddTrip}
-      />
+      {token ? (
+        <AddTravelModal
+          allTravelList={allTravelList}
+          handleAddTrip={handleAddTrip}
+        />
+      ) : (
+        <AuthModal modalName={'Add to Travel List'} />
+      )}
     </View>
   );
 };
