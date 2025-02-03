@@ -53,24 +53,27 @@ const Trips = ({
   });
 
   useEffect(() => {
-    if (trip) {
-      setAllTrip(trip?.items.map(item => ({...item})));
-      console.log('setting allTrips with first edit');
+    console.log(trip, 'trip in trips.tsx');
+    if (apiUrl && token) {
+      if (trip) {
+        setAllTrip(trip?.items.map(item => ({...item})));
+        console.log('setting allTrips with first edit');
 
-      const initialOrder = {};
-      trip.items.forEach(item => {
-        initialOrder[item.id] = {
-          value: item.order,
-          subLevel: item.subLevelName,
-        }; // Assign key-value pairs directly to the object
-      });
+        const initialOrder = {};
+        trip.items.forEach(item => {
+          initialOrder[item.id] = {
+            value: item.order,
+            subLevel: item.subLevelName,
+          }; // Assign key-value pairs directly to the object
+        });
 
-      setTripOrder(initialOrder);
+        setTripOrder(initialOrder);
 
-      setSubLevels([...trip?.subLevels]);
+        setSubLevels([...trip?.subLevels]);
+      }
+      getList(); //ensures list is latest from database --> list wont be old from switching list
     }
-    getList(); //ensures list is latest from database --> list wont be old from switching list
-  }, [trip]); // now the list of trips is stored in its own state which renders based on this state
+  }, [trip, apiUrl]); // now the list of trips is stored in its own state which renders based on this state
 
   useEffect(() => {
     allTrip.map(item =>

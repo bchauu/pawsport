@@ -107,16 +107,18 @@ const Place = ({
   };
 
   useEffect(() => {
-    const getList = async () => {
-      const response = await axios.get(`${apiUrl}/trips/lists/places`, {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      });
+    if (token && apiUrl) {
+      const getList = async () => {
+        const response = await axios.get(`${apiUrl}/trips/lists/places`, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
 
-      setAllTravelList([...response.data.travelLists]);
-    };
-    getList();
+        setAllTravelList([...response.data.travelLists]);
+      };
+      getList();
+    }
   }, []);
 
   useEffect(() => {

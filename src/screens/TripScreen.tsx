@@ -13,17 +13,18 @@ import ChatModal from '../component/trips/Chat/ChatModal';
 // import {useNavigation} from '@react-navigation/native';
 import CollapsibleDropdown from '../component/trips/CollapsibleDropDown';
 import {useTheme} from '../context/ThemeContext';
-import {useApiConfigContext} from '../context/ApiConfigContext';
+// import {useApiConfigContext} from '../context/ApiConfigContext';
 import {useSelectedTripListContext} from '../context/SelectedTripListContext';
 import {useTravelList} from '../context/AllTravelListContext';
 import {useSocketContext} from '../context/SocketContext';
 import {useEmittedItems} from '../context/EmittedItemsContext';
+import useApiConfig from '../utils/apiConfig';
 import axios from 'axios';
 
 const TripsScreen = () => {
   // const navigation = useNavigation();
   const {theme} = useTheme();
-  const {apiUrl, token} = useApiConfigContext();
+  const {apiUrl, token} = useApiConfig();
   const {socket} = useSocketContext();
   const handleViewTravlers = () => {
     setIsTravelersViewed(prevState => !prevState);
@@ -51,17 +52,50 @@ const TripsScreen = () => {
   const {emittedItems, setEmittedItems} = useEmittedItems();
 
   const getList = async () => {
-    const response = await axios.get(`${apiUrl}/trips/lists/places`, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
+    try {
+      if (!token && !apiUrl) {
+        console.error('Token is missing, skipping list retrieval.');
+        return;
+      }
 
-    setAllTravelList(prevList => {
-      return [...response.data.travelLists.map(list => ({...list}))];
-    });
-    await delay(50);
-    setIsInitialList(true);
+      console.log(token, 'Token is valid, initiating request');
+
+      const url = `${apiUrl}/trips/lists/places`;
+      console.log(`Making request to URL: ${url}`);
+
+      const response = await axios.get(url, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data?.travelLists) {
+        console.log('Data retrieved successfully:', response.data.travelLists);
+
+        setAllTravelList(prevList => {
+          return [...response.data.travelLists.map(list => ({...list}))];
+        });
+
+        console.log('Travel list updated.');
+      } else {
+        console.warn('No travel lists found in the response.', response.data);
+      }
+
+      await delay(50);
+      setIsInitialList(true);
+      console.log('Initial list set successfully.');
+    } catch (error) {
+      console.error('Error occurred while fetching the list:', error);
+
+      // Log additional details if available
+      if (error.response) {
+        console.error('Response error:', error.response.data);
+      } else if (error.request) {
+        console.error('Request error:', error.request);
+      } else {
+        console.error('General error:', error.message);
+      }
+    }
   };
 
   const handleSelect = trip => {
@@ -189,11 +223,12 @@ const TripsScreen = () => {
   };
 
   useEffect(() => {
-    if (token) {
+    console.log('this should trigger after logged in, tripscreen');
+    if (token && apiUrl) {
       //initial
       getList();
     }
-  }, [token]); //this is for very first time
+  }, [token, apiUrl]); //this is for very first time
 
   useEffect(() => {
     //emitting from tripscreen
@@ -238,18 +273,34 @@ const TripsScreen = () => {
   }, [socket]);
 
   useEffect(() => {
-    const getSharedList = async () => {
-      const response = await axios.get(`${apiUrl}/trips/lists/shared`, {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      });
+    if (token && apiUrl) {
+      console.log('gets shared list');
+      const getSharedList = async () => {
+        const response = await axios.get(`${apiUrl}/trips/lists/shared`, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
 
-      setSharedListWithUser(response.data.listPermission);
-    };
+        console.log(response, 'getsharedList');
 
-    getSharedList();
-  }, []); //query shared list with current user
+        setSharedListWithUser(response.data.listPermission);
+      };
+
+      getSharedList();
+    }
+    // const getSharedList = async () => {
+    //   const response = await axios.get(`${apiUrl}/trips/lists/shared`, {
+    //     headers: {
+    //       authorization: `Bearer ${token}`,
+    //     },
+    //   });
+
+    //   setSharedListWithUser(response.data.listPermission);
+    // };
+
+    // getSharedList();
+  }, [token, apiUrl]); //query shared list with current user
 
   useEffect(() => {
     setNewMessageCount(4 + 1); // for testing
@@ -297,18 +348,20 @@ const TripsScreen = () => {
 
   useEffect(() => {
     //this is to fetch newData after adding list.
-    const fetchList = async () => {
-      if (hasNewList) {
-        try {
-          await delay(200);
-          await getList();
-        } finally {
-          console.log('editOnFirstNote changed back to false');
-          setHasNewList(false);
+    if (token && apiUrl) {
+      const fetchList = async () => {
+        if (hasNewList && token) {
+          try {
+            await delay(200);
+            await getList();
+          } finally {
+            console.log('editOnFirstNote changed back to false');
+            setHasNewList(false);
+          }
         }
-      }
-    };
-    fetchList();
+      };
+      fetchList();
+    }
   }, [hasNewList]);
 
   useEffect(() => {

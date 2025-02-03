@@ -15,6 +15,7 @@ const useApiConfig = () => {
         const {apiUrl: fetchedApiUrl} = await config(); // Fetch apiUrl from config
 
         setToken(fetchedToken);
+        console.log('setting apiurl');
         setApiUrl(fetchedApiUrl);
       } catch (error) {
         console.error('Error fetching API config:', error);

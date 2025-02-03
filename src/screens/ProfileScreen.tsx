@@ -10,6 +10,7 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     if (token) {
+      console.log(token, 'should exist after logging in');
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
