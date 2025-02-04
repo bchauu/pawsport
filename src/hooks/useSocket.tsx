@@ -7,23 +7,25 @@ const SOCKET_SERVER_URL = 'http://localhost:3000';
 const useSocket = () => {
   const [socket, setSocket] = useState(null);
 
+  const initializeSocket = async () => {
+    const token = await getToken(); // Fetch token for authentication
+    const newSocket = io(SOCKET_SERVER_URL, {
+      query: {token}, // Pass token as query parameter
+    });
+
+    console.log(token, newSocket.id, 'reconnect');
+    newSocket.on('connect', () => {
+      console.log('Socket connected:', newSocket.id);
+    });
+
+    newSocket.on('disconnect', () => {
+      console.log('Socket disconnected.');
+    });
+
+    setSocket(newSocket);
+  };
+
   useEffect(() => {
-    const initializeSocket = async () => {
-      const token = await getToken(); // Fetch token for authentication
-      const newSocket = io(SOCKET_SERVER_URL, {
-        query: {token}, // Pass token as query parameter
-      });
-
-      newSocket.on('connect', () => {
-        console.log('Socket connected:', newSocket.id);
-      });
-
-      newSocket.on('disconnect', () => {
-        console.log('Socket disconnected.');
-      });
-
-      setSocket(newSocket);
-    };
     initializeSocket();
 
     return () => {
@@ -32,7 +34,15 @@ const useSocket = () => {
     };
   }, []); // Run once on mount
 
-  return socket;
+  const reconnectSocket = () => {
+    console.log('Forcing socket reconnection...');
+    setSocket(null); // This will trigger a re-render
+    setTimeout(() => {
+      initializeSocket(); // Reconnect after a small delay
+    }, 100);
+  };
+
+  return {socket, reconnectSocket};
 };
 
 export default useSocket;

@@ -232,6 +232,9 @@ const TripsScreen = () => {
 
   useEffect(() => {
     //emitting from tripscreen
+    if (!socket) {
+      return;
+    }
     if (emittedItems.length > 0 && emittedItems[0]?.updatedList) {
       console.log(emittedItems, 'in tripscreen for emitted items');
       console.log(allTravelList, 'allTravelList tripscreen');
@@ -246,12 +249,12 @@ const TripsScreen = () => {
       );
       updateItemNotes();
     }
-  }, [emittedItems]);
+  }, [emittedItems, socket]);
 
   useEffect(() => {
-    if (!socket) {
-      return;
-    }
+    // if (!socket) {
+    //   return;
+    // }
 
     socket.on('updateListItems', (updatedList, eventAction) => {
       console.log('Updated list received:', updatedList);
@@ -325,6 +328,9 @@ const TripsScreen = () => {
   }, [socket]);
 
   useEffect(() => {
+    if (!socket) {
+      return;
+    }
     if (socket && selectedTrip) {
       console.log('leaving room useEffect triggered', `${roomId} this room`);
 
@@ -338,7 +344,7 @@ const TripsScreen = () => {
         }
       });
     }
-  }, [selectedTrip]);
+  }, [selectedTrip, socket]);
 
   useEffect(() => {
     if (!selectedTrip) {

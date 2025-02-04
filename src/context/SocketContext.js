@@ -4,10 +4,12 @@ import useSocket from '../hooks/useSocket';
 const SocketContext = createContext(null);
 
 export const SocketProvider = ({children}) => {
-  const socket = useSocket(); // Initialize socket
+  const {socket, reconnectSocket} = useSocket(); // Initialize socket
 
   return (
-    <SocketContext.Provider value={{socket}}>{children}</SocketContext.Provider>
+    <SocketContext.Provider value={{socket, reconnectSocket}}>
+      {children}
+    </SocketContext.Provider>
   );
 };
 

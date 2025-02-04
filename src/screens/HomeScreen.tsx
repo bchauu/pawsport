@@ -6,12 +6,14 @@ import {useSocketContext} from '../context/SocketContext';
 import {useEmittedItems} from '../context/EmittedItemsContext';
 import {useTravelList} from '../context/AllTravelListContext';
 import {useTheme} from '../context/ThemeContext';
+import useApiConfig from '../utils/apiConfig';
 
 const HomeScreen = () => {
   const {theme} = useTheme();
   const {socket} = useSocketContext();
   const {emittedItems, setEmittedItems} = useEmittedItems();
   const {allTravelList, setAllTravelList} = useTravelList();
+  const {apiUrl, token} = useApiConfig();
 
   useEffect(() => {
     if (!socket) {
@@ -29,7 +31,7 @@ const HomeScreen = () => {
     return () => {
       socket.off('updateListItems');
     };
-  }, [socket]);
+  }, [socket, apiUrl, token]);
 
   return (
     <ScrollView style={[styles.scrollContainer]}>

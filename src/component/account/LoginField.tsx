@@ -1,12 +1,14 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {View, Button, TextInput, Alert} from 'react-native';
 import {useAuth} from '../../context/AuthContext';
 import {storeToken, getToken} from '../../utils/authStorage';
 import config from '../../config';
 import {CommonActions, useNavigation} from '@react-navigation/native';
+import {useSocketContext} from '../../context/SocketContext';
 
 const LoginField = () => {
+  const {reconnectSocket} = useSocketContext();
   const {login} = useAuth();
   const navigation = useNavigation(); // Get navigation object
   const [cred, setCred] = useState({
@@ -36,6 +38,7 @@ const LoginField = () => {
       const response = await axios.post(`${apiUrl}/api/users/login`, cred);
       if (response.status === 200) {
         const {token} = response.data;
+        console.log(token, 'token and log in');
         await storeToken(token);
         console.log('successfully stored token');
         const test = await getToken();
@@ -44,7 +47,15 @@ const LoginField = () => {
         console.log('Login Failed', response.data.message);
       }
       login();
+      const token = await getToken();
+      console.log('Before reset:', token, apiUrl);
       resetNavigation({navigation});
+      setTimeout(() => {
+        console.log('After reset:', token, apiUrl);
+      }, 1000);
+      setTimeout(() => {
+        reconnectSocket();
+      }, 250);
     } catch (error: any) {
       console.log('error message', error);
       Alert.alert('Error Message:', 'Error loggin in.');
