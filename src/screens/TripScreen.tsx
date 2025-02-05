@@ -54,7 +54,6 @@ const TripsScreen = () => {
   const getList = async () => {
     try {
       if (!token && !apiUrl) {
-        console.error('Token is missing, skipping list retrieval.');
         return;
       }
 
@@ -97,6 +96,15 @@ const TripsScreen = () => {
       }
     }
   };
+
+  //weird issue where list doesnt load all the time after login
+  //or it remains still after logging out
+  //this means i have to check every single list and order
+  //one of them must be inconsistent
+  //in addition, it can be what i did to cause it to be faster now, causing list to render before data is loading in
+  //which means need to check if list is triggering useeffect or if its one of the orders taht doesnt trigger
+
+  //in addition what did i say that was this was good for talking point as optimizing perofmrance?
 
   const handleSelect = trip => {
     setSelectedTrip(trip);

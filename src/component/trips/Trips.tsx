@@ -19,6 +19,7 @@ import RemoveSubLevel from './subLevels/RemoveSubLevel';
 import {useAllTrips} from '../../context/AllTripsContext';
 import {useTheme} from '../../context/ThemeContext';
 import {useEmittedItems} from '../../context/EmittedItemsContext';
+
 // import {useTravelList} from '../context/AllTravelListContext';
 
 const Trips = ({
@@ -51,6 +52,7 @@ const Trips = ({
     invite: false,
     addLevel: false,
   });
+  const {apiUrl, token} = useApiConfig();
 
   useEffect(() => {
     console.log(trip, 'trip in trips.tsx');
@@ -73,7 +75,7 @@ const Trips = ({
       }
       getList(); //ensures list is latest from database --> list wont be old from switching list
     }
-  }, [trip, apiUrl]); // now the list of trips is stored in its own state which renders based on this state
+  }, [trip, apiUrl, token]); // now the list of trips is stored in its own state which renders based on this state
 
   useEffect(() => {
     allTrip.map(item =>
@@ -82,7 +84,7 @@ const Trips = ({
         [item.id]: {isCollapsed: false},
       })),
     );
-  }, [allTrip]);
+  }, [allTrip, token]);
 
   useEffect(() => {
     //individual notes fro each place
@@ -158,8 +160,6 @@ const Trips = ({
     // })
     // setAllTrip(allTrip)
   };
-
-  const {token, apiUrl} = useApiConfig();
 
   const handleShare = async input => {
     try {
