@@ -1,28 +1,29 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  Button,
 } from 'react-native';
 import Trips from '../component/trips/Trips';
 import MyMap from '../component/trips/Map';
 import CreateTravelListModal from '../component/trips/CreateTravelListModal';
 import ChatModal from '../component/trips/Chat/ChatModal';
-// import {useNavigation} from '@react-navigation/native';
 import CollapsibleDropdown from '../component/trips/CollapsibleDropDown';
 import {useTheme} from '../context/ThemeContext';
-// import {useApiConfigContext} from '../context/ApiConfigContext';
 import {useSelectedTripListContext} from '../context/SelectedTripListContext';
 import {useTravelList} from '../context/AllTravelListContext';
 import {useSocketContext} from '../context/SocketContext';
 import {useEmittedItems} from '../context/EmittedItemsContext';
 import useApiConfig from '../utils/apiConfig';
+import {useAuth} from '../context/AuthContext';
 import axios from 'axios';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
+import LoginField from '../component/account/LoginField';
 
 const TripsScreen = () => {
-  // const navigation = useNavigation();
   const {theme} = useTheme();
   const {apiUrl, token} = useApiConfig();
   const {socket} = useSocketContext();
@@ -50,6 +51,7 @@ const TripsScreen = () => {
   const [isSharedList, setIsSharedList] = useState(false);
   const [tripOrder, setTripOrder] = useState({});
   const {emittedItems, setEmittedItems} = useEmittedItems();
+  const {isAuthenticated} = useAuth();
 
   const getList = async () => {
     try {
@@ -96,15 +98,6 @@ const TripsScreen = () => {
       }
     }
   };
-
-  //weird issue where list doesnt load all the time after login
-  //or it remains still after logging out
-  //this means i have to check every single list and order
-  //one of them must be inconsistent
-  //in addition, it can be what i did to cause it to be faster now, causing list to render before data is loading in
-  //which means need to check if list is triggering useeffect or if its one of the orders taht doesnt trigger
-
-  //in addition what did i say that was this was good for talking point as optimizing perofmrance?
 
   const handleSelect = trip => {
     setSelectedTrip(trip);
@@ -231,11 +224,17 @@ const TripsScreen = () => {
   };
 
   useEffect(() => {
-    console.log('this should trigger after logged in, tripscreen');
-    if (token && apiUrl) {
-      //initial
-      getList();
-    }
+    const initialScreenVisit = async () => {
+      await delay(1050);
+      if (!token) {
+        console.log('this should trigger after logged in, tripscreen');
+      }
+      if (token && apiUrl) {
+        //initial
+        getList();
+      }
+    };
+    initialScreenVisit();
   }, [token, apiUrl]); //this is for very first time
 
   useEffect(() => {
@@ -406,6 +405,13 @@ const TripsScreen = () => {
       {/* <TouchableOpacity onPress={test}>
         <Text>Test</Text>
       </TouchableOpacity> */}
+      {!isAuthenticated && (
+        <View style={styles.overlay}>
+          <View style={styles.modalContainer}>
+            <LoginField />
+          </View>
+        </View>
+      )}
       <ScrollView>
         <View style={[theme.topHeaderContainer, {zIndex: 100}]}>
           <CreateTravelListModal
@@ -469,6 +475,30 @@ const TripsScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  overlay: {
+    position: 'absolute', // Ensure it covers the whole screen
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent overlay
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000, // Make sure it's on top
+  },
+  modalContainer: {
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center', // Ensure content is centered inside modal
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
   scrollContainer: {
     padding: 10,
     flexGrow: 1,
