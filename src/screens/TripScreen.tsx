@@ -22,6 +22,8 @@ import {useAuth} from '../context/AuthContext';
 import axios from 'axios';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import LoginField from '../component/account/LoginField';
+import {useAddedItem} from '../context/AddedItemContext';
+import {useAllTrips} from '../context/AllTripsContext';
 
 const TripsScreen = () => {
   const {theme} = useTheme();
@@ -52,6 +54,43 @@ const TripsScreen = () => {
   const [tripOrder, setTripOrder] = useState({});
   const {emittedItems, setEmittedItems} = useEmittedItems();
   const {isAuthenticated} = useAuth();
+  const {isAddedItem, setIsAddedItem} = useAddedItem();
+  const [isListReset, setIsListRest] = useState(false);
+  const {allTrip, setAllTrip} = useAllTrips(); //this is why not refreshed
+
+  const resetListState = () => {
+    console.log('resetListState');
+    // setSelectedTrip(null);
+    // // setSubLevels({});
+    setTripOrder({});
+    // setAllTrip([]);
+
+    // setAllTravelList([]);
+    // delay(1000);
+    setIsListRest(true);
+    //might be close but probalby not all of them need to be
+    //in fact, i should just remove all from usecallback and have a clean usecallback for this
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      if (isAddedItem) {
+        console.log('Triggers multiple times because this runs for each item');
+        setIsAddedItem(false);
+        resetListState();
+      }
+    }, [isAddedItem]),
+  );
+
+  // const setAllListState = newTrip => {
+  //   if (!newTrip) {
+  //     return;
+  //   }
+
+  //   setSelectedTrip(newTrip);
+  //   setSubLevels(extractSubLevels(newTrip.items)); // Extract sublevel data
+  //   setTripOrder(initializeTripOrders(newTrip.items)); // Initialize trip order
+  // };
 
   const getList = async () => {
     try {
@@ -104,7 +143,11 @@ const TripsScreen = () => {
   };
 
   const test = () => {
-    console.log(allTravelList[0]?.items, 'testing notes before');
+    console.log(isAuthenticated, 'isAuthenticated');
+    // console.log(allTravelList[0]?.items, 'testing notes before');
+    // console.log(selectedTrip, 'selected trip in test');
+    // console.log(tripOrder, 'tripOrder in test');
+    // console.log(allTrip, 'alltrip in test');
   };
 
   const updateTravelList = () => {
@@ -232,10 +275,12 @@ const TripsScreen = () => {
       if (token && apiUrl) {
         //initial
         getList();
+        console.log('getlist in initialscreenvist');
+        setIsListRest(false);
       }
     };
     initialScreenVisit();
-  }, [token, apiUrl]); //this is for very first time
+  }, [token, apiUrl, isListReset]); //this is for very first time
 
   useEffect(() => {
     //emitting from tripscreen
@@ -298,6 +343,7 @@ const TripsScreen = () => {
       };
 
       getSharedList();
+      setIsListRest(false);
     }
     // const getSharedList = async () => {
     //   const response = await axios.get(`${apiUrl}/trips/lists/shared`, {
@@ -310,7 +356,8 @@ const TripsScreen = () => {
     // };
 
     // getSharedList();
-  }, [token, apiUrl]); //query shared list with current user
+  }, [token, apiUrl, isListReset]); //query shared list with current user
+  // }, [token, apiUrl]); //query shared list with current user
 
   useEffect(() => {
     setNewMessageCount(4 + 1); // for testing
@@ -355,9 +402,12 @@ const TripsScreen = () => {
 
   useEffect(() => {
     if (!selectedTrip) {
+      console.log(allTravelList, 'set selected trip should be chosn here');
       setSelectedTrip(allTravelList[0]);
+      setIsListRest(false);
     }
-  }, [isInitialList]); //auto pick first (2nd) one on load
+  }, [isInitialList, allTravelList]); //auto pick first (2nd) one on load
+  // }, [isInitialList]); //auto pick first (2nd) one on load
 
   useEffect(() => {
     //this is to fetch newData after adding list.
@@ -402,10 +452,10 @@ const TripsScreen = () => {
 
   return (
     <View>
-      {/* <TouchableOpacity onPress={test}>
+      <TouchableOpacity onPress={test}>
         <Text>Test</Text>
-      </TouchableOpacity> */}
-      {!isAuthenticated && (
+      </TouchableOpacity>
+      {!token && (
         <View style={styles.overlay}>
           <View style={styles.modalContainer}>
             <LoginField />

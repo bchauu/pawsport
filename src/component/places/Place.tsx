@@ -14,6 +14,7 @@ import {useTravelList} from '../../context/AllTravelListContext';
 import useApiConfig from '../../utils/apiConfig';
 import {useAuth} from '../../context/AuthContext'; //because this can be lost. token is stored
 import AuthModal from '../sharedModals/AuthModal';
+import {useAddedItem} from '../../context/AddedItemContext';
 
 const Place = ({
   reviews,
@@ -31,11 +32,16 @@ const Place = ({
   const {selectedTrip, setSelectedTrip} = useSelectedTripListContext();
   const {allTrip, setAllTrip} = useAllTrips();
   const {isAuthenticated, setIsAuthenticated} = useAuth();
+  const {isAddedItem, setIsAddedItem} = useAddedItem();
 
   const getAddedPlace = async addedItem => {
     //this is everything that needs to be updated for list to be changed
 
     setAllTrip(prevAllTrip => [...prevAllTrip, addedItem]);
+
+    if (!selectedTrip) {
+      setSelectedTrip(allTravelList[0]);
+    }
 
     setSelectedTrip(prevSelectedTrip => ({
       ...prevSelectedTrip,
@@ -52,48 +58,6 @@ const Place = ({
     );
   };
 
-  const getList = async () => {
-    //this can be moved to tripscreen potentially.
-    try {
-      const response = await axios.get(`${apiUrl}/trips/lists/places`, {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      });
-
-      const travelLists = response.data.travelLists;
-
-      // Update allTravelList with new data and create a new reference
-      setAllTravelList(() =>
-        travelLists.map(list => ({
-          ...list,
-        })),
-      );
-
-      // If there's a selected trip, update its state
-      const updatedSelectedTrip = travelLists.find(
-        list => list.id === selectedTrip?.id,
-      );
-      if (updatedSelectedTrip) {
-        setSelectedTrip({...updatedSelectedTrip});
-      }
-
-      // Update allTrip for the currently active trip (if relevant)
-      if (selectedTrip && selectedTrip.id) {
-        const activeTrip = travelLists.find(
-          list => list.id === selectedTrip.id,
-        );
-        if (activeTrip) {
-          setAllTrip(() => [...activeTrip.items]); // Extract items for local updates
-        }
-      }
-
-      await delay(50);
-    } catch (error) {
-      console.error('Error fetching travel lists:', error);
-    }
-  };
-
   const {lat, lng} = placeDetail.location,
     {name, placeId} = placeDetail;
   // console.log(placeDetail, 'placedetails shoul be missing id')    //direct from google maps
@@ -107,21 +71,6 @@ const Place = ({
   };
 
   useEffect(() => {
-    if (token && apiUrl) {
-      const getList = async () => {
-        const response = await axios.get(`${apiUrl}/trips/lists/places`, {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        });
-
-        setAllTravelList([...response.data.travelLists]);
-      };
-      getList();
-    }
-  }, []);
-
-  useEffect(() => {
     setLocation(prevLocations => {
       const updatedLocations = [...prevLocations, currentPlace];
 
@@ -131,12 +80,6 @@ const Place = ({
       setIsSearchInitiated(false);
     }
   }, [isSearchInitiated]);
-
-  //moving sublevels not updating correctly --> adding to place
-  //after moving sublevels out of default, and then adding places, sublevels revert back. but only on clientside
-  //if refreshed its fine
-  //since its only when adding means, its using old order
-  //which looks like this messes up order for moving around
 
   const handleAddTrip = async selectedList => {
     try {
@@ -156,6 +99,7 @@ const Place = ({
         },
       );
       getAddedPlace(response.data.item);
+      setIsAddedItem(true);
 
       // if (response.status === 201) {
       //     allTravelList.map((list, index) => {

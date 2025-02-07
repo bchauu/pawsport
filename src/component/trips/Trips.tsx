@@ -71,9 +71,9 @@ const Trips = ({
 
         setTripOrder(initialOrder);
 
-        setSubLevels([...trip?.subLevels]);
+        setSubLevels(trip?.subLevels.map(subLevel => ({...subLevel})));
       }
-      getList(); //ensures list is latest from database --> list wont be old from switching list
+      // getList(); //ensures list is latest from database --> list wont be old from switching list
     }
   }, [trip, apiUrl, token]); // now the list of trips is stored in its own state which renders based on this state
 

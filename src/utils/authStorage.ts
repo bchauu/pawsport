@@ -21,7 +21,7 @@ export const getToken = async () => {
       // console.log('Token retrieved from storage:', token);
       return token;
     } else {
-      console.log('No token found');
+      console.log(token, 'No token found');
       return null;
     }
   } catch (error) {
