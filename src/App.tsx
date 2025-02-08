@@ -14,27 +14,27 @@ import {AddedItemProvider} from './context/AddedItemContext';
 const App = () => {
   return (
     <SafeAreaProvider>
-      <AuthProvider>
-        <ApiConfigProvider>
-          <SocketProvider>
-            <EmittedItemsProvider>
-              <AddedItemProvider>
-                <TravelListProvider>
-                  <SelectedTripListProvider>
-                    <AllTripsProvider>
-                      <ThemeProvider>
-                        <NavigationContainer>
+      <NavigationContainer>
+        <AuthProvider>
+          <ApiConfigProvider>
+            <SocketProvider>
+              <EmittedItemsProvider>
+                <AddedItemProvider>
+                  <TravelListProvider>
+                    <SelectedTripListProvider>
+                      <AllTripsProvider>
+                        <ThemeProvider>
                           <MainNavigator />
-                        </NavigationContainer>
-                      </ThemeProvider>
-                    </AllTripsProvider>
-                  </SelectedTripListProvider>
-                </TravelListProvider>
-              </AddedItemProvider>
-            </EmittedItemsProvider>
-          </SocketProvider>
-        </ApiConfigProvider>
-      </AuthProvider>
+                        </ThemeProvider>
+                      </AllTripsProvider>
+                    </SelectedTripListProvider>
+                  </TravelListProvider>
+                </AddedItemProvider>
+              </EmittedItemsProvider>
+            </SocketProvider>
+          </ApiConfigProvider>
+        </AuthProvider>
+      </NavigationContainer>
     </SafeAreaProvider>
   );
 };
