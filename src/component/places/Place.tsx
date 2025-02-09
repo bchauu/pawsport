@@ -27,7 +27,8 @@ const Place = ({
   const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
   const {theme} = useTheme();
   const {locations, setLocation} = useTrip<TripLocation[]>([]);
-  const {apiUrl, token} = useApiConfigContext();
+  // const {apiUrl, token} = useApiConfigContext();
+  const {apiUrl, token} = useApiConfig();
   const {allTravelList, setAllTravelList} = useTravelList();
   const {selectedTrip, setSelectedTrip} = useSelectedTripListContext();
   const {allTrip, setAllTrip} = useAllTrips();

@@ -17,6 +17,9 @@ const AuthProvider: FC<{children: ReactNode}> = ({children}) => {
 
   const login = () => setIsAuthenticated(true);
   const logout = () => setIsAuthenticated(false);
+  //this is separate from token
+  //need to ensure token works like apiconfig
+  //or i can just call deletetoken  from authstorage
 
   return (
     <AuthContext.Provider value={{isAuthenticated, login, logout}}>
