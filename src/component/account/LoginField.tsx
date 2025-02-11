@@ -1,13 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import {View, Button, TextInput, Alert} from 'react-native';
+import {
+  View,
+  Button,
+  TextInput,
+  Alert,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 import {useAuth} from '../../context/AuthContext';
 import {storeToken, getToken} from '../../utils/authStorage';
 import config from '../../config';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import {useSocketContext} from '../../context/SocketContext';
+import {useTheme} from '../../context/ThemeContext';
 
 const LoginField = () => {
+  const {theme} = useTheme();
   const {reconnectSocket} = useSocketContext();
   const {login} = useAuth();
   const navigation = useNavigation(); // Get navigation object
@@ -98,7 +107,11 @@ const LoginField = () => {
         value={cred.password}
         onChangeText={value => handleChange('password', value)}
       />
-      <Button title="Login" onPress={handleLogin} />
+      <View style={theme.account.button}>
+        <TouchableOpacity onPress={handleLogin} style={theme.account.login}>
+          <Text style={theme.account.buttonText}>Login</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

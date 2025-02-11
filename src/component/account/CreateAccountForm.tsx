@@ -1,8 +1,16 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import {useAuth} from '../../context/AuthContext';
-import {View, TextInput, Button, Alert} from 'react-native';
+import {
+  View,
+  TextInput,
+  Button,
+  Alert,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 import {storeToken, getToken} from '../../utils/authStorage';
+import {useTheme} from '../../context/ThemeContext';
 import config from '../../config';
 
 interface FormData {
@@ -15,7 +23,7 @@ type onSubmit = (data: FormData) => void;
 
 const CreateAccountForm: React.FC<{onSubmit: onSubmit}> = ({onSubmit}) => {
   const {login} = useAuth();
-
+  const {theme} = useTheme();
   const [form, setForm] = useState({
     username: '',
     email: '',
@@ -70,7 +78,11 @@ const CreateAccountForm: React.FC<{onSubmit: onSubmit}> = ({onSubmit}) => {
         value={form.password}
         onChangeText={value => handleChange('password', value)}
       />
-      <Button title="Create Account" onPress={handleSubmit} />
+      <View style={theme.account.button}>
+        <TouchableOpacity onPress={handleSubmit} style={theme.account.create}>
+          <Text style={theme.account.buttonText}>Create Account</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

@@ -69,7 +69,60 @@ const typography = {
   },
 };
 
+account = {
+  button: {
+    paddingVertical: 14,
+    paddingHorizontal: 28,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 10,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  login: {
+    backgroundColor: '#007bff', // Blue for Login
+  },
+  logout: {
+    backgroundColor: '#dc3545', // Red for Logout
+  },
+  create: {
+    backgroundColor: '#28a745', // Green for Create Account
+  },
+};
+
 const theme = {
+  account: {
+    button: {
+      paddingVertical: 14,
+      paddingHorizontal: 28,
+      borderRadius: 8,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginVertical: 10,
+    },
+    buttonText: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: 'white',
+      textTransform: 'uppercase',
+      letterSpacing: 1,
+    },
+    login: {
+      backgroundColor: '#007bff', // Blue for Login
+    },
+    logout: {
+      backgroundColor: '#dc3545', // Red for Logout
+    },
+    create: {
+      backgroundColor: '#28a745', // Green for Create Account
+    },
+  },
   padding: {
     default: {
       paddingTop: 3,
