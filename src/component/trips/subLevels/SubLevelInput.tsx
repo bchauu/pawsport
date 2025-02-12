@@ -37,12 +37,12 @@ const SubLevelInput = ({trip}) => {
         placeholder="Add SubLevel"
         onChangeText={value => setSubLevelInput(value)}
         value={subLevelInput}
-        style={theme.textInput.default}
+        style={theme.inputs.default}
       />
       <TouchableOpacity
         onPress={() => addSubLevel()}
-        style={[theme.actionButton.default, {width: '100%'}]}>
-        <Text style={[theme.actionButton.text]}>Add Sub-level</Text>
+        style={[theme.buttons.action, {width: '100%'}]}>
+        <Text style={[theme.buttons.actionText]}>Add Sub-level</Text>
       </TouchableOpacity>
     </View>
   );

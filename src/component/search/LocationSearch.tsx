@@ -22,7 +22,7 @@ const LocationSearch: React.FC<SearchField> = ({enteredQuery, updateQuery}) => {
         onFocus={() => {
           handleNavigateToSuggest();
         }}
-        style={[theme.textInput.default]}
+        style={[theme.inputs.default]}
       />
     </View>
   );

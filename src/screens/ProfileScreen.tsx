@@ -39,7 +39,8 @@ const ProfileScreen = () => {
             <View>
               <CreateAccountForm onSubmit={handleCreateAccount} />
               <TouchableOpacity
-                onPress={() => setIsCreateAccount(prev => !prev)}>
+                onPress={() => setIsCreateAccount(prev => !prev)}
+                style={styles.container}>
                 <Text>Login Instead</Text>
               </TouchableOpacity>
             </View>
@@ -47,7 +48,8 @@ const ProfileScreen = () => {
             <View>
               <LoginField />
               <TouchableOpacity
-                onPress={() => setIsCreateAccount(prev => !prev)}>
+                onPress={() => setIsCreateAccount(prev => !prev)}
+                style={styles.container}>
                 <Text>Create an Account</Text>
               </TouchableOpacity>
             </View>
@@ -60,7 +62,7 @@ const ProfileScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     // padding: spacing.padding,

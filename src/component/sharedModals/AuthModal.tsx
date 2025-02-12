@@ -23,11 +23,11 @@ const AuthModal = ({modalName}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <View style={theme.card.buttonContainer}>
+    <View style={theme.lists.buttonContainer}>
       <TouchableOpacity
         onPress={() => setModalVisible(true)}
-        style={[theme.card.button]}>
-        <Text style={[theme.card.buttonText]}>{modalName}</Text>
+        style={[theme.buttons.action]}>
+        <Text style={[theme.buttons.actionText]}>{modalName}</Text>
       </TouchableOpacity>
       {modalVisible && (
         <Modal
@@ -40,10 +40,9 @@ const AuthModal = ({modalName}) => {
           <View style={styles.overlay}>
             <View style={styles.modalContainer}>
               <LoginField />
-              <Button
-                title="Hide"
-                onPress={() => setModalVisible(!modalVisible)}
-              />
+              <TouchableOpacity onPress={() => setModalVisible(false)}>
+                <Text>Hide</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </Modal>

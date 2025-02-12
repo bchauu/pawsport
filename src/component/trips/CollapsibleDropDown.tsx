@@ -130,10 +130,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     color: '#ffffff',
-    left: '53%',
-    top: '5%',
-    paddingTop: '1.5%',
+    left: '50%',
+    top: '-45%',
+    paddingTop: '4.5%',
     alignItems: 'flex-end',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
     width: '50%', //this needs to be defined or it shifts when expanded
     //   height: '10%', //cant have height
     zIndex: 10, // Ensure dropdown container is also above others

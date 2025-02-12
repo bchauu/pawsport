@@ -72,15 +72,15 @@ const Recommendations = () => {
     getCuratedList();
   }, [token, apiUrl]);
   return (
-    <View style={theme.list.listContainer}>
-      <View style={theme.list.mainHeaderContainer}>
-        <Text style={theme.list.mainHeader}>Curated Lists</Text>
+    <View style={theme.lists.listContainer}>
+      <View style={theme.lists.mainHeaderContainer}>
+        <Text style={theme.lists.mainHeader}>Curated Lists</Text>
       </View>
-      <View style={theme.list.list}>
+      <View style={theme.lists.list}>
         {curatedList.map((list, index) => (
-          <View key={list.id} style={theme.list.sectionCard}>
-            <View style={theme.list.titleRow}>
-              <Text style={theme.list.titleText}>
+          <View key={list.id} style={theme.lists.sectionCard}>
+            <View style={[theme.lists.titleRow, theme.shadow.medium]}>
+              <Text style={theme.lists.titleText}>
                 {list.name}
                 {list.id}
               </Text>

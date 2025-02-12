@@ -7,6 +7,7 @@ import {
   Button,
   TextInput,
 } from 'react-native';
+import {useTheme} from '../../../context/ThemeContext';
 
 const NoteInput = ({
   item,
@@ -16,6 +17,7 @@ const NoteInput = ({
   isItemNotesCollapsed,
 }) => {
   const [enteredNotes, setEnteredNotes] = useState('');
+  const {theme} = useTheme();
 
   useEffect(() => {
     setEnteredNotes('');
@@ -38,7 +40,11 @@ const NoteInput = ({
             onChangeText={value => handleNoteInput(value)}
             value={enteredNotes}
           />
-          <Button title="add notes" onPress={() => addNotes(item)} />
+          <TouchableOpacity
+            onPress={() => addNotes(item)}
+            style={theme.buttons.action}>
+            <Text style={theme.buttons.actionText}>Add Note</Text>
+          </TouchableOpacity>
         </View>
       )}
     </>

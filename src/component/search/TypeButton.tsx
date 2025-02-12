@@ -42,17 +42,18 @@ const ButtonSlider = () => {
       {buttonTypes.map((button, index) => (
         <View
           key={index}
-          style={[styles.buttonContainer, theme.padding.default]}>
+          style={[styles.buttonContainer, theme.spacing.padding.default]}>
           <TouchableOpacity
             onPress={() => updateSearchType(button.type)}
             style={[
-              theme.filterButton.default,
-              selectedType === button.type && theme.filterButton.selected,
+              theme.buttons.filter,
+              selectedType === button.type && theme.buttons.filterSelected,
             ]}>
             <Text
               style={[
-                theme.filterButton.text,
-                selectedType === button.type && theme.filterButton.selectedText,
+                theme.buttons.filterText,
+                selectedType === button.type &&
+                  theme.buttons.filterSelectedText,
               ]}>
               {button.title}
             </Text>

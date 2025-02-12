@@ -28,20 +28,20 @@ const SearchOptions = ({selectedSearchOption, setSelectedSearchOption}) => {
       {buttonTypes.map((button, index) => (
         <View
           key={index}
-          style={[styles.buttonContainer, theme.padding.default]}>
+          style={[styles.buttonContainer, theme.spacing.padding.default]}>
           <TouchableOpacity
             onPress={() => updateSearchOption(button.type)}
             style={[
-              theme.filterButton.default,
+              theme.buttons.filter,
               selectedSearchOption === button.type &&
-                theme.filterButton.selected,
+                theme.buttons.filterSelected,
             ]}>
             <Text
               style={[
-                theme.filterButton.text,
+                theme.buttons.filterText,
                 {fontSize: 15},
                 selectedSearchOption === button.type &&
-                  theme.filterButton.selectedText,
+                  theme.buttons.filterSelectedText,
               ]}>
               {button.title}
             </Text>

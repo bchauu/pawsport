@@ -80,11 +80,11 @@ const PlaceDetails = ({placeId, reviews, setReviews}) => {
   };
 
   return (
-    <View style={theme.card.buttonContainer}>
+    <View style={theme.lists.buttonContainer}>
       <TouchableOpacity
         onPress={() => handleViewDetails()}
-        style={[theme.card.button]}>
-        <Text style={[theme.card.buttonText]}>View Reviews</Text>
+        style={[theme.buttons.action]}>
+        <Text style={[theme.buttons.actionText]}>View Reviews</Text>
       </TouchableOpacity>
       <Modal
         animationType="slide"
@@ -115,7 +115,9 @@ const PlaceDetails = ({placeId, reviews, setReviews}) => {
             )}
             <View />
             <Button title={'test'} onPress={() => handleTest()} />
-            <Button title="Hide" onPress={() => setModalVisible(false)} />
+            <TouchableOpacity onPress={() => setModalVisible(false)}>
+              <Text>Hide</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>

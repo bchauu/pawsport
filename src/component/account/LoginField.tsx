@@ -96,20 +96,24 @@ const LoginField = () => {
   };
 
   return (
-    <View>
+    <View style={theme.lists.authContainer}>
       <TextInput
         placeholder="Email"
         value={cred.email}
         onChangeText={value => handleChange('email', value)}
+        style={[theme.inputs.auth]}
       />
       <TextInput
         placeholder="Password"
         value={cred.password}
         onChangeText={value => handleChange('password', value)}
+        style={[theme.inputs.auth]}
       />
-      <View style={theme.account.button}>
-        <TouchableOpacity onPress={handleLogin} style={theme.account.login}>
-          <Text style={theme.account.buttonText}>Login</Text>
+      <View style={theme.buttons.base}>
+        <TouchableOpacity
+          onPress={handleLogin}
+          style={[theme.buttons.primary, theme.buttons.auth]}>
+          <Text style={theme.buttons.text}>Login</Text>
         </TouchableOpacity>
       </View>
     </View>

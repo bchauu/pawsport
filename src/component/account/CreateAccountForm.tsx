@@ -62,25 +62,30 @@ const CreateAccountForm: React.FC<{onSubmit: onSubmit}> = ({onSubmit}) => {
   };
 
   return (
-    <View>
+    <View style={theme.lists.authContainer}>
       <TextInput
         placeholder="Username"
         value={form.username}
         onChangeText={value => handleChange('username', value)}
+        style={[theme.inputs.auth]}
       />
       <TextInput
         placeholder="Email"
         value={form.email}
         onChangeText={value => handleChange('email', value)}
+        style={[theme.inputs.auth]}
       />
       <TextInput
         placeholder="Password"
         value={form.password}
         onChangeText={value => handleChange('password', value)}
+        style={[theme.inputs.auth]}
       />
-      <View style={theme.account.button}>
-        <TouchableOpacity onPress={handleSubmit} style={theme.account.create}>
-          <Text style={theme.account.buttonText}>Create Account</Text>
+      <View style={theme.buttons.base}>
+        <TouchableOpacity
+          onPress={handleSubmit}
+          style={[theme.buttons.success, theme.buttons.auth]}>
+          <Text style={theme.buttons.text}>Create Account</Text>
         </TouchableOpacity>
       </View>
     </View>

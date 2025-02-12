@@ -31,12 +31,8 @@ const CreateTravelListModal = ({
     <View>
       <TouchableOpacity
         onPress={() => setModalVisible(true)}
-        style={[
-          theme.ctaButton.default,
-          styles.buttonContainer,
-          {width: '40%'},
-        ]}>
-        <Text style={[theme.ctaButton.text]}>Create Travel List</Text>
+        style={[theme.buttons.cta, styles.buttonContainer, {width: '40%'}]}>
+        <Text style={[theme.buttons.ctaText]}>Create Travel List</Text>
       </TouchableOpacity>
       <Modal
         animationType="slide" // Animation type can be 'slide', 'fade', or 'none'
@@ -52,18 +48,18 @@ const CreateTravelListModal = ({
               placeholder="Enter Travel Name"
               value={InputName}
               onChangeText={handleInputName}
-              style={theme.textInput.default}
+              style={theme.inputs.default}
             />
             {/* <Button title="Create New List" onPress={handleAddtoTravelList} /> */}
             <View>
               <TouchableOpacity
                 onPress={handleAddtoTravelList}
                 style={[
-                  theme.ctaButton.default,
+                  theme.buttons,
                   styles.buttonContainer,
                   {maxHeight: '40%'},
                 ]}>
-                <Text style={[theme.ctaButton.text, {color: '#FFFFFF'}]}>
+                <Text style={[theme.buttons.ctaText, {color: '#FFFFFF'}]}>
                   Submit
                 </Text>
               </TouchableOpacity>

@@ -123,10 +123,10 @@ const MoveSubLevelModal = ({
   };
 
   return (
-    <View style={theme.card.buttonContainer}>
+    <View style={theme.lists.buttonContainer}>
       <TouchableOpacity
         onPress={() => setModalVisible(true)}
-        style={[theme.card.button]}>
+        style={[theme.lists.button]}>
         <Icon name="swap-vert" size={20} color="black" />
       </TouchableOpacity>
       {/* The Modal */}
@@ -149,13 +149,12 @@ const MoveSubLevelModal = ({
               ))}
               <TouchableOpacity
                 onPress={handleMoveToNewSubLevel}
-                style={[{...theme.actionButton.default}]}>
-                <Text style={[{...theme.actionButton.text}]}>Confirm</Text>
+                style={[{...theme.buttons.action}]}>
+                <Text style={[{...theme.buttons.actionText}]}>Confirm</Text>
               </TouchableOpacity>
-              <Button
-                title="Hide"
-                onPress={() => setModalVisible(!modalVisible)}
-              />
+              <TouchableOpacity onPress={() => setModalVisible(false)}>
+                <Text>Hide</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </Modal>

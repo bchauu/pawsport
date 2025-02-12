@@ -70,8 +70,8 @@ const DirectSearchPlace = ({directSearchResult, submitGoogleUrl}) => {
     <View>
       <TouchableOpacity
         onPress={() => handleGoogleUrl()}
-        style={[theme.ctaButton.default, styles.buttonContainer]}>
-        <Text style={[theme.ctaButton.text]}>Find Location</Text>
+        style={[theme.buttons.cta, styles.buttonContainer]}>
+        <Text style={[theme.buttons.ctaText]}>Find Location</Text>
       </TouchableOpacity>
       <Modal
         animationType="slide"
@@ -117,7 +117,9 @@ const DirectSearchPlace = ({directSearchResult, submitGoogleUrl}) => {
               </ScrollView>
             )}
             <View />
-            <Button title="Hide" onPress={() => setModalVisible(false)} />
+            <TouchableOpacity onPress={() => setModalVisible(false)}>
+              <Text>Hide</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>

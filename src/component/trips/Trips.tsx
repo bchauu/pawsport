@@ -443,28 +443,28 @@ const Trips = ({
   return (
     <View>
       <View>
-        <View style={theme.list.mainHeaderContainer}>
-          <Text style={theme.list.mainHeader}>{trip?.name}</Text>
-          <View style={theme.list.mainHeaederButtons}>
+        <View style={theme.lists.mainHeaderContainer}>
+          <Text style={theme.lists.mainHeader}>{trip?.name}</Text>
+          <View style={theme.lists.mainHeaderButtons}>
             <TouchableOpacity
               onPress={() => handleActionButton('invite')}
-              style={[theme.actionButton.default]}>
-              <Text style={[theme.actionButton.text]}>Invite</Text>
+              style={[theme.buttons.action]}>
+              <Text style={[theme.buttons.actionText]}>Invite</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => handleActionButton('viewBuddies')}
-              style={[theme.actionButton.default]}>
-              <Text style={[theme.actionButton.text]}>Travel Buddies</Text>
+              style={[theme.buttons.action]}>
+              <Text style={[theme.buttons.actionText]}>Travel Buddies</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => handleActionButton('addLevel')}
-              style={[theme.actionButton.default]}>
-              <Text style={[theme.actionButton.text]}>
+              style={[theme.buttons.action]}>
+              <Text style={[theme.buttons.actionText]}>
                 Add Intinerary Block
               </Text>
             </TouchableOpacity>
           </View>
-          <View style={theme.list.mainHeaederDetails}>
+          <View style={theme.lists.mainHeaederDetails}>
             {!isSharedList && listActions.invite ? (
               <Share handleShare={handleShare} />
             ) : listActions.viewBuddies ? (

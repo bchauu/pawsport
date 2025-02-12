@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Button} from 'react-native';
+import {View, Text, Button, StyleSheet} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import CreateAccountForm from '../component/account/CreateAccountForm';
 import {AuthStackParamList} from '../types/types';
@@ -24,7 +24,7 @@ const CreateScreen: React.FC<Props> = ({navigation}) => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Text> Create Account </Text>
       <CreateAccountForm onSubmit={handleCreateAccount} />
       <Button
@@ -34,5 +34,14 @@ const CreateScreen: React.FC<Props> = ({navigation}) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    // flex: 1,
+    backgroundColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default CreateScreen;

@@ -215,10 +215,10 @@ const Place = ({
     <View>
       <Image
         source={{uri: `${placeDetail.photos[0]?.photoUrl}`}}
-        style={[theme.card.cardImage]}
+        style={[theme.lists.cardImage]}
       />
-      <Text style={[theme.card.cardTitle]}>{placeDetail.name}</Text>
-      <Paragraph style={[theme.card.cardDetails]}>
+      <Text style={[theme.lists.cardTitle]}>{placeDetail.name}</Text>
+      <Paragraph style={[theme.lists.cardDetails]}>
         Rating: {placeDetail.rating}
         Total: {placeDetail.userRatingTotal}
       </Paragraph>

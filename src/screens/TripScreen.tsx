@@ -452,9 +452,9 @@ const TripsScreen = () => {
 
   return (
     <View>
-      <TouchableOpacity onPress={test}>
+      {/* <TouchableOpacity onPress={test}>
         <Text>Test</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       {!token && (
         <View style={styles.overlay}>
           <View style={styles.modalContainer}>

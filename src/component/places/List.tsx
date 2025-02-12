@@ -27,7 +27,7 @@ const List = ({places, isSearchInitiated, setIsSearchInitiated}) => {
             <Card
               key={place.place_id || place.placeId}
               style={styles.container}>
-              <Card.Content style={theme.card.cardContainer}>
+              <Card.Content style={theme.lists.cardContainer}>
                 <Place
                   reviews={reviews}
                   setReviews={setReviews}

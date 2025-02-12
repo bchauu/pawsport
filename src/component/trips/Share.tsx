@@ -38,15 +38,15 @@ const Share = ({handleShare}) => {
       <>
         <TextInput
           // style={styles.input}
-          style={theme.textInput.default}
+          style={theme.inputs.default}
           value={inputValue}
           onChangeText={setInputValue} // Update state when the input changes
           placeholder="Enter email or username"
         />
         <TouchableOpacity
           onPress={handleChange}
-          style={[theme.ctaButton.default, styles.buttonContainer]}>
-          <Text style={[theme.ctaButton.text]}>Submit</Text>
+          style={[theme.buttons.ctaButton, styles.buttonContainer]}>
+          <Text style={[theme.buttons.ctaText]}>Submit</Text>
         </TouchableOpacity>
       </>
       {/* )} */}

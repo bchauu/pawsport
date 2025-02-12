@@ -248,9 +248,9 @@ const Search = () => {
             placeholder="Paste a location’s Google Maps link"
             onChangeText={value => handleGoogleUrl(value)}
             value={googleMapUrl}
-            style={[theme.textInput.default]}
+            style={[theme.inputs.default]}
           />
-          <View style={[theme.padding.default]} />
+          <View style={[theme.spacing.padding.default]} />
           <DirectSearchPlace
             directSearchResult={directSearchResult}
             submitGoogleUrl={submitGoogleUrl}
@@ -272,11 +272,11 @@ const Search = () => {
               setIsSearchInitiated={setIsSearchInitiated}
               isSearchInitiated={isSearchInitiated}
             />
-            <View style={theme.padding.default}>
+            <View style={theme.spacing.padding.default}>
               <TouchableOpacity
                 onPress={handleSubmit}
-                style={[theme.ctaButton.default, styles.buttonContainer]}>
-                <Text style={[theme.ctaButton.text]}>Search Location</Text>
+                style={[theme.buttons.cta, styles.buttonContainer]}>
+                <Text style={[theme.buttons.ctaText]}>Search Location</Text>
               </TouchableOpacity>
             </View>
             {nextPage ? (
