@@ -41,11 +41,11 @@ const PlaceDetails = ({placeId, reviews, setReviews}) => {
                         }
                     `,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
+        // {
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //   },
+        // },
       );
 
       console.log(
