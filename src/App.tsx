@@ -6,7 +6,6 @@ import {AuthProvider} from './context/AuthContext';
 import {ThemeProvider} from './context/ThemeContext';
 import {TravelListProvider} from './context/AllTravelListContext';
 import {AllTripsProvider} from './context/AllTripsContext';
-import {ApiConfigProvider} from './context/ApiConfigContext';
 import {SelectedTripListProvider} from './context/SelectedTripListContext';
 import {SocketProvider} from './context/SocketContext';
 import {EmittedItemsProvider} from './context/EmittedItemsContext';
@@ -15,25 +14,23 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <ApiConfigProvider>
-          <AuthProvider>
-            <SocketProvider>
-              <EmittedItemsProvider>
-                <AddedItemProvider>
-                  <TravelListProvider>
-                    <SelectedTripListProvider>
-                      <AllTripsProvider>
-                        <ThemeProvider>
-                          <MainNavigator />
-                        </ThemeProvider>
-                      </AllTripsProvider>
-                    </SelectedTripListProvider>
-                  </TravelListProvider>
-                </AddedItemProvider>
-              </EmittedItemsProvider>
-            </SocketProvider>
-          </AuthProvider>
-        </ApiConfigProvider>
+        <AuthProvider>
+          <SocketProvider>
+            <EmittedItemsProvider>
+              <AddedItemProvider>
+                <TravelListProvider>
+                  <SelectedTripListProvider>
+                    <AllTripsProvider>
+                      <ThemeProvider>
+                        <MainNavigator />
+                      </ThemeProvider>
+                    </AllTripsProvider>
+                  </SelectedTripListProvider>
+                </TravelListProvider>
+              </AddedItemProvider>
+            </EmittedItemsProvider>
+          </SocketProvider>
+        </AuthProvider>
       </NavigationContainer>
     </SafeAreaProvider>
   );
