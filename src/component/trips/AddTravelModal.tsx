@@ -28,8 +28,8 @@ const AddTravelModal = ({allTravelList, handleAddTrip}) => {
     <View style={theme.lists.buttonContainer}>
       <TouchableOpacity
         onPress={() => setModalVisible(true)}
-        style={[theme.lists.button]}>
-        <Text style={[theme.lists.buttonText]}>Add to Travels</Text>
+        style={[theme.buttons.action]}>
+        <Text style={[theme.buttons.actionText]}>Add to Travels</Text>
       </TouchableOpacity>
       {/* The Modal */}
       {modalVisible && (

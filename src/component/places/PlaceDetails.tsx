@@ -25,7 +25,7 @@ const PlaceDetails = ({placeId, reviews, setReviews}) => {
   const handleViewDetails = async () => {
     try {
       const response = await axios.post(
-        `${apiUrl}/graphql`,
+        `${apiUrl}/curatedgraphql`,
         {
           query: `
                         query {

@@ -64,7 +64,7 @@ const HomeScreen = () => {
   return (
     <ScrollView style={[styles.scrollContainer]}>
       <View style={styles.container}>
-        <Button onPress={test} title="test" />
+        {/* <Button onPress={test} title="test" /> */}
         <Search />
         <Recommendations />
       </View>
