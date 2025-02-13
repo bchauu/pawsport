@@ -8,7 +8,6 @@ import {useTrip} from '../../context/TripContext';
 import {TripLocation} from '../../types/types';
 import {useTheme} from '../../context/ThemeContext';
 import {useAllTrips} from '../../context/AllTripsContext';
-import {useApiConfigContext} from '../../context/ApiConfigContext';
 import {useSelectedTripListContext} from '../../context/SelectedTripListContext';
 import {useTravelList} from '../../context/AllTravelListContext';
 import useApiConfig from '../../utils/apiConfig';
@@ -27,7 +26,6 @@ const Place = ({
   const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
   const {theme} = useTheme();
   const {locations, setLocation} = useTrip<TripLocation[]>([]);
-  // const {apiUrl, token} = useApiConfigContext();
   const {apiUrl, token} = useApiConfig();
   const {allTravelList, setAllTravelList} = useTravelList();
   const {selectedTrip, setSelectedTrip} = useSelectedTripListContext();

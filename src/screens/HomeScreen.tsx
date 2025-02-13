@@ -8,7 +8,6 @@ import {useTravelList} from '../context/AllTravelListContext';
 import {useTheme} from '../context/ThemeContext';
 import useApiConfig from '../utils/apiConfig';
 // import {useFocusEffect} from '@react-navigation/native';
-// import {useApiConfigContext} from '../context/ApiConfigContext';
 // import {getToken} from '../utils/authStorage';
 import axios from 'axios';
 
@@ -18,7 +17,6 @@ const HomeScreen = () => {
   const {emittedItems, setEmittedItems} = useEmittedItems();
   const {allTravelList, setAllTravelList} = useTravelList();
   const {apiUrl, token} = useApiConfig();
-  // const {apiUrl, token} = useApiConfigContext();
 
   const getList = async () => {
     console.log(allTravelList, `token: ${token}`, 'test in usecallbackr');

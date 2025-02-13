@@ -3,13 +3,11 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import axios from 'axios';
 import List from '../places/List';
 import {useTheme} from '../../context/ThemeContext';
-import {useApiConfigContext} from '../../context/ApiConfigContext';
 import useApiConfig from '../../utils/apiConfig';
 
 const Recommendations = () => {
   const {theme} = useTheme();
   const [curatedList, setCuratedList] = useState([]);
-  // const {apiUrl, token} = useApiConfigContext(); //this doesnt trigger on change
   const {apiUrl, token} = useApiConfig();
 
   useEffect(() => {
