@@ -62,7 +62,7 @@ const useApiConfig = () => {
     fetchConfig();
   }, []);
 
-  return {apiUrl, token};
+  return {apiUrl, token, setToken};
 };
 
 export default useApiConfig;

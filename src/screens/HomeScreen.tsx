@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useCallback} from 'react';
 import {View, Text, Button, ScrollView, StyleSheet} from 'react-native';
 import Search from '../component/home/Search';
 import Recommendations from '../component/home/Recommendations';
@@ -7,7 +7,9 @@ import {useEmittedItems} from '../context/EmittedItemsContext';
 import {useTravelList} from '../context/AllTravelListContext';
 import {useTheme} from '../context/ThemeContext';
 import useApiConfig from '../utils/apiConfig';
-import {useApiConfigContext} from '../context/ApiConfigContext';
+// import {useFocusEffect} from '@react-navigation/native';
+// import {useApiConfigContext} from '../context/ApiConfigContext';
+// import {getToken} from '../utils/authStorage';
 import axios from 'axios';
 
 const HomeScreen = () => {
@@ -15,22 +17,33 @@ const HomeScreen = () => {
   const {socket} = useSocketContext();
   const {emittedItems, setEmittedItems} = useEmittedItems();
   const {allTravelList, setAllTravelList} = useTravelList();
-  // const {apiUrl, token} = useApiConfig();
-  const {apiUrl, token} = useApiConfigContext();
+  const {apiUrl, token} = useApiConfig();
+  // const {apiUrl, token} = useApiConfigContext();
+
+  const getList = async () => {
+    console.log(allTravelList, `token: ${token}`, 'test in usecallbackr');
+    const response = await axios.get(`${apiUrl}/trips/lists/places`, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+    // console.log(response, 'getlist response');
+    setAllTravelList([...response.data.travelLists]);
+  };
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     console.log(allTravelList, 'test in usecallbackr');
+  //     if (!allTravelList.length) {
+  //       getList();
+  //     }
+  //   }, [token]),
+  // );
 
   useEffect(() => {
     // console.log(token, apiUrl, 'homescreen');
     if (token && apiUrl) {
       try {
-        const getList = async () => {
-          const response = await axios.get(`${apiUrl}/trips/lists/places`, {
-            headers: {
-              authorization: `Bearer ${token}`,
-            },
-          });
-          // console.log(response, 'getlist response');
-          setAllTravelList([...response.data.travelLists]);
-        };
         getList();
         // console.log('getting list in places');
       } catch (error) {

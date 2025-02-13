@@ -15,8 +15,8 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <AuthProvider>
-          <ApiConfigProvider>
+        <ApiConfigProvider>
+          <AuthProvider>
             <SocketProvider>
               <EmittedItemsProvider>
                 <AddedItemProvider>
@@ -32,8 +32,8 @@ const App = () => {
                 </AddedItemProvider>
               </EmittedItemsProvider>
             </SocketProvider>
-          </ApiConfigProvider>
-        </AuthProvider>
+          </AuthProvider>
+        </ApiConfigProvider>
       </NavigationContainer>
     </SafeAreaProvider>
   );

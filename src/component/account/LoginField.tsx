@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {useAuth} from '../../context/AuthContext';
 import {storeToken, getToken} from '../../utils/authStorage';
+import useApiConfig from '../../utils/apiConfig';
 import config from '../../config';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import {useSocketContext} from '../../context/SocketContext';
@@ -19,6 +20,7 @@ const LoginField = () => {
   const {theme} = useTheme();
   const {reconnectSocket} = useSocketContext();
   const {login} = useAuth();
+  const {setToken, apiUrl} = useApiConfig();
   const navigation = useNavigation(); // Get navigation object
   const [cred, setCred] = useState({
     email: '',
@@ -48,6 +50,7 @@ const LoginField = () => {
       if (response.status === 200) {
         const {token} = response.data;
         console.log(token, 'token and log in');
+        setToken(token);
         await storeToken(token);
         console.log('successfully stored token');
         const test = await getToken();
