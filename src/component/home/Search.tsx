@@ -275,7 +275,11 @@ const Search = () => {
             <View style={theme.spacing.padding.default}>
               <TouchableOpacity
                 onPress={handleSubmit}
-                style={[theme.buttons.cta, styles.buttonContainer]}>
+                style={{
+                  ...theme.buttons.cta,
+                  ...styles.buttonContainer,
+                  backgroundColor: theme.colors.secondary,
+                }}>
                 <Text style={[theme.buttons.ctaText]}>Search Location</Text>
               </TouchableOpacity>
             </View>

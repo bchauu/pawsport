@@ -80,7 +80,7 @@ const PlaceDetails = ({placeId, reviews, setReviews}) => {
   };
 
   return (
-    <View style={theme.lists.buttonContainer}>
+    <View style={theme.lists.buttonsContainer}>
       <TouchableOpacity
         onPress={() => handleViewDetails()}
         style={[theme.buttons.action]}>

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Button} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useTheme} from '../../context/ThemeContext';
 
 const CollapsibleDropdown = ({
   setIsSharedList,
@@ -14,6 +15,7 @@ const CollapsibleDropdown = ({
   const [expandedCategory, setExpandedCategory] = useState({}); //nested. reveals items in parent
   const [value, setValue] = useState(null); // --> this needs to be in parent so i can update and pass to trip
   const [items, setItems] = useState([]);
+  const {theme} = useTheme();
 
   const toggleDropdown = () => {
     setDropdownOpen(prev => !prev);
@@ -78,7 +80,9 @@ const CollapsibleDropdown = ({
   return (
     <View style={styles.container}>
       {/* Dropdown Trigger */}
-      <TouchableOpacity style={styles.dropdownTrigger} onPress={toggleDropdown}>
+      <TouchableOpacity
+        style={[theme.buttons.cta, styles.dropdownTrigger]}
+        onPress={toggleDropdown}>
         <Text style={styles.mainText}> Select List </Text>
         {/* <Text style={styles.arrow}> ⬇️ </Text> */}
         <Icon name="keyboard-arrow-down" size={20} color="black" />
@@ -131,7 +135,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     color: '#ffffff',
     left: '50%',
-    top: '-45%',
+    top: '-47%',
     paddingTop: '4.5%',
     alignItems: 'flex-end',
     shadowColor: '#000',
@@ -151,12 +155,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
+    paddingVertical: 9,
     width: '50%',
     padding: 7,
-    backgroundColor: '#ff9800',
     borderRadius: 5,
-    borderWidth: 1,
-    borderColor: '#ff9800',
   },
   dropdownTriggerText: {
     color: '#ffffff',

@@ -78,8 +78,8 @@ const TravelBuddiesButton = ({
                 !isSharedList && (
                   <TouchableOpacity
                     onPress={() => handleRemove(user.listPermissionId)}
-                    style={[theme.buttons.danger, theme.buttons.auth]}>
-                    <Text style={theme.lists.removeButtonText}>Remove</Text>
+                    style={[theme.buttons.auth, theme.buttons.danger]}>
+                    <Text style={theme.buttons.authText}>Remove</Text>
                   </TouchableOpacity>
                 )
                 // <Button title="Remove" onPress={() => handleRemove(user.listPermissionId)} />

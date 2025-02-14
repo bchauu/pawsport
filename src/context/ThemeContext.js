@@ -1,43 +1,42 @@
 import React, {createContext, useContext, useState} from 'react';
 
-// 🔹 Main Color Palette
+// 🔹 Main Color Palette (slightly muted secondary if desired)
 const colors = {
-  background: '#f7f7f7', // Soft off-white for a clean background
-  text: '#1a1a1a', // Very dark gray for sharp readability
-  primary: '#007bff', // Blue for CTAs (trust and action-oriented)
-  secondary: '#ff9800', // Warm orange for secondary actions
-  accent: '#00bfa6', // Bright teal for special highlights
-  muted: '#f4f4f4', // Soft, light gray
-  white: '#ffffff',
-  gray: '#a3a3a3', // Subdued gray for disabled states
-  danger: '#dc3545', // Red for errors/logouts
-  success: '#28a745', // Green for confirmations
+  primary: '#2C7D53', // Forest green (main CTA color)
+  secondary: '#7F5B34', // Saddle Brown (secondary actions/highlights)
+  accent: '#ECC94B', // Golden mustard (small highlights/alerts)
+  success: '#38A169', // Cactus green (success messages)
+  danger: '#C53030', // Canyon red (errors/destructive actions)
+  background: '#F7FAFC', // Soft off-white backdrop
+  text: '#1A202C', // Dark gray-navy for strong readability
+  muted: '#E2E8F0', // Light gray for subtle backgrounds
+  white: '#FFFFFF', // Pure white
+  gray: '#A0AEC0', // Mid-tone gray for borders, disabled states
 };
 
-// 🔹 Shadows (Reused for buttons, containers, cards)
+// 🔹 Shadows: Lowered opacity for subtler effect
 const shadow = {
   light: {
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.05,
-    shadowRadius: 4,
+    shadowRadius: 3, // 🔥 Slightly smaller radius
     elevation: 1,
   },
   medium: {
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 4},
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 3,
+    shadowOffset: {width: 0, height: 3}, // Lower height
+    shadowOpacity: 0.08, // 🔥 Reduced for a smoother look
+    shadowRadius: 4,
+    elevation: 2,
   },
 };
 
-// 🔹 Typography Styles
+// 🔹 Typography: Could unify headers with consistent spacing, lineHeights
 const typography = {
   fontFamily: {
-    regular: 'Roboto-Regular',
-    bold: 'Roboto-Bold',
-    italic: 'Roboto-Italic',
+    heading: 'RobotoSlab-Bold',
+    body: 'OpenSans-Regular',
   },
   fontSize: {
     xs: 12,
@@ -45,6 +44,7 @@ const typography = {
     md: 16,
     lg: 20,
     xl: 24,
+    xxl: 28, // 🔥 If you want bigger headings
   },
   lineHeight: {
     sm: 18,
@@ -53,8 +53,8 @@ const typography = {
   },
   letterSpacing: {
     normal: 0,
-    wide: 1,
-    wider: 2,
+    wide: 0.5,
+    wider: 1,
   },
 };
 
@@ -66,66 +66,66 @@ const spacing = {
   lg: 24,
   xl: 32,
   padding: {
-    small: {padding: 4},
-    medium: {padding: 8},
+    small: {padding: 8}, // 🔥 Bumped up from 4 → 8
+    medium: {padding: 12},
     large: {padding: 16},
-    default: {paddingTop: 3, paddingLeft: 1, paddingRight: 1, paddingBottom: 3}, // 🔥 Still here!
+    default: {paddingTop: 3, paddingLeft: 3, paddingRight: 3, paddingBottom: 3},
   },
 };
 
 // 🔹 Button Styles
 const buttons = {
-  // 🔹 Base button styling (applies to all buttons)
   base: {
-    paddingVertical: 14,
-    paddingHorizontal: 28,
-    borderRadius: 8,
+    paddingVertical: 10, // 🔥 Reduced from 14
+    paddingHorizontal: 20, // 🔥 Reduced from 28
+    borderRadius: 6, // 🔥 More unified corner radius
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 10,
-  },
-  auth: {
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 5,
+    marginVertical: 8, // Slightly smaller margin
   },
   text: {
     fontSize: 16,
     fontWeight: 'bold',
     color: colors.white,
     textTransform: 'uppercase',
-    letterSpacing: 1,
+    letterSpacing: 0.5, // 🔥 Slightly subtler spacing
   },
+  primary: {backgroundColor: colors.primary},
+  secondary: {backgroundColor: colors.secondary},
+  danger: {backgroundColor: colors.danger},
+  success: {backgroundColor: colors.success},
 
-  // 🔹 Primary Action Buttons
-  primary: {backgroundColor: colors.primary}, // Main action button
-  secondary: {backgroundColor: colors.secondary}, // Less dominant action
-  danger: {backgroundColor: colors.danger}, // For logout & destructive actions
-  success: {backgroundColor: colors.success}, // For "Create Account" button
-
-  // 🔹 Call-to-Action (CTA) Button
+  // 🔹 CTA Button
   cta: {
     backgroundColor: colors.primary,
-    borderRadius: 8,
+    borderRadius: 6,
     paddingVertical: 10,
-    paddingHorizontal: 12,
+    paddingHorizontal: 16,
+    ...shadow.medium,
     alignItems: 'center',
     justifyContent: 'center',
-    ...shadow.medium,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 4},
-    shadowOpacity: 0.15,
-    shadowRadius: 3,
-    elevation: 3,
   },
   ctaText: {
     color: colors.white,
     fontSize: 14,
     fontWeight: 'bold',
   },
+
+  // 🔹 Smaller Auth/Action Buttons
+  auth: {
+    borderRadius: 6,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    marginVertical: 5,
+    backgroundColor: colors.primary,
+    ...shadow.light,
+  },
+  authText: {
+    color: colors.white,
+    fontSize: 14,
+    fontWeight: '600',
+  },
+
   action: {
     backgroundColor: colors.secondary, // Use secondary color
     borderRadius: 8,
@@ -134,26 +134,22 @@ const buttons = {
     alignItems: 'center',
   },
   actionText: {
-    color: colors.text, // Text color for action buttons
+    color: colors.white, // Text color for action buttons
     fontSize: 12,
     fontWeight: 'bold',
   },
 
-  // 🔹 Filter Button (Used for selecting categories)
+  // 🔹 Filter Button
   filter: {
     borderRadius: 20,
     borderWidth: 1,
     borderColor: colors.gray,
     paddingHorizontal: 12,
     paddingVertical: 6,
-    backgroundColor: colors.whiter,
+    backgroundColor: colors.white,
+    ...shadow.light,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.15,
-    shadowRadius: 3,
-    elevation: 2,
   },
   filterText: {
     fontSize: 12,
@@ -161,21 +157,21 @@ const buttons = {
     color: colors.primary,
   },
   filterSelected: {
-    backgroundColor: colors.primary, // Highlighted background
+    backgroundColor: colors.primary,
     borderColor: colors.primary,
-    shadowOpacity: 0.3, // Slightly stronger shadow
-    elevation: 3, // Slightly higher elevation for selected state
+    shadowOpacity: 0.15,
+    elevation: 2,
   },
   filterSelectedText: {
-    color: colors.white, // White text for contrast
-    fontWeight: '600', // More bold for emphasis
+    color: colors.white,
+    fontWeight: '600',
   },
 
-  // 🔹 Toggle Button (Switches between states)
+  // 🔹 Toggle Button
   toggle: {
-    borderRadius: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
+    borderRadius: 6,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
     backgroundColor: colors.secondary,
     alignItems: 'center',
     justifyContent: 'center',
@@ -184,7 +180,7 @@ const buttons = {
     backgroundColor: colors.primary,
   },
 
-  // 🔹 Chip Button (Small rounded buttons like Material Design chips)
+  // 🔹 Chip Button
   chip: {
     borderRadius: 20,
     paddingVertical: 4,
@@ -198,11 +194,11 @@ const buttons = {
     color: colors.text,
   },
 
-  // 🔹 Flat Button (Button with no elevation)
+  // 🔹 Flat Button
   flat: {
     backgroundColor: 'transparent',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
+    paddingVertical: 6,
+    paddingHorizontal: 8,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -211,40 +207,19 @@ const buttons = {
     fontWeight: 'bold',
     color: colors.primary,
   },
-  listContainer: {
-    flexDirection: 'column', // Stack buttons vertically
-    alignItems: 'stretch', // Make buttons take full width
-    marginBottom: 12,
-  },
-  list: {
-    backgroundColor: '#ff9800',
-    paddingVertical: 8,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginBottom: 8, // Space between buttons
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.15,
-    shadowRadius: 3,
-  },
-  listText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 14,
-  },
 
-  // 🔹 Pressed & Disabled States
-  pressed: {backgroundColor: '#004494'}, // Darker color on press
+  // 🔹 Pressed & Disabled
+  pressed: {backgroundColor: '#004494'},
   disabled: {backgroundColor: colors.gray},
 };
 
 // 🔹 Input Styles
 const inputs = {
   default: {
-    height: 44,
-    borderColor: 'rgba(214, 204, 204, 2)',
+    height: 40, // 🔥 Slightly smaller
+    borderColor: colors.gray,
     borderWidth: 1,
-    borderRadius: 8,
+    borderRadius: 6,
     paddingHorizontal: 12,
     fontSize: 16,
     color: colors.text,
@@ -262,7 +237,7 @@ const inputs = {
     backgroundColor: colors.white,
   },
   focused: {
-    borderColor: colors.primary, // Accent color for focus
+    borderColor: colors.primary,
     borderWidth: 2,
   },
   error: {
@@ -274,37 +249,54 @@ const inputs = {
   },
 };
 
-// 🔹 List & Card Styles (Grouped Together)
+// 🔹 Lists & Cards
 const lists = {
   listContainer: {
-    paddingTop: 10,
+    paddingTop: spacing.md,
   },
   list: {
     padding: 5,
     paddingTop: 0,
   },
   authContainer: {
-    // backgroundColor: colors.white,
-    // width: '80%',
     borderRadius: 12,
     ...shadow.light,
     padding: 12,
     marginBottom: 16,
     justifyContent: 'center',
   },
+  buttonsContainer: {
+    paddingTop: 20,
+    paddingBottom: 10,
+  },
   mainHeaderContainer: {
-    width: '100%', // Full width
-    padding: 10,
-    paddingTop: 16,
-    backgroundColor: colors.muted, // Light background for contrast
-    marginBottom: 16, // Spacing below
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 3},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2, // Android shadow
+    width: '100%',
+    padding: spacing.md,
+    backgroundColor: colors.muted,
+    marginBottom: spacing.md,
+    ...shadow.light,
     borderBottomWidth: 1,
-    borderBottomColor: colors.muted, // Light border for separation
+    borderBottomColor: colors.gray,
+  },
+  mainHeader: {
+    fontSize: typography.fontSize.xl,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: spacing.sm,
+    color: colors.text,
+  },
+  mainHeaderDetails: {
+    paddingTop: 10,
+  },
+  mainHeaderButtons: {
+    backgroundColor: colors.muted,
+    borderRadius: 6,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    marginTop: spacing.sm,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   cardContainer: {
     flexDirection: 'row',
@@ -333,100 +325,73 @@ const lists = {
     marginBottom: 12, // Space before the buttons
   },
   sectionCard: {
-    backgroundColor: colors.white, // White background for contrast
-    borderRadius: 13.5, // Rounded corners
-    borderWidth: 1.5, // Thin border for structure
-    borderColor: colors.gray, // Subtle gray border
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    marginBottom: 16, // Space below the card
-    elevation: 2, // Android shadow
-    padding: 12, // Inner padding
-  },
-  mainHeader: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 8,
-    color: colors.text,
-  },
-  mainHeaderButtons: {
-    backgroundColor: colors.muted,
-    borderRadius: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    marginTop: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-  },
-  mainHeaderDetails: {
-    paddingTop: 10,
+    backgroundColor: colors.white,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: colors.gray,
+    ...shadow.light,
+    marginBottom: spacing.md,
+    padding: spacing.md,
   },
   titleRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 8, // Vertical padding for spacing
-    paddingHorizontal: 16, // Horizontal padding for alignment
-    borderTopLeftRadius: 12, // Rounded top-left corner
-    borderTopRightRadius: 12, // Rounded top-right corner
-    marginBottom: 8, // Space between the header and the list items
-    backgroundColor: colors.secondary,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    backgroundColor: colors.primary,
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6,
     borderBottomWidth: 1,
-    borderBottomColor: 'black',
+    borderBottomColor: colors.gray,
   },
   titleText: {
-    fontSize: 20,
+    fontSize: typography.fontSize.lg,
     fontWeight: '600',
-    color: '#555',
+    color: colors.white, // 🔥 Make white text stand out on orange
   },
 };
 
+// 🔹 Personal List
 const personalList = {
   mainContainer: {
-    padding: 10,
-    backgroundColor: '#f5f5f5', // Light gray background for the main container
+    padding: spacing.md,
+    backgroundColor: colors.background,
   },
   list: {
-    padding: 1.5,
-    backgroundColor: '#ffffff', // White background for the list
-    borderRadius: 8, // Rounded corners
-    marginBottom: 15, // Space between each list
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', // Soft shadow for depth
+    padding: spacing.xs,
+    backgroundColor: colors.white,
+    borderRadius: 6,
+    marginBottom: spacing.md,
+    // React Native doesn’t support `boxShadow` syntax – use shadow props:
+    ...shadow.light,
   },
   subList: {
-    padding: 5,
-    backgroundColor: '#ffefd5', // Light orange background for sublist
-    borderLeftWidth: 5, // Left border for visual separation
+    padding: spacing.sm,
+    backgroundColor: 'rgba(236, 201, 75, 0.2)',
+    borderLeftWidth: 5,
     left: 5,
-    borderLeftColor: '#ffa500', // Orange color for left border
-    borderRadius: 4, // Slight rounded corners
-    marginBottom: 10, // Spacing between sublist items
+    borderLeftColor: colors.secondary,
+    borderRadius: 4,
+    marginBottom: spacing.sm,
   },
   subListHeaderContainer: {
-    paddingVertical: 10, // Vertical spacing
-    paddingHorizontal: 15, // Horizontal spacing
-    backgroundColor: '#4A90E2', // Modern blue background
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    backgroundColor: colors.primary,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderRadius: 6, // Rounded edges
-    marginBottom: 10, // Space between header and next section
-    shadowColor: '#000', // Soft shadow for depth
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 3, // For Android shadow
+    borderRadius: 6,
+    marginBottom: spacing.sm,
+    ...shadow.light,
   },
   subListHeaderText: {
-    fontSize: 18, // Larger font for header
-    color: '#ffffff', // White text for contrast
-    fontWeight: '600', // Semi-bold for emphasis
-    textAlign: 'left', // Align text to the left
-    letterSpacing: 0.5, // Slight spacing for a polished look
+    fontSize: typography.fontSize.md,
+    color: colors.white,
+    fontWeight: '600',
+    textAlign: 'left',
+    letterSpacing: 0.5,
   },
   listItem: {
     // width: '60%',
@@ -449,7 +414,7 @@ const personalList = {
   },
 };
 
-// 🔹 Theme Object (Consolidated All Sections)
+// 🔹 Combine into One Theme Object
 const theme = {
   colors,
   typography,
@@ -461,12 +426,10 @@ const theme = {
   personalList,
 };
 
-// 🔹 Create Theme Context
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({children}) => {
   const [currentTheme] = useState(theme);
-
   return (
     <ThemeContext.Provider value={{theme: currentTheme}}>
       {children}
@@ -474,7 +437,6 @@ export const ThemeProvider = ({children}) => {
   );
 };
 
-// 🔹 Custom Hook for Theme Usage
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (!context) {

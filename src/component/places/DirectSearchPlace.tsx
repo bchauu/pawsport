@@ -70,7 +70,11 @@ const DirectSearchPlace = ({directSearchResult, submitGoogleUrl}) => {
     <View>
       <TouchableOpacity
         onPress={() => handleGoogleUrl()}
-        style={[theme.buttons.cta, styles.buttonContainer]}>
+        style={{
+          ...theme.buttons.cta,
+          ...styles.buttonContainer,
+          backgroundColor: theme.colors.secondary,
+        }}>
         <Text style={[theme.buttons.ctaText]}>Find Location</Text>
       </TouchableOpacity>
       <Modal

@@ -32,7 +32,7 @@ const LogOut = ({setIsLoggedIn}) => {
   return (
     <View style={theme.buttons.base}>
       <TouchableOpacity
-        style={[theme.buttons.danger, theme.buttons.auth]}
+        style={[theme.buttons.auth, theme.buttons.danger]}
         onPress={handleLogOut}>
         <Text style={theme.buttons.text}>Log Out</Text>
       </TouchableOpacity>
