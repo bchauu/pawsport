@@ -1,5 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {TextInput, Text, ScrollView} from 'react-native';
+import {
+  TextInput,
+  Text,
+  ScrollView,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import {useSearch} from '../context/SearchContext';
 // import AutoCompleteField from '../components/search/AutoCompleteField';
 import AutoCompleteField from '../component/search/AutoCompleteField';
@@ -74,27 +81,82 @@ const SearchSuggestionScreen = () => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
       <TextInput
+        style={styles.input}
         placeholder="Where to?"
-        value={suggestions}
         onChangeText={value => updateSuggestion(value)}
       />
 
       {hasSuggestion ? (
-        suggestions?.map((suggestion, index) => (
-          <AutoCompleteField
-            address={suggestion.address}
-            lat={suggestion.lat}
-            lon={suggestion.lon}
-            key={index}
-          />
-        ))
+        <View style={styles.suggestionsContainer}>
+          {suggestions?.map((suggestion, index) => (
+            <AutoCompleteField
+              key={index}
+              address={suggestion.address}
+              lat={suggestion.lat}
+              lon={suggestion.lon}
+              style={[
+                styles.suggestionItem,
+                // remove bottom border from last item, for example
+                index === suggestions.length - 1 && styles.suggestionItemLast,
+              ]}
+            />
+          ))}
+        </View>
       ) : (
-        <Text>Type to View Suggestions</Text>
+        <Text style={styles.placeholderText}>Type to View Suggestions</Text>
       )}
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F7FAFC', // Light neutral background
+    padding: 16,
+  },
+  input: {
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    fontSize: 16,
+    marginBottom: 12,
+  },
+  suggestionsContainer: {
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    borderRadius: 8,
+    backgroundColor: '#fff',
+  },
+  suggestionItem: {
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E2E8F0',
+  },
+  suggestionItemLast: {
+    // Remove bottom border for the last item
+    borderBottomWidth: 0,
+  },
+  suggestionText: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#1A202C',
+  },
+  coordText: {
+    fontSize: 13,
+    color: '#718096',
+  },
+  placeholderText: {
+    textAlign: 'center',
+    color: '#A0AEC0',
+    marginTop: 20,
+  },
+});
 
 export default SearchSuggestionScreen;

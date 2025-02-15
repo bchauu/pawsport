@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Button, Text} from 'react-native';
+import {View, Button, Text, StyleSheet} from 'react-native';
 import {useSearch} from '../../context/SearchContext';
 import {useNavigation} from '@react-navigation/native';
+import {useTheme} from '../../context/ThemeContext';
 
 type AutoCompleteFieldProps = {
   address: {};
@@ -17,6 +18,40 @@ const AutoCompleteField: React.FC<AutoCompleteFieldProps> = ({
   const navigation = useNavigation();
   const {searchValue, setSearchValue} = useSearch();
   //name, city, state. country_code
+  const {theme} = useTheme();
+
+  const styles = StyleSheet.create({
+    container: {
+      padding: 12,
+      backgroundColor: theme.colors.muted,
+      borderRadius: 8,
+      marginVertical: 8,
+      // center contents horizontally
+      alignItems: 'center',
+      // subtle shadow for elevation
+      shadowColor: '#000',
+      shadowOffset: {width: 0, height: 2},
+      shadowOpacity: 0.1,
+      shadowRadius: 3,
+      elevation: 2,
+    },
+    buttonContainer: {
+      width: '100%',
+      marginBottom: 8,
+    },
+    buttonColor: {
+      color: theme.colors.primary, // you can change this to match your theme (forest green)
+    },
+    coordContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      width: '100%',
+    },
+    coordText: {
+      fontSize: 14,
+      color: '#718096', // a muted gray
+    },
+  });
 
   const {
     name,
@@ -46,13 +81,18 @@ const AutoCompleteField: React.FC<AutoCompleteFieldProps> = ({
 
   //textSearch API
   return (
-    <View>
-      <Button
-        title={searchName}
-        onPress={() => handleSelectSearch(searchName, lat, lon)}
-      />
-      <Text>{lat}</Text>
-      <Text>{lon}</Text>
+    <View style={styles.container}>
+      <View style={styles.buttonContainer}>
+        <Button
+          title={searchName}
+          onPress={() => handleSelectSearch(searchName, lat, lon)}
+          color={styles.buttonColor.color} // using a color from our style object
+        />
+      </View>
+      <View style={styles.coordContainer}>
+        <Text style={styles.coordText}>Lat: {lat}</Text>
+        <Text style={styles.coordText}>Lon: {lon}</Text>
+      </View>
     </View>
   );
 };
