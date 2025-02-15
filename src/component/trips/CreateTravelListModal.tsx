@@ -50,7 +50,11 @@ const CreateTravelListModal = ({
               onChangeText={handleInputName}
               style={theme.inputs.default}
             />
-            {/* <Button title="Create New List" onPress={handleAddtoTravelList} /> */}
+            <TouchableOpacity
+              onPress={handleAddtoTravelList}
+              style={theme.buttons.cta}>
+              <Text style={theme.buttons.ctaText}>Add List</Text>
+            </TouchableOpacity>
             <View>
               <TouchableOpacity
                 onPress={handleAddtoTravelList}
@@ -64,16 +68,6 @@ const CreateTravelListModal = ({
                 </Text>
               </TouchableOpacity>
             </View>
-            {/* <TouchableOpacity
-              onPress={handleAddtoTravelList}
-              // style={[theme.ctaButton.default, styles.buttonContainer]}
-            >
-              <Text
-                style={[theme.ctaButton.text]}
-              >
-                Submit
-              </Text>
-            </TouchableOpacity> */}
             <TouchableOpacity
               onPress={() => setModalVisible(false)}
               // style={[theme.ctaButton.default, styles.buttonContainer]}

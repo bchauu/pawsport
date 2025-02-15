@@ -41,8 +41,8 @@ const SubLevelInput = ({trip}) => {
       />
       <TouchableOpacity
         onPress={() => addSubLevel()}
-        style={[theme.buttons.action, {width: '100%'}]}>
-        <Text style={[theme.buttons.actionText]}>Add Sub-level</Text>
+        style={[theme.buttons.cta, {width: '100%'}]}>
+        <Text style={[theme.buttons.ctaText]}>Add Sub-level</Text>
       </TouchableOpacity>
     </View>
   );

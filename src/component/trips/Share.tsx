@@ -43,9 +43,7 @@ const Share = ({handleShare}) => {
           onChangeText={setInputValue} // Update state when the input changes
           placeholder="Enter email or username"
         />
-        <TouchableOpacity
-          onPress={handleChange}
-          style={[theme.buttons.ctaButton, styles.buttonContainer]}>
+        <TouchableOpacity onPress={handleChange} style={[theme.buttons.cta]}>
           <Text style={[theme.buttons.ctaText]}>Submit</Text>
         </TouchableOpacity>
       </>
