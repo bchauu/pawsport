@@ -94,19 +94,27 @@ const PlaceDetails = ({placeId, reviews, setReviews}) => {
       >
         <View style={styles.modalBackground}>
           <View style={styles.container}>
-            <Text>All Details</Text>
+            <Text>Reviews</Text>
             {reviews && (
               <ScrollView horizontal>
                 {reviews[placeId]?.map((review, index) => (
-                  <Card key={index} style={styles.reviewCard}>
-                    <Card.Content style={styles.reviewHeader}>
-                      <Text>{review.author}</Text>
-                      <Text>{review.rating}</Text>
-                      <Text>{review.relativeTimeDescription}</Text>
-                    </Card.Content>
+                  <Card key={index} style={theme.lists.reviewCard}>
                     <Card.Content>
-                      <ScrollView>
-                        <Text>{review.text}</Text>
+                      <ScrollView style={theme.lists.verticalScroll}>
+                        <View style={theme.lists.reviewHeaderContainer}>
+                          <Text style={theme.lists.authorText}>
+                            {review.author}
+                          </Text>
+                          <Text style={theme.lists.ratingText}>
+                            Review: {review.rating}/5
+                          </Text>
+                          <Text style={theme.lists.relativeTimeText}>
+                            {review.relativeTimeDescription}
+                          </Text>
+                        </View>
+                        <Text style={theme.lists.reviewText}>
+                          {review.text}
+                        </Text>
                       </ScrollView>
                     </Card.Content>
                   </Card>
@@ -114,7 +122,7 @@ const PlaceDetails = ({placeId, reviews, setReviews}) => {
               </ScrollView>
             )}
             <View />
-            <Button title={'test'} onPress={() => handleTest()} />
+            {/* <Button title={'test'} onPress={() => handleTest()} /> */}
             <TouchableOpacity onPress={() => setModalVisible(false)}>
               <Text>Hide</Text>
             </TouchableOpacity>
@@ -142,29 +150,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 10,
     padding: 20,
-  },
-  userRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    paddingVertical: 10,
-  },
-  reviewText: {
-    height: '100%',
-    width: '20%',
-  },
-  reviewHeader: {
-    paddingBottom: 10,
-    borderColor: 'black',
-  },
-  reviewCard: {
-    // width: '30%',
-    // flexGrow: 1,
-    alignSelf: 'flex-start',
-    maxWidth: 350,
-    // height: 300,
-    // maxHeight: 1000
   },
 });
 

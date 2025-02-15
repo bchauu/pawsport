@@ -298,6 +298,19 @@ const lists = {
     justifyContent: 'space-around',
     alignItems: 'center',
   },
+  card: {
+    backgroundColor: colors.muted,
+    padding: 8,
+    paddingTop: 14,
+    paddingBottom: 10,
+    margin: 6,
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
   cardContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -349,6 +362,36 @@ const lists = {
     fontSize: typography.fontSize.lg,
     fontWeight: '600',
     color: colors.white, // 🔥 Make white text stand out on orange
+  },
+  reviewCard: {
+    backgroundColor: colors.muted,
+    alignSelf: 'flex-start',
+    maxWidth: 300,
+  },
+  reviewHeaderContainer: {
+    marginBottom: 10, // Space below header
+    paddingBottom: 5, // Extra padding inside header
+    borderBottomWidth: 1, // A subtle divider line
+    borderBottomColor: '#E2E8F0', // Use a muted tone from your theme
+  },
+  authorText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#1A202C',
+  },
+  ratingText: {
+    fontSize: 14,
+    color: '#1A202C',
+  },
+  relativeTimeText: {
+    fontSize: 12,
+    color: '#A0AEC0',
+  },
+  reviewText: {
+    fontSize: 14,
+    lineHeight: 20,
+    color: '#1A202C',
+    marginTop: 10, // additional separation from header
   },
 };
 
