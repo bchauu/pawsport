@@ -256,7 +256,7 @@ const lists = {
   },
   list: {
     padding: 5,
-    paddingTop: 0,
+    paddingTop: 15,
   },
   authContainer: {
     borderRadius: 12,
@@ -341,10 +341,10 @@ const lists = {
     backgroundColor: colors.white,
     borderRadius: 6,
     borderWidth: 1,
-    borderColor: colors.gray,
+    borderColor: colors.muted,
     ...shadow.light,
-    marginBottom: spacing.md,
-    padding: spacing.md,
+    // marginBottom: spacing.md,
+    // padding: spacing.md,
   },
   titleRow: {
     flexDirection: 'row',

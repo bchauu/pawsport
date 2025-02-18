@@ -11,6 +11,7 @@ import MoveSubLevelModal from '../subLevels/MoveSubLevelModal';
 import {useTheme} from '../../../context/ThemeContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import FontIcon from 'react-native-vector-icons/FontAwesome';
+import PlaceDetails from '../../places/PlaceDetails';
 
 const ManualSwipeableRow = ({
   item,
@@ -29,6 +30,9 @@ const ManualSwipeableRow = ({
   const translateX = useRef(new Animated.Value(0)).current; // Animated value for translation
   const [isSwipedLeft, setIsSwipedLeft] = useState(false);
   const [collapsedItemDetails, setCollapsedItemDetails] = useState(false);
+  const [reviews, setReviews] = useState([]);
+
+  console.log(item, 'manualswipe');
 
   const handleSwipeLeft = () => {
     setIsSwipedLeft(true);
@@ -104,6 +108,11 @@ const ManualSwipeableRow = ({
           <Text style={theme.personalList.listItem}>{item.name}</Text>
         </View>
         <View style={theme.personalList.itemButtons}>
+          <PlaceDetails
+            placeId={item.placeId}
+            reviews={reviews}
+            setReviews={setReviews}
+          />
           <TouchableOpacity
             onPress={() => handleTripOrderChange(tripOrder, item)}>
             <Icon name="keyboard-arrow-up" size={30} color="black" />

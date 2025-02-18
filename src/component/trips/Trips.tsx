@@ -52,6 +52,7 @@ const Trips = ({
     invite: false,
     addLevel: false,
   });
+  const [reviws, setReviews] = useState([]);
   const {apiUrl, token} = useApiConfig();
 
   useEffect(() => {

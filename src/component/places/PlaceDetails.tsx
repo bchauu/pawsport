@@ -13,6 +13,8 @@ import useApiConfig from '../../utils/apiConfig';
 import {Card} from 'react-native-paper';
 import axios from 'axios';
 import {useTheme} from '../../context/ThemeContext';
+import getReviewApi from '../../utils/reviewApi';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const PlaceDetails = ({placeId, reviews, setReviews}) => {
   const {theme} = useTheme();
@@ -23,50 +25,14 @@ const PlaceDetails = ({placeId, reviews, setReviews}) => {
   //this format to open up on google maps --> this way they can get even more info if needed
 
   const handleViewDetails = async () => {
+    console.log(placeId, 'placeId');
     try {
-      const response = await axios.post(
-        `${apiUrl}/curatedgraphql`,
-        {
-          query: `
-                        query {
-                            getPlaceReviews(placeId: "${placeId}") {
-                                reviews
-                                    {
-                                        author
-                                        rating
-                                        text
-                                        relativeTimeDescription
-                                    }
-                            }
-                        }
-                    `,
-        },
-        // {
-        //   headers: {
-        //     Authorization: `Bearer ${token}`,
-        //   },
-        // },
-      );
-
-      console.log(
-        response.data.data.getPlaceReviews.reviews,
-        'response from getting reviews',
-      );
-
-      // response.data.data.getPlaceReviews.reviews.map((review))
-      // setReviews({
-      //     ...reviews,
-      //     [placeId]: response.data.data.getPlaceReviews.reviews
-      // })
+      const response = await getReviewApi({placeId, apiUrl, setReviews});
 
       setReviews(prevReviews => ({
         ...prevReviews,
-        [placeId]: response.data.data.getPlaceReviews.reviews,
+        [placeId]: response,
       }));
-
-      // setReviews((prev) => (
-      //     [...prev, placeId]
-      // ))
 
       setModalVisible(true);
     } catch (error) {
@@ -81,10 +47,8 @@ const PlaceDetails = ({placeId, reviews, setReviews}) => {
 
   return (
     <View style={theme.lists.buttonsContainer}>
-      <TouchableOpacity
-        onPress={() => handleViewDetails()}
-        style={[theme.buttons.action]}>
-        <Text style={[theme.buttons.actionText]}>View Reviews</Text>
+      <TouchableOpacity onPress={() => handleViewDetails()}>
+        <Icon name="info" size={24} color="gray" />
       </TouchableOpacity>
       <Modal
         animationType="slide"
