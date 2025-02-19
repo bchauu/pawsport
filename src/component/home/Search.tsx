@@ -194,7 +194,7 @@ const Search = () => {
         `${apiUrl}/graphql`,
         {
           query: `query {
-                        resolveAndExtractPlace(url: "https://maps.app.goo.gl/DQHkLhNGJ2Y5zDer8") {
+                        resolveAndExtractPlace(url: "${googleMapUrl}") {
                                 result {
                                     name
                                     location {
