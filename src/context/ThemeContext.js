@@ -384,6 +384,7 @@ const lists = {
   },
   cardActions: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   sectionCard: {
     backgroundColor: colors.background,

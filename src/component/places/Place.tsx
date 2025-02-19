@@ -232,7 +232,7 @@ const Place = ({
             handleAddTrip={handleAddTrip}
           />
         ) : (
-          <AuthModal modalName={' List'} />
+          <AuthModal modalName={'Add to Travel List'} />
         )}
       </View>
     </View>
