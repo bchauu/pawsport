@@ -216,7 +216,10 @@ const Place = ({
         style={[theme.lists.cardImage]}
       />
       <Text style={[theme.lists.cardTitle]}>{placeDetail.name}</Text>
-      <Paragraph style={[theme.lists.cardDetails]}>
+      <Paragraph style={[{...theme.lists.cardDetails, maxWidth: 300}]}>
+        {placeDetail.address}
+      </Paragraph>
+      <Paragraph style={[{...theme.lists.cardDetails, maxWidth: 300}]}>
         Rating: {placeDetail.rating}
         Total: {placeDetail.userRatingTotal}
       </Paragraph>

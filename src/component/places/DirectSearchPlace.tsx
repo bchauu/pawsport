@@ -10,11 +10,13 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
+import {Paragraph} from 'react-native-paper';
 import useApiConfig from '../../utils/apiConfig';
 import {Card} from 'react-native-paper';
 import ListSelector from './BottomSheet';
 import {useTheme} from '../../context/ThemeContext';
 import {useTravelList} from '../../context/AllTravelListContext';
+import PlaceDetails from './PlaceDetails';
 import axios from 'axios';
 
 const DirectSearchPlace = ({directSearchResult, submitGoogleUrl}) => {
@@ -25,6 +27,7 @@ const DirectSearchPlace = ({directSearchResult, submitGoogleUrl}) => {
   const [selectedItem, setSelectedItem] = useState('');
   // const [allTravelList, setAllTravelList] = useState([]);
   const {allTravelList, setAllTravelList} = useTravelList();
+  const [reviews, setReviews] = useState({});
 
   useEffect(() => {
     if (token && apiUrl) {
@@ -97,23 +100,45 @@ const DirectSearchPlace = ({directSearchResult, submitGoogleUrl}) => {
             )}
             {directSearchResult && (
               <ScrollView horizontal>
-                <Card>
+                <Card style={(styles.container, theme.lists.card)}>
                   {directSearchResult.map(item => (
                     <View key={item.place_id}>
-                      <View>
-                        <Button
-                          title="Add to List"
-                          onPress={() => handleAddDirectToList(item)}
-                        />
-                      </View>
-                      <Card.Content>
-                        <Text>Rating: {item.rating}</Text>
-                        <Text>Total: {item.userRatingTotal}</Text>
-                        <Text>Address: {item.address}</Text>
+                      <Card.Content
+                        style={{
+                          ...theme.lists.cardContainer,
+                          flexDirection: 'column',
+                        }}>
+                        <Text style={[theme.lists.cardTitle]}>{item.name}</Text>
                         <Image
                           source={{uri: `${item.photos[0]?.photoUrl}`}}
-                          style={{width: 100, height: 100}}
+                          style={theme.lists.cardImage}
                         />
+                        <View
+                          style={[{flexDirection: 'column', maxWidth: 300}]}>
+                          <Paragraph style={[{...theme.lists.cardDetails}]}>
+                            Address: {item.address}
+                          </Paragraph>
+                          <Paragraph style={[{...theme.lists.cardDetails}]}>
+                            Rating: {item.rating}
+                          </Paragraph>
+                          <Paragraph style={[{...theme.lists.cardDetails}]}>
+                            Total: {item.userRatingTotal}
+                          </Paragraph>
+                        </View>
+                        <View style={{flexDirection: 'row'}}>
+                          <PlaceDetails
+                            placeId={item.placeId}
+                            reviews={reviews}
+                            setReviews={setReviews}
+                          />
+                          <TouchableOpacity
+                            onPress={() => handleAddDirectToList(item)}
+                            style={theme.buttons.action}>
+                            <Text style={theme.buttons.actionText}>
+                              Add to List
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
                       </Card.Content>
                     </View>
                   ))}
@@ -146,9 +171,9 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   container: {
-    height: height / 2,
+    height: height / 1.7,
     // flexGrow: 1,
-    width: '90%',
+    width: '95%',
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
