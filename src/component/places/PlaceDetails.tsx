@@ -47,8 +47,10 @@ const PlaceDetails = ({placeId, reviews, setReviews}) => {
 
   return (
     <View style={theme.lists.buttonsContainer}>
-      <TouchableOpacity onPress={() => handleViewDetails()}>
-        <Icon name="info" size={24} color="gray" />
+      <TouchableOpacity
+        onPress={() => handleViewDetails()}
+        style={{marginTop: -18}}>
+        <Icon name="info" size={24} color="#7F5B34" />
       </TouchableOpacity>
       <Modal
         animationType="slide"

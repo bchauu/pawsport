@@ -4,11 +4,13 @@ import LogOut from '../component/account/LogOut';
 import LoginField from '../component/account/LoginField';
 import CreateAccountForm from '../component/account/CreateAccountForm';
 import useApiConfig from '../utils/apiConfig';
+import {useTheme} from '../context/ThemeContext';
 
 const ProfileScreen = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCreateAccount, setIsCreateAccount] = useState(false);
   const {token} = useApiConfig();
+  const {theme} = useTheme();
 
   const handleCreateAccount = (data: {
     // this should go to useAuth and then send to backend to register and authenticate
@@ -29,8 +31,7 @@ const ProfileScreen = () => {
   }, [token]);
 
   return (
-    <View>
-      <Text>Account</Text>
+    <View style={theme.spacing.padding.screen}>
       {isLoggedIn ? (
         <LogOut setIsLoggedIn={setIsLoggedIn} />
       ) : (

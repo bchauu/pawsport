@@ -24,7 +24,7 @@ const SearchOptions = ({selectedSearchOption, setSelectedSearchOption}) => {
   ];
 
   return (
-    <View style={styles.mainContainer}>
+    <View style={[styles.mainContainer, theme.spacing.padding.screen]}>
       {buttonTypes.map((button, index) => (
         <View
           key={index}
@@ -39,7 +39,7 @@ const SearchOptions = ({selectedSearchOption, setSelectedSearchOption}) => {
             <Text
               style={[
                 theme.buttons.filterText,
-                {fontSize: 15},
+                {fontSize: 12},
                 selectedSearchOption === button.type &&
                   theme.buttons.filterSelectedText,
               ]}>
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
   },
   buttonContainer: {
-    fontSize: 14,
+    fontSize: 12,
     // marginHorizontal: 5,
   },
   text: {

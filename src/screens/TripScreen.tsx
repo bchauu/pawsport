@@ -463,7 +463,12 @@ const TripsScreen = () => {
         </View>
       )}
       <ScrollView>
-        <View style={[theme.topHeaderContainer, {zIndex: 100}]}>
+        <View
+          style={[
+            styles.topHeaderContainer,
+            theme.spacing.padding.screen,
+            {zIndex: 100},
+          ]}>
           <CreateTravelListModal
             setIsCreateNewList={setIsCreateNewList}
             setInputName={setInputName}
@@ -535,6 +540,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1000, // Make sure it's on top
+  },
+  topHeaderContainer: {
+    padding: 3,
+    backgroundColor: '#2C7D53',
   },
   modalContainer: {
     width: '80%',

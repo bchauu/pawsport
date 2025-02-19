@@ -446,6 +446,7 @@ const Trips = ({
       <View>
         <View style={theme.lists.mainHeaderContainer}>
           <Text style={theme.lists.mainHeader}>{trip?.name}</Text>
+          <View style={styles.divider} />
           <View style={theme.lists.mainHeaderButtons}>
             <TouchableOpacity
               onPress={() => handleActionButton('invite')}
@@ -465,6 +466,7 @@ const Trips = ({
               </Text>
             </TouchableOpacity>
           </View>
+
           <View style={theme.lists.mainHeaederDetails}>
             {!isSharedList && listActions.invite ? (
               <Share handleShare={handleShare} />
@@ -536,7 +538,10 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: 'column', // Align number and text horizontally
     marginBottom: 5,
+    borderColor: '#E2E8F0',
+    borderWidth: 1,
     // padding: 50
+    borderRadius: 8,
   },
   item: {
     padding: 15,
@@ -565,6 +570,11 @@ const styles = StyleSheet.create({
   subLevelContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  divider: {
+    height: 1, // Thickness of the line
+    backgroundColor: '#E2E8F0', // Light gray color (adjust as needed)
+    marginVertical: 8, // Spacing above and below the divider
   },
 });
 

@@ -81,9 +81,12 @@ const CollapsibleDropdown = ({
     <View style={styles.container}>
       {/* Dropdown Trigger */}
       <TouchableOpacity
-        style={[theme.buttons.cta, styles.dropdownTrigger]}
+        style={[theme.buttons.ctaReverse, styles.dropdownTrigger]}
         onPress={toggleDropdown}>
-        <Text style={styles.mainText}> Select List </Text>
+        <Text style={[theme.buttons.ctaReverseText, styles.mainText]}>
+          {' '}
+          Select List{' '}
+        </Text>
         {/* <Text style={styles.arrow}> ⬇️ </Text> */}
         <Icon name="keyboard-arrow-down" size={20} color="black" />
       </TouchableOpacity>
@@ -134,9 +137,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     color: '#ffffff',
-    left: '50%',
-    top: '-47%',
-    paddingTop: '4.5%',
+    left: '50.5%',
+    top: '-46%',
+    paddingTop: '17%',
     alignItems: 'flex-end',
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},
@@ -147,15 +150,15 @@ const styles = StyleSheet.create({
     zIndex: 10, // Ensure dropdown container is also above others
   },
   mainText: {
-    color: '#ffffff', // White text for contrast
-    fontSize: 12,
+    // color: '#ffffff', // White text for contrast
+    fontSize: 10,
     fontWeight: 'bold',
   },
   dropdownTrigger: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    paddingVertical: 9,
+    paddingVertical: 5.5,
     width: '50%',
     padding: 7,
     borderRadius: 5,

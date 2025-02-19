@@ -14,7 +14,7 @@ const NotesSection = ({
   notes,
   item,
 }) => {
-  const [activeCategory, setActiveCategory] = useState('Important');
+  const [activeCategory, setActiveCategory] = useState('Important Notes');
   const {theme} = useTheme();
 
   const categories = [
@@ -38,16 +38,17 @@ const NotesSection = ({
               <TouchableOpacity
                 key={category.value}
                 style={[
-                  styles.categoryButton,
-                  activeCategory === category.value && styles.activeButton,
+                  theme.buttons.filter,
+                  activeCategory === category.value &&
+                    theme.buttons.filterSelected,
                 ]}
                 onPress={() => updateCategory(category.value)} // Update active category
               >
                 <Text
                   style={[
-                    styles.buttonText,
+                    theme.buttons.filterText,
                     activeCategory === category.value &&
-                      styles.activeButtonText,
+                      theme.buttons.filterSelectedText,
                   ]}>
                   {category.label}
                 </Text>
@@ -95,6 +96,9 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     marginBottom: 10,
+    justifyContent: 'space-between',
+    paddingVertical: 5,
+    paddingHorizontal: 5,
   },
   categoryButton: {
     padding: 10,

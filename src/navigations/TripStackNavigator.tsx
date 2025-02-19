@@ -16,7 +16,11 @@ const TripStackNavigator = () => {
       <TripStack.Navigator
         initialRouteName="Trip"
         screenOptions={{headerShown: false, ...flipAnimation}}>
-        <TripStack.Screen name="Trip" component={TripsScreen} />
+        <TripStack.Screen
+          name="Trip"
+          component={TripsScreen}
+          options={{headerShown: false}}
+        />
       </TripStack.Navigator>
     </SearchProvider>
   );

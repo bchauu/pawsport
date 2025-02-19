@@ -31,8 +31,16 @@ const getTabBarIcon = (routeName, color, size) => {
 const MainNavigator = () => {
   const screenOptions = ({route}) => ({
     tabBarIcon: ({color, size}) => getTabBarIcon(route.name, color, size),
-    tabBarActiveTintColor: 'blue', // Color for active tab
+    // tabBarActiveTintColor: '#2C7D53', // Color for active tab
+    tabBarActiveTintColor: '#EDF0F2', // Color for active tab
     tabBarInactiveTintColor: 'gray', // Color for inactive tab
+    headerShown: false,
+    tabBarStyle: {
+      backgroundColor: 'rgba(127, 91, 52, 0.3)', // or any color you want
+      height: 78,
+      borderTopWidth: 0.5,
+      borderColor: '#A0AEC0',
+    },
   });
 
   return (

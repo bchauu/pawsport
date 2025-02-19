@@ -85,7 +85,7 @@ const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    paddingVertical: 16, // Use vertical padding for better spacing
+    // paddingVertical: 16, // Use vertical padding for better spacing
   },
   container: {
     // padding: 0,

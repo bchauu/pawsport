@@ -220,19 +220,21 @@ const Place = ({
         Rating: {placeDetail.rating}
         Total: {placeDetail.userRatingTotal}
       </Paragraph>
-      <PlaceDetails
-        placeId={placeDetail.placeId}
-        reviews={reviews}
-        setReviews={setReviews}
-      />
-      {token ? (
-        <AddTravelModal
-          allTravelList={allTravelList}
-          handleAddTrip={handleAddTrip}
+      <View style={[theme.lists.cardActions]}>
+        <PlaceDetails
+          placeId={placeDetail.placeId}
+          reviews={reviews}
+          setReviews={setReviews}
         />
-      ) : (
-        <AuthModal modalName={'Add to Travel List'} />
-      )}
+        {token ? (
+          <AddTravelModal
+            allTravelList={allTravelList}
+            handleAddTrip={handleAddTrip}
+          />
+        ) : (
+          <AuthModal modalName={' List'} />
+        )}
+      </View>
     </View>
   );
 };

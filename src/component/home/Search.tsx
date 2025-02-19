@@ -298,8 +298,10 @@ const Search = () => {
 const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'column',
-    width: '95%',
+    width: '100%',
     alignSelf: 'center',
+    backgroundColor: 'rgba(44,125,83,0.2)',
+    paddingHorizontal: 15,
   },
   buttonContainer: {
     flex: 1,

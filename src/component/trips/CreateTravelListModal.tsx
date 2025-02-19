@@ -28,11 +28,11 @@ const CreateTravelListModal = ({
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <TouchableOpacity
         onPress={() => setModalVisible(true)}
-        style={[theme.buttons.cta, styles.buttonContainer, {width: '40%'}]}>
-        <Text style={[theme.buttons.ctaText]}>Create Travel List</Text>
+        style={[theme.buttons.ctaReverse, {width: '40%'}]}>
+        <Text style={[theme.buttons.ctaReverseText]}>Create Travel List</Text>
       </TouchableOpacity>
       <Modal
         animationType="slide" // Animation type can be 'slide', 'fade', or 'none'
@@ -84,9 +84,10 @@ const CreateTravelListModal = ({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    // flex: 1,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    backgroundColor: '#2C7D53',
   },
   overlay: {
     flex: 1,

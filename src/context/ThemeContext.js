@@ -3,11 +3,15 @@ import React, {createContext, useContext, useState} from 'react';
 // 🔹 Main Color Palette (slightly muted secondary if desired)
 const colors = {
   primary: '#2C7D53', // Forest green (main CTA color)
+  lighterPrimary: '#4B906C', // A lighter, opaque version of the primary color
+  primaryOverlay: 'rgba(44,125,83,0.2)', // A transparent overlay version
   secondary: '#7F5B34', // Saddle Brown (secondary actions/highlights)
-  accent: '#ECC94B', // Golden mustard (small highlights/alerts)
+  lighterSecondary: '#A28564', // A lighter, opaque version of secondary (approximation)
+  secondaryOverlay: 'rgba(127,91,52,0.2)', // Transparent overlay of secondary
+  accent: '#FAF4EC', // Golden mustard (small highlights/alerts)
   success: '#38A169', // Cactus green (success messages)
   danger: '#C53030', // Canyon red (errors/destructive actions)
-  background: '#F7FAFC', // Soft off-white backdrop
+  background: '#EDF0F2', // Soft off-white backdrop
   text: '#1A202C', // Dark gray-navy for strong readability
   muted: '#E2E8F0', // Light gray for subtle backgrounds
   white: '#FFFFFF', // Pure white
@@ -25,8 +29,15 @@ const shadow = {
   },
   medium: {
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 3}, // Lower height
-    shadowOpacity: 0.08, // 🔥 Reduced for a smoother look
+    shadowOffset: {width: 1, height: 2}, // Lower height
+    shadowOpacity: 0.15, // 🔥 Reduced for a smoother look
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  button: {
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 1}, // Lower height
+    shadowOpacity: 0.3, // 🔥 Reduced for a smoother look
     shadowRadius: 4,
     elevation: 2,
   },
@@ -60,16 +71,24 @@ const typography = {
 
 // 🔹 Spacing & Padding
 const spacing = {
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
+  xs: 2,
+  sm: 6,
+  md: 12,
+  lg: 18,
+  xl: 24,
   padding: {
     small: {padding: 8}, // 🔥 Bumped up from 4 → 8
     medium: {padding: 12},
     large: {padding: 16},
-    default: {paddingTop: 3, paddingLeft: 3, paddingRight: 3, paddingBottom: 3},
+    default: {
+      paddingTop: 2,
+      paddingLeft: 3,
+      paddingRight: 3,
+      paddingBottom: 6,
+    },
+    screen: {
+      paddingTop: 54,
+    },
   },
 };
 
@@ -99,15 +118,29 @@ const buttons = {
   cta: {
     backgroundColor: colors.primary,
     borderRadius: 6,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    ...shadow.medium,
+    paddingVertical: 6,
+    paddingHorizontal: 4,
+    ...shadow.button,
     alignItems: 'center',
     justifyContent: 'center',
   },
   ctaText: {
     color: colors.white,
-    fontSize: 14,
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  ctaReverse: {
+    backgroundColor: colors.muted,
+    borderRadius: 6,
+    paddingVertical: 8.5,
+    paddingHorizontal: 0,
+    ...shadow.medium,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ctaReverseText: {
+    color: colors.primary,
+    fontSize: 10,
     fontWeight: 'bold',
   },
 
@@ -132,6 +165,8 @@ const buttons = {
     paddingVertical: 8,
     paddingHorizontal: 8,
     alignItems: 'center',
+    ...shadow.button,
+    alignSelf: 'center',
   },
   actionText: {
     color: colors.white, // Text color for action buttons
@@ -152,13 +187,13 @@ const buttons = {
     justifyContent: 'center',
   },
   filterText: {
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: '500',
     color: colors.primary,
   },
   filterSelected: {
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
+    backgroundColor: colors.lighterPrimary,
+    borderColor: colors.lighterPrimary,
     shadowOpacity: 0.15,
     elevation: 2,
   },
@@ -221,7 +256,7 @@ const inputs = {
     borderWidth: 1,
     borderRadius: 6,
     paddingHorizontal: 12,
-    fontSize: 16,
+    fontSize: 14,
     color: colors.text,
     backgroundColor: colors.white,
   },
@@ -252,11 +287,13 @@ const inputs = {
 // 🔹 Lists & Cards
 const lists = {
   listContainer: {
-    paddingTop: spacing.md,
+    // paddingTop: spacing.md,
+    backgroundColor: colors.background,
   },
   list: {
     padding: 5,
     paddingTop: 15,
+    backgroundColor: colors.background,
   },
   authContainer: {
     borderRadius: 12,
@@ -272,27 +309,32 @@ const lists = {
   mainHeaderContainer: {
     width: '100%',
     padding: spacing.md,
-    backgroundColor: colors.muted,
+    backgroundColor: colors.primary,
     marginBottom: spacing.md,
+    paddingVertical: spacing.xl,
     ...shadow.light,
     borderBottomWidth: 1,
     borderBottomColor: colors.gray,
   },
   mainHeader: {
-    fontSize: typography.fontSize.xl,
+    fontSize: typography.fontSize.xxl,
     fontWeight: 'bold',
     textAlign: 'center',
+    backgroundColor: colors.primary,
+    borderColor: colors.muted,
+    borderBottomWidth: 1,
     marginBottom: spacing.sm,
-    color: colors.text,
+    color: colors.white,
   },
   mainHeaderDetails: {
     paddingTop: 10,
   },
   mainHeaderButtons: {
-    backgroundColor: colors.muted,
+    backgroundColor: colors.primary,
     borderRadius: 6,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.md,
+    paddingBottom: 0,
     marginTop: spacing.sm,
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -306,15 +348,16 @@ const lists = {
     margin: 6,
     borderRadius: 8,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: {width: 0, height: 0},
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowRadius: 0, //shadow causing double border padding when title gets pushed down
+    // elevation: 3,
   },
   cardContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+    alignItems: 'flex-start', // ensures top alignment
     backgroundColor: colors.white,
     borderRadius: 12,
     ...shadow.medium,
@@ -325,9 +368,11 @@ const lists = {
     fontSize: typography.fontSize.lg,
     fontWeight: 'bold',
     color: colors.text,
+    maxWidth: 300,
   },
   cardImage: {
     width: '100%',
+    maxWidth: 300,
     height: 120, // Fixed height for consistent card size
     borderRadius: 8, // Rounded corners for the image
     marginBottom: 8, // Space below the image
@@ -337,31 +382,31 @@ const lists = {
     color: '#555',
     marginBottom: 12, // Space before the buttons
   },
+  cardActions: {
+    flexDirection: 'row',
+  },
   sectionCard: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.background,
     borderRadius: 6,
-    borderWidth: 1,
-    borderColor: colors.muted,
-    ...shadow.light,
-    // marginBottom: spacing.md,
-    // padding: spacing.md,
+    marginBottom: spacing.md,
+    paddingBottom: 50,
   },
   titleRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: spacing.sm,
+    paddingVertical: spacing.lg,
     paddingHorizontal: spacing.md,
-    backgroundColor: colors.primary,
-    borderTopLeftRadius: 6,
-    borderTopRightRadius: 6,
+    backgroundColor: colors.accent,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
     borderBottomWidth: 1,
     borderBottomColor: colors.gray,
   },
   titleText: {
-    fontSize: typography.fontSize.lg,
-    fontWeight: '600',
-    color: colors.white, // 🔥 Make white text stand out on orange
+    fontSize: typography.fontSize.xl,
+    fontWeight: '700',
+    color: colors.primary, // 🔥 Make white text stand out on orange
   },
   reviewCard: {
     backgroundColor: colors.muted,
@@ -402,36 +447,47 @@ const personalList = {
     backgroundColor: colors.background,
   },
   list: {
-    padding: spacing.xs,
+    // padding: spacing.xs,
     backgroundColor: colors.white,
     borderRadius: 6,
     marginBottom: spacing.md,
     // React Native doesn’t support `boxShadow` syntax – use shadow props:
     ...shadow.light,
+    borderColor: colors.muted,
+    borderWidth: 1,
   },
   subList: {
     padding: spacing.sm,
-    backgroundColor: 'rgba(236, 201, 75, 0.2)',
+    backgroundColor: colors.accent,
     borderLeftWidth: 5,
     left: 5,
     borderLeftColor: colors.secondary,
     borderRadius: 4,
     marginBottom: spacing.sm,
+    borderColor: colors.muted,
+    borderBottomWidth: 1,
+    borderWidth: 0,
   },
   subListHeaderContainer: {
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.md,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.accent,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderRadius: 6,
+    // borderRadius: 6,
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6,
     marginBottom: spacing.sm,
+    borderColor: colors.gray,
+    borderBottomWidth: 0.5,
+    // borderWidth: 0.3,
+    shadowOpacity: 0.1,
     ...shadow.light,
   },
   subListHeaderText: {
-    fontSize: typography.fontSize.md,
-    color: colors.white,
+    fontSize: typography.fontSize.lg,
+    color: colors.primary,
     fontWeight: '600',
     textAlign: 'left',
     letterSpacing: 0.5,

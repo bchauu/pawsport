@@ -142,13 +142,14 @@ const ManualSwipeableRow = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    width: '99.5%',
+    width: '100%',
     justifyContent: 'space-between',
     backgroundColor: '#fff',
     shadowColor: 'rgba(0, 0, 0, 0.2)',
     shadowOffset: {width: 0, height: 2},
     shadowRadius: 0,
     shadowOpacity: 0.3,
+    borderRadius: 8,
   },
   itemContainer: {
     flexDirection: 'row',
@@ -161,11 +162,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
+    color: '#7F5B34',
   },
   number: {
     marginRight: 10,
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#7F5B34',
   },
   itemText: {
     fontSize: 16,

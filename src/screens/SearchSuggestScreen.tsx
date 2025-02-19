@@ -13,11 +13,13 @@ import AutoCompleteField from '../component/search/AutoCompleteField';
 import config from '../config';
 import {getToken} from '../utils/authStorage';
 import axios from 'axios';
+import {useTheme} from '../context/ThemeContext';
 
 const SearchSuggestionScreen = () => {
   const {searchValue, setSearchValue} = useSearch(); // context --> to be accessed in search. selected from suggestions will be sent to Search
   const [suggestions, setSuggestions] = useState([]); // the suggestion to be displayed on screen
   const [locationQuery, setLocationQuery] = useState(''); // changing of query sent to api
+  const {theme} = useTheme();
 
   const [hasSuggestion, setHasSuggestion] = useState(false);
   const timeoutId = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -81,7 +83,9 @@ const SearchSuggestionScreen = () => {
   };
 
   return (
-    <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
+    <ScrollView
+      style={[theme.spacing.padding.screen, styles.container]}
+      keyboardShouldPersistTaps="handled">
       <TextInput
         style={styles.input}
         placeholder="Where to?"
@@ -116,6 +120,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F7FAFC', // Light neutral background
     padding: 16,
+    paddingTop: 55,
   },
   input: {
     backgroundColor: '#fff',
