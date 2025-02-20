@@ -271,6 +271,7 @@ const Search = () => {
               places={places}
               setIsSearchInitiated={setIsSearchInitiated}
               isSearchInitiated={isSearchInitiated}
+              fromSearch={true}
             />
             <View style={theme.spacing.padding.default}>
               <TouchableOpacity
@@ -284,7 +285,9 @@ const Search = () => {
               </TouchableOpacity>
             </View>
             {nextPage ? (
-              <Button title="next:" onPress={handleNextPage} />
+              <TouchableOpacity onPress={handleNextPage}>
+                <Text>next:</Text>
+              </TouchableOpacity>
             ) : (
               <></>
             )}

@@ -5,7 +5,12 @@ import Place from './Place';
 import {useTheme} from '../../context/ThemeContext';
 import useApiConfig from '../../utils/apiConfig';
 
-const List = ({places, isSearchInitiated, setIsSearchInitiated}) => {
+const List = ({
+  places,
+  isSearchInitiated,
+  setIsSearchInitiated,
+  fromSearch,
+}) => {
   const {theme} = useTheme();
   const [hasList, setHasList] = useState(true);
   const [reviews, setReviews] = useState({});
@@ -26,7 +31,11 @@ const List = ({places, isSearchInitiated, setIsSearchInitiated}) => {
           {places?.map((place, index) => (
             <Card
               key={place.place_id || place.placeId}
-              style={(styles.container, theme.lists.card)}>
+              style={[
+                styles.container,
+                theme.lists.card,
+                fromSearch && {backgroundColor: '#EDF0F2'},
+              ]}>
               <Card.Content style={theme.lists.cardContainer}>
                 <Place
                   reviews={reviews}
