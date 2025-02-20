@@ -8,7 +8,7 @@ require Pod::Executable.execute_command('node', ['-p',
 platform :ios, 15
 prepare_react_native_project!
 
-target 'travelCollabApp' do
+target 'Pawsport' do
 
   rn_maps_path = '../node_modules/react-native-maps'
   pod 'react-native-maps', :path => rn_maps_path
@@ -25,7 +25,7 @@ target 'travelCollabApp' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'travelCollabAppTests' do
+  target 'PawsportTests' do
     inherit! :complete
     # Pods for testing
   end

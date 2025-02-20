@@ -22,7 +22,7 @@
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>Your app needs access to the local network to connect to the server.</string>
 	<key>CFBundleDisplayName</key>
-	<string>travelCollabApp</string>
+	<string>Pawsport</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

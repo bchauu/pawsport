@@ -1,4 +1,4 @@
-package com.travelcollabapp
+package com.pawsportapp
 
 import android.app.Application
 import com.facebook.react.PackageList
