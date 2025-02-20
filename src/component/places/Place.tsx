@@ -217,7 +217,7 @@ const Place = ({
       />
       <Text style={[theme.lists.cardTitle]}>{placeDetail.name}</Text>
       <Paragraph style={[{...theme.lists.cardDetails, maxWidth: 300}]}>
-        {placeDetail.address}
+        {placeDetail.vicinity}
       </Paragraph>
       <Paragraph style={[{...theme.lists.cardDetails, maxWidth: 300}]}>
         Rating: {placeDetail.rating}
