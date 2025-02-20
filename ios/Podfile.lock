@@ -937,7 +937,7 @@ PODS:
     - React-Core
   - react-native-network-info (5.2.1):
     - React
-  - react-native-safe-area-context (5.1.0):
+  - react-native-safe-area-context (5.2.0):
     - React-Core
   - react-native-sensitive-info (5.5.8):
     - React
@@ -1153,7 +1153,7 @@ PODS:
     - React-logger (= 0.74.3)
     - React-perflogger (= 0.74.3)
     - React-utils (= 0.74.3)
-  - RNGestureHandler (2.22.1):
+  - RNGestureHandler (2.23.1):
     - DoubleConversion
     - glog
     - RCT-Folly (= 2024.01.01.00)
@@ -1261,7 +1261,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (4.5.0):
+  - RNScreens (4.8.0):
     - DoubleConversion
     - glog
     - RCT-Folly (= 2024.01.01.00)
@@ -1539,7 +1539,7 @@ SPEC CHECKSUMS:
   react-native-get-random-values: 21325b2244dfa6b58878f51f9aa42821e7ba3d06
   react-native-maps: ee1e65647460c3d41e778071be5eda10e3da6225
   react-native-network-info: d1290ffc0bd0709e11436f5b8d7f605dcc5c4530
-  react-native-safe-area-context: 04803a01f39f31cc6605a5531280b477b48f8a88
+  react-native-safe-area-context: 849d7df29ecb2a7155c769c0b76849ba952c2aa3
   react-native-sensitive-info: 400c6e3d27945e15c8cddb5b4b92233c85ee06f8
   React-nativeconfig: fa5de9d8f4dbd5917358f8ad3ad1e08762f01dcb
   React-NativeModulesApple: a6c18ebe96428589977f43c41a2c811b27bbd9cc
@@ -1563,13 +1563,13 @@ SPEC CHECKSUMS:
   React-runtimescheduler: 31167deac0efc721e52015f8000cd2cf9bfaeceb
   React-utils: e429e41d4edaae8d0668ecdb9e2122d58c0eea6b
   ReactCommon: 4d15fcb03c1d4086b0d6817bf28032e9da874c75
-  RNGestureHandler: fa7c426ee9a9f99e7650424f1e9aea79c68074e2
+  RNGestureHandler: c7962a9b5652f944e9d705980556d94a6ff19ea2
   RNReanimated: 47b567bbcbcc8dc5bfd6248c6dafaeaa89d4296f
-  RNScreens: 320ea65d8e32e872e0bcd3d3d535a3709402eab2
+  RNScreens: 23b8b73b0e69ed9c2b32d614958cabb5910aa84b
   RNVectorIcons: a98ff1d74647e3de2eafd248466e7989bbac631c
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: 04f1db30bb810187397fa4c37dd1868a27af229c
 
-PODFILE CHECKSUM: 47ec8f43db6da75571807098be6de40ffcea4492
+PODFILE CHECKSUM: 0e1491e94d296156683231c8eb6f483445bab49c
 
 COCOAPODS: 1.16.2
