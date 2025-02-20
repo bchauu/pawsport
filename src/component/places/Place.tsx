@@ -61,7 +61,6 @@ const Place = ({
     {name, placeId} = placeDetail;
   // console.log(placeDetail, 'placedetails shoul be missing id')    //direct from google maps
 
-  //dont need photo, they can click more details which will pull up photos along with details
   const currentPlace: TripLocation = {
     name,
     lat,
