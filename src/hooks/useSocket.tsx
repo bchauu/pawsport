@@ -2,7 +2,8 @@ import {useEffect, useState} from 'react';
 import {io} from 'socket.io-client';
 import {getToken} from '../utils/authStorage'; // Import your token function
 
-const SOCKET_SERVER_URL = 'http://localhost:3000';
+// const SOCKET_SERVER_URL = 'http://localhost:3000';
+const SOCKET_SERVER_URL = 'wss://api.pawsport.quest';
 
 const useSocket = () => {
   const [socket, setSocket] = useState(null);
